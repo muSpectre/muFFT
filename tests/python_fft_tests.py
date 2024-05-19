@@ -39,7 +39,7 @@ import gc
 import unittest
 import numpy as np
 
-from python_test_imports import muFFT, muGrid
+import muFFT, muGrid
 
 if muFFT.has_mpi:
     from mpi4py import MPI

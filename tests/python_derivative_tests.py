@@ -38,7 +38,7 @@ import unittest
 import numpy as np
 import itertools
 
-from python_test_imports import muFFT
+import muFFT
 
 
 class DerivativeCheck1d(unittest.TestCase):

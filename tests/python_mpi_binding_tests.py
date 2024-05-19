@@ -37,7 +37,7 @@ Program grant you additional permission to convey the resulting work.
 import unittest
 import numpy as np
 
-from python_test_imports import muFFT
+import muFFT
 
 from python_fft_tests import FFT_Check
 #from python_netcdf_tests import NetCDF_Check_2d, NetCDF_Check_3d

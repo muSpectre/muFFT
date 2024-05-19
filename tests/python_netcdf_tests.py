@@ -40,7 +40,7 @@ import numpy as np
 try:
     from netCDF4 import Dataset
 
-    from python_test_imports import muFFT
+    import muFFT
     from muFFT.NetCDF import NCStructuredGrid
 
     def build_test_classes(nb_grid_pts):

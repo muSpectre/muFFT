@@ -17,23 +17,18 @@ if boost_test.found()
 endif
 
 #
-# Environment for Python tests
+# Test environment
 #
 
 envdata = environment()
 python_paths = [
-    # We place the source directories first, because there are no .py files in
-    # the build directory, but it does have an empty muGrid, muFFT, muSpectre
-    # subdirectory that Python will import as a defunct module.
-    join_paths(meson.current_source_dir(), '../language_bindings/libmugrid/python'),
-    join_paths(meson.current_source_dir(), '../language_bindings/libmufft/python'),
+    join_paths(meson.current_build_dir(), '../language_bindings/python'),
     join_paths(meson.current_source_dir(), '../language_bindings/python'),
-    join_paths(meson.current_build_dir(), '../language_bindings/libmugrid/python'),
-    join_paths(meson.current_build_dir(), '../language_bindings/libmufft/python'),
-    join_paths(meson.current_build_dir(), '../language_bindings/python')
+    join_paths(meson.current_build_dir(), '../subprojects/mugrid/language_bindings/python'),
+    join_paths(meson.current_source_dir(), '../subprojects/mugrid/language_bindings/python')
 ]
 envdata.append('PYTHONPATH', python_paths)
-envdata.append('MUSPECTRE_TEST_DIR', meson.current_source_dir())
+envdata.append('TESTS_BUILDDIR', meson.current_build_dir())
 
 #
 # Python unit tests
@@ -42,8 +37,8 @@ envdata.append('MUSPECTRE_TEST_DIR', meson.current_source_dir())
 test('mufft_python_binding_tests',
     python,
     args: [files('python_binding_tests.py'), '-v', '-f'],
-    depends: [mufft_python],
     env: envdata,
+    depends: [mufft_python],
     timeout: test_timeout)
 
 #
@@ -66,6 +61,7 @@ if mu_with_mpi
                 test('mpi_mufft_main_test_suite-np_' + n,
                      mpiexec,
                      args: ['-n', n, '--oversubscribe', mpi_main_test_suite],
+                     env: envdata,
                      is_parallel: false)  # Don't run any other test in parallel
             endif
 
