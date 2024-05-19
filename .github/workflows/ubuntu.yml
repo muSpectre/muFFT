@@ -56,6 +56,7 @@ jobs:
               openmpi-bin \
               libopenmpi-dev \
               libpnetcdf-dev \
+              libfftw3-dev \
               libfftw3-mpi-dev
             # Install mpi4py
             echo "Installing mpi4py${{ matrix.mpi4py-version }}"
