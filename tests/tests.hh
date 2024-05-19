@@ -9,18 +9,18 @@
  *
  * Copyright © 2017 Till Junge
  *
- * µSpectre is free software; you can redistribute it and/or
+ * µFFT is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3, or (at
  * your option) any later version.
  *
- * µSpectre is distributed in the hope that it will be useful, but
+ * µFFT is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with µSpectre; see the file COPYING. If not, write to the
+ * along with µFFT; see the file COPYING. If not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * * Boston, MA 02111-1307, USA.
  *
@@ -33,18 +33,27 @@
  *
  */
 
-#include "libmugrid/tests.hh"
+#include "tests.hh"
 
-#include <common/muSpectre_common.hh>
+#include <libmufft/mufft_common.hh>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/mpl/list.hpp>
 
-#ifndef TESTS_TESTS_HH_
-#define TESTS_TESTS_HH_
+#ifndef TESTS_LIBMUFFT_TESTS_HH_
+#define TESTS_LIBMUFFT_TESTS_HH_
 
-namespace muSpectre {
+namespace muFFT {
   using muGrid::tol;
-  constexpr Real finite_diff_tol = 1e-7;  // it's in percent
-}  // namespace muSpectre
+}  // namespace muFFT
 
-#endif  // TESTS_TESTS_HH_
+template <muFFT::Dim_t Dim>
+struct dimFixture {
+  constexpr static muFFT::Dim_t dim{Dim};
+};
+
+using dimlist =
+    boost::mpl::list<dimFixture<muFFT::oneD>, dimFixture<muFFT::twoD>,
+                     dimFixture<muFFT::threeD>>;
+
+#endif  // TESTS_LIBMUFFT_TESTS_HH_

@@ -1,83 +1,30 @@
-subdir('libmugrid')
-subdir('libmufft')
+incdirs = include_directories('..')
 
-muspectre_sources = [
-    'cell/cell.cc',
-    'cell/cell_data.cc',
-#    'cell/cell_split.cc',
-    'common/version.cc',
-    'common/common.cc',
-    'common/voigt_conversion.cc',
-#    'common/intersection_octree.cc',
-    'materials/material_base.cc',
-    'materials/material_dunant.cc',
-    'materials/material_dunant_t.cc',
-    'materials/material_dunant_max.cc',
-    'materials/material_dunant_tc.cc',
-    'materials/material_linear_anisotropic.cc',
-    'materials/material_linear_orthotropic.cc',
-    'materials/material_linear_diffusion.cc',
-    'materials/material_linear_elastic1.cc',
-    'materials/material_linear_elastic2.cc',
-    'materials/material_linear_elastic3.cc',
-    'materials/material_linear_elastic4.cc',
-    'materials/material_linear_elastic_damage1.cc',
-    'materials/material_linear_elastic_damage2.cc',
-    'materials/material_linear_elastic_generic1.cc',
-    'materials/material_linear_elastic_generic2.cc',
-    'materials/material_mechanics_base.cc',
-    'materials/material_visco_elastic_ss.cc',
-    'materials/material_visco_elastic_damage_ss1.cc',
-    'materials/material_visco_elastic_damage_ss2.cc',
-    'materials/material_neo_hookean_elastic.cc',
-    'materials/material_hyper_elasto_plastic1.cc',
-    'materials/material_hyper_elasto_plastic2.cc',
-    'materials/material_stochastic_plasticity.cc',
-    'materials/material_phase_field_fracture.cc',
-    'materials/material_phase_field_fracture2.cc',
-    'materials/s_t_material_linear_elastic_generic1.cc',
-    'materials/material_hyper_elastic1.cc',
-    'materials/material_hyper_elastic2.cc',
-#    'materials/laminate_homogenisation.cc',
-#    'materials/material_laminate.cc',
-    'projection/projection_base.cc',
-    'projection/projection_default.cc',
-    'projection/projection_gradient.cc',
-    'projection/projection_finite_strain.cc',
-    'projection/projection_small_strain.cc',
-    'projection/projection_approx_Green_operator.cc',
-    'projection/stiffness_operator.cc',
-    'projection/fem_stencil.cc',
-    'projection/discretisation.cc',
-    'projection/fem_library.cc',
-    'projection/discrete_greens_operator.cc',
-    'solver/krylov_solver_base.cc',
-    'solver/krylov_solver_trust_region_features.cc',
-    'solver/krylov_solver_preconditioned_features.cc',
-    'solver/matrix_adaptor.cc',
-    'solver/krylov_solver_cg.cc',
-    'solver/krylov_solver_pcg.cc',
-    'solver/krylov_solver_eigen.cc',
-    'solver/krylov_solver_trust_region_cg.cc',
-    'solver/krylov_solver_trust_region_pcg.cc',
-    'solver/solver_common.cc',
-    'solver/solvers.cc',
-    'solver/solver_base.cc',
-    'solver/solver_single_physics.cc',
-    'solver/solver_single_physics_projection_base.cc',
-    'solver/solver_newton_cg.cc',
-    'solver/solver_trust_region_newton_cg.cc',
-    'solver/solver_fem_trust_region_newton_cg.cc',
-    'solver/solver_fem_trust_region_newton_pcg.cc',
-    'solver/solver_fem_newton_cg.cc',
-    'solver/solver_fem_newton_pcg.cc'
+mufft_sources = [
+    'version.cc',
+    'derivative.cc',
+    'fft_engine_base.cc',
+    'fft_utils.cc',
+    'pocketfft_engine.cc'
 ]
 
-muspectre = shared_library(
-    'muSpectre',
-    muspectre_sources,
-    include_directories: eigen3_incdir,
-    link_with: [mugrid, mufft],
+if mu_with_fftw3
+    mufft_sources += ['fftw_engine.cc']
+endif
+
+if mu_with_fftw3mpi
+    mufft_sources += ['fftwmpi_engine.cc']
+endif
+
+if mu_with_pfft
+    mufft_sources += ['pfft_engine.cc']
+endif
+
+mufft = shared_library(
+    'muFFT',
+    mufft_sources,
+    include_directories: [eigen3_incdir, incdirs],
+    link_with: mugrid,
     dependencies: muspectre_dependencies,
     install: true  # needed, otherwise it is not copied to wheel
 )
