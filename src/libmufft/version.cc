@@ -37,7 +37,7 @@
 #include <string>
 #include <sstream>
 
-#include <libmugrid/grid_common.hh>
+#include "libmugrid/grid_common.hh"
 
 namespace muFFT {
   namespace version {

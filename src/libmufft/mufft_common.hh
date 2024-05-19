@@ -33,7 +33,7 @@
  *
  */
 
-#include <libmugrid/grid_common.hh>
+#include "libmugrid/grid_common.hh"
 
 #ifndef SRC_LIBMUFFT_MUFFT_COMMON_HH_
 #define SRC_LIBMUFFT_MUFFT_COMMON_HH_

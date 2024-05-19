@@ -36,9 +36,9 @@
 #ifndef SRC_LIBMUFFT_FFT_ENGINE_BASE_HH_
 #define SRC_LIBMUFFT_FFT_ENGINE_BASE_HH_
 
-#include <libmugrid/ccoord_operations.hh>
-#include <libmugrid/field_collection_global.hh>
-#include <libmugrid/field_typed.hh>
+#include "libmugrid/ccoord_operations.hh"
+#include "libmugrid/field_collection_global.hh"
+#include "libmugrid/field_typed.hh"
 
 #include "libmugrid/communicator.hh"
 #include "mufft_common.hh"

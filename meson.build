@@ -15,11 +15,14 @@ version_dirty = version[0]
 version_str = version[1]
 version_hash = version[2]
 
+mufft_dependencies = []
+
 fftw3 = dependency('fftw3', required: false)
 if fftw3.found()
     message('muFFT FFTW: *** YES ***')
     mu_with_fftw3 = true
     add_project_arguments('-DWITH_FFTW', language : ['c', 'cpp'])
+    mufft_dependencies += [fftw3]
 else
     message('muFFT FFTW: no')
     mu_with_fftw3 = false
@@ -34,8 +37,6 @@ cc = meson.get_compiler('c')
 
 # This produces lots of Warning from Eigen3. Disabling for now.
 # add_project_arguments('-Weffc++', language: 'cpp')
-
-mufft_dependencies = []
 
 mpi = dependency('mpi', language: 'cpp', required: false)
 mu_with_mpi = false

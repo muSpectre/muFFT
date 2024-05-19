@@ -36,7 +36,7 @@
 
 #include "fft_engine_base.hh"
 #include "fft_utils.hh"
-#include <libmugrid/ccoord_operations.hh>
+#include "libmugrid/ccoord_operations.hh"
 
 using muGrid::GlobalFieldCollection;
 using muGrid::CcoordOps::get_col_major_strides;

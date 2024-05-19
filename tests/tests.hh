@@ -33,8 +33,6 @@
  *
  */
 
-#include "tests.hh"
-
 #include <libmufft/mufft_common.hh>
 
 #include <boost/test/unit_test.hpp>
@@ -44,7 +42,10 @@
 #define TESTS_LIBMUFFT_TESTS_HH_
 
 namespace muFFT {
-  using muGrid::tol;
+
+  constexpr Real tol = 1e-14 * 100;       // it's in percent
+  constexpr Real finite_diff_tol = 1e-7;  // it's in percent
+
 }  // namespace muFFT
 
 template <muFFT::Dim_t Dim>

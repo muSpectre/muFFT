@@ -36,11 +36,11 @@
 #ifndef SRC_LIBMUFFT_FFT_UTILS_HH_
 #define SRC_LIBMUFFT_FFT_UTILS_HH_
 
-#include <libmugrid/exception.hh>
+#include "libmugrid/exception.hh"
 
 #include "mufft_common.hh"
 
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 
 #include <array>
 #include <valarray>

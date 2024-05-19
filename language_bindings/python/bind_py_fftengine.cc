@@ -160,7 +160,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                        size_t comm) {
              // Initialise with bare MPI handle
              return new Engine(DynCcoord_t(nb_grid_pts),
-                               std::move(muFFT::Communicator(MPI_Comm(comm))),
+                               muFFT::Communicator(MPI_Comm(comm)),
                                plan_flags,
                                allow_temporary_buffer,
                                allow_destroy_input);

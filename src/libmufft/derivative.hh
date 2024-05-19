@@ -39,11 +39,11 @@
 
 #include <memory>
 
-#include <libmugrid/ccoord_operations.hh>
-#include <libmugrid/exception.hh>
-#include <libmugrid/field_map.hh>
-#include <libmugrid/field_typed.hh>
-#include <libmugrid/field_collection_global.hh>
+#include "libmugrid/ccoord_operations.hh"
+#include "libmugrid/exception.hh"
+#include "libmugrid/field_map.hh"
+#include "libmugrid/field_typed.hh"
+#include "libmugrid/field_collection_global.hh"
 
 #include "mufft_common.hh"
 

@@ -35,8 +35,8 @@
 
 #include <sstream>
 
-#include <libmugrid/ccoord_operations.hh>
-#include <libmugrid/exception.hh>
+#include "libmugrid/ccoord_operations.hh"
+#include "libmugrid/exception.hh"
 
 #include "fftw_engine.hh"
 
