@@ -33,8 +33,8 @@
  *
  */
 
-#include "../../src/fft_utils.hh"
-#include "../../src/mufft_common.hh"
+#include <libmufft/fft_utils.hh>
+#include <libmufft/mufft_common.hh>
 
 #include <libmugrid/ccoord_operations.hh>
 

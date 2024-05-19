@@ -1,4 +1,5 @@
-incdirs = include_directories('..')
+pocketfft_proj = subproject('pocketfft')
+pocketfft = pocketfft_proj.get_variable('pocketfft')
 
 mufft_sources = [
     'version.cc',
@@ -20,11 +21,15 @@ if mu_with_pfft
     mufft_sources += ['pfft_engine.cc']
 endif
 
-mufft = shared_library(
+libmufft = shared_library(
     'muFFT',
     mufft_sources,
-    include_directories: [eigen3_incdir, incdirs],
-    link_with: mugrid,
-    dependencies: muspectre_dependencies,
+    dependencies: [mufft_dependencies, pocketfft],
     install: true  # needed, otherwise it is not copied to wheel
+)
+
+mufft = declare_dependency(
+    include_directories: include_directories('.'),
+    link_with: libmufft,
+    dependencies: mufft_dependencies
 )

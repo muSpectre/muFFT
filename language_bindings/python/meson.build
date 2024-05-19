@@ -5,13 +5,13 @@ mufft_python_sources = [
     'bind_py_fftengine.cc'
 ]
 
+pybind11 = dependency('pybind11', required: true)
+
 mufft_python = python.extension_module(
     '_muFFT', # Name of the module
     mufft_python_sources,
     install: true,  # Install it
-    include_directories: [eigen3_incdir, pybind11_incdir, include_directories('../../../src')],
-    link_with: [mugrid, mufft],
-    dependencies: [muspectre_dependencies, python3_dependency]
+    dependencies: [mugrid, mufft, pybind11]
 )
 
 subdir('muFFT')
