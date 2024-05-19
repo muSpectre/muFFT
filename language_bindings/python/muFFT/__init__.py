@@ -44,8 +44,7 @@ except ImportError:
 import _muGrid
 
 import _muFFT
-from _muFFT import (version, FourierDerivative, DiscreteDerivative,
-                    FFT_PlanFlags, get_nb_hermitian_grid_pts)
+from _muFFT import version, FourierDerivative, DiscreteDerivative, FFT_PlanFlags, get_nb_hermitian_grid_pts
 
 import muFFT.Stencils1D
 import muFFT.Stencils2D
@@ -54,6 +53,7 @@ import muFFT.Stencils3D
 from muGrid import Communicator
 
 has_mpi = _muGrid.Communicator.has_mpi
+__version__ = _muFFT.version.description()
 
 
 class UnknownFFTEngineError(Exception):
