@@ -187,13 +187,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                Engine::register_real_space_field,
            "unique_name"_a, "shape"_a,
            py::return_value_policy::reference_internal)
-      .def("fetch_or_register_real_space_field",
+      .def("real_space_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Index_t &)) &
                Engine::fetch_or_register_real_space_field,
            "unique_name"_a, "nb_dof_per_pixel"_a,
            py::return_value_policy::reference_internal)
-      .def("fetch_or_register_real_space_field",
+      .def("real_space_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Shape_t &)) &
                Engine::fetch_or_register_real_space_field,
@@ -211,13 +211,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                Engine::register_halfcomplex_field,
            "unique_name"_a, "shape"_a,
            py::return_value_policy::reference_internal)
-      .def("fetch_or_register_halfcomplex_field",
+      .def("halfcomplex_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Index_t &)) &
                Engine::fetch_or_register_halfcomplex_field,
            "unique_name"_a, "nb_dof_per_pixel"_a,
            py::return_value_policy::reference_internal)
-      .def("fetch_or_register_halfcomplex_field",
+      .def("halfcomplex_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Shape_t &)) &
                Engine::fetch_or_register_halfcomplex_field,
@@ -235,13 +235,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                Engine::register_fourier_space_field,
            "unique_name"_a, "shape"_a,
            py::return_value_policy::reference_internal)
-      .def("fetch_or_register_fourier_space_field",
+      .def("fourier_space_field",
            (FFTEngineBase::FourierField_t &
             (Engine::*)(const std::string &, const Index_t &)) &
                Engine::fetch_or_register_fourier_space_field,
            "unique_name"_a, "nb_dof_per_pixel"_a,
            py::return_value_policy::reference_internal)
-      .def("fetch_or_register_fourier_space_field",
+      .def("fourier_space_field",
            (FFTEngineBase::FourierField_t &
             (Engine::*)(const std::string &, const Shape_t &)) &
                Engine::fetch_or_register_fourier_space_field,
