@@ -64,10 +64,10 @@ class UnknownFFTEngineError(Exception):
 
 
 # This is a list of FFT engines that are potentially available.
-#              |--------------------------------- String identifier for 'FFT' class
-#              |             |------------------- Name of engine class
-#              |             |          |-------- Is output transposed?
-#              v             v          v      v- Supports MPI parallel calculations?
+#             |----------------------------------- String identifier for 'FFT' class
+#             |             |--------------------- Name of engine class
+#             |             |            |-------- Is output transposed?
+#             v             v            v      v- Supports MPI parallel calculations?
 _factories = {'pocketfft': ('PocketFFT', False, False),
               'fftw': ('FFTW', False, False),
               'fftwmpi': ('FFTWMPI', True, True),
