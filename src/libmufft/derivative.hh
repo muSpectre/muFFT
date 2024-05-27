@@ -122,46 +122,67 @@ namespace muFFT {
   };
 
   /**
-   * Representation of a derivative computed by Fourier interpolation
+   * @class FourierDerivative
+   * @brief A class that represents a derivative computed by Fourier
+   * interpolation.
+   * @details This class is derived from the DerivativeBase class and provides
+   * functionalities for Fourier interpolated derivatives.
    */
   class FourierDerivative : public DerivativeBase {
    public:
-    using Parent = DerivativeBase;  //!< base class
-    //! convenience alias
+    //! Alias for the base class
+    using Parent = DerivativeBase;
+
+    //! Alias for Eigen::Matrix<Real, Eigen::Dynamic, 1>
     using Vector = typename Parent::Vector;
 
-    //! Default constructor
+    /**
+     * @brief Deleted default constructor.
+     * @details This constructor is deleted because a FourierDerivative object
+     * requires a spatial dimension and direction to be properly initialized.
+     */
     FourierDerivative() = delete;
 
-    //! Constructor with raw FourierDerivative information
+    /**
+     * @brief Constructor that takes the spatial dimension and direction as
+     * arguments.
+     * @param spatial_dimension The spatial dimension of the derivative.
+     * @param direction The direction of the derivative.
+     */
     explicit FourierDerivative(Index_t spatial_dimension, Index_t direction);
 
-    //! Constructor with raw FourierDerivative information and shift info
+    /**
+     * @brief Constructor that takes the spatial dimension, direction, and shift
+     * info as arguments.
+     * @param spatial_dimension The spatial dimension of the derivative.
+     * @param direction The direction of the derivative.
+     * @param shift The shift information for the derivative.
+     */
     explicit FourierDerivative(Index_t spatial_dimension, Index_t direction,
                                const Eigen::ArrayXd & shift);
 
-    //! Copy constructor
+    //! Default copy constructor
     FourierDerivative(const FourierDerivative & other) = default;
 
-    //! Move constructor
+    //! Default move constructor
     FourierDerivative(FourierDerivative && other) = default;
 
-    //! Destructor
+    //! Default destructor
     virtual ~FourierDerivative() = default;
 
-    //! Copy assignment operator
+    //! Deleted copy assignment operator
     FourierDerivative & operator=(const FourierDerivative & other) = delete;
 
-    //! Move assignment operator
+    //! Deleted move assignment operator
     FourierDerivative & operator=(FourierDerivative && other) = delete;
 
     /**
-     * Return Fourier representation of the Fourier interpolated derivative
-     * shifted to the new position of the derivative. This here simply returns
-     * I*2*pi*phase * e^(I*2*pi*shift*phase). (I*2*pi*wavevector is the
-     * Fourier representation of the derivative and e^(I*2*pi*shift*phase)
-     * shifts the derivative to its new position.)
-     **/
+     * @brief Returns the Fourier derivative.
+     * @details Returns the derivative of the Fourier interpolated field.
+     * @param phase The phase is the wavevector times cell dimension, but
+     * lacking a factor of 2 π.
+     * @return The Fourier representation of the derivative.
+     */
     virtual Complex fourier(const Vector & phase) const {
       return Complex(0, 2 * muGrid::pi * phase[this->direction]) *
              std::exp(
@@ -169,85 +190,159 @@ namespace muFFT {
     }
 
    protected:
-    //! spatial direction in which to perform differentiation
+    //! The spatial direction in which to perform differentiation
     Index_t direction;
-    //! real space shift from the position of the center of the cell.
+
+    //! The real space shift from the position of the center of the cell.
     const Eigen::ArrayXd shift;
   };
 
   /**
-   * Representation of a finite-differences stencil
+   * @class DiscreteDerivative
+   * @brief A class that represents a discrete derivative.
+   * @details This class is derived from the DerivativeBase class and provides
+   * functionalities for discrete derivatives.
    */
   class DiscreteDerivative : public DerivativeBase {
    public:
-    using Parent = DerivativeBase;  //!< base class
-    //! convenience alias
-    using Vector = typename Parent::Vector;
+    using Parent = DerivativeBase;  //!< Base class alias
+    using Vector =
+        typename Parent::Vector;  //!< Vector type alias from the base class
 
-    //! Default constructor
+    //! Default constructor is deleted as a DiscreteDerivative object requires
+    //! raw stencil information for proper initialization
     DiscreteDerivative() = delete;
 
     /**
-     * Constructor with raw stencil information
-     * @param nb_pts: stencil size
-     * @param lbounds: relative starting point of stencil, e.g. (-2,) means
-     * that the stencil start two pixels to the left of where the derivative
-     * should be computed
-     * @param stencil: stencil coefficients
+     * @brief Constructor with raw stencil information
+     * @details This constructor initializes a DiscreteDerivative object with
+     * the provided stencil size, relative starting point of stencil, and
+     * stencil coefficients.
+     * @param nb_pts The stencil size.
+     * @param lbounds The relative starting point of stencil. For example, a
+     * value of (-2,) means that the stencil starts two pixels to the left of
+     * where the derivative should be computed.
+     * @param stencil The stencil coefficients.
      */
     DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
                        const std::vector<Real> & stencil);
 
-    //! Constructor with raw stencil information
+    /**
+     * @brief Constructor with raw stencil information
+     * @details This constructor initializes a DiscreteDerivative object with
+     * the provided stencil size, relative starting point of stencil, and
+     * stencil coefficients.
+     * @param nb_pts The stencil size.
+     * @param lbounds The relative starting point of stencil. For example, a
+     * value of (-2,) means that the stencil starts two pixels to the left of
+     * where the derivative should be computed.
+     * @param stencil The stencil coefficients.
+     */
     DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
                        const Eigen::ArrayXd & stencil);
 
-    //! Copy constructor
+    //! Default copy constructor
     DiscreteDerivative(const DiscreteDerivative & other) = default;
 
-    //! Move constructor
+    //! Default move constructor
     DiscreteDerivative(DiscreteDerivative && other) = default;
 
-    //! Destructor
+    //! Default destructor
     virtual ~DiscreteDerivative() = default;
 
-    //! Copy assignment operator
+    //! Copy assignment operator is deleted as copying is not allowed for
+    //! DiscreteDerivative objects
     DiscreteDerivative & operator=(const DiscreteDerivative & other) = delete;
 
-    //! Move assignment operator
+    //! Move assignment operator is deleted as moving is not allowed for
+    //! DiscreteDerivative objects
     DiscreteDerivative & operator=(DiscreteDerivative && other) = delete;
 
-    //! Return stencil value
+    /**
+     * @brief Returns the stencil value at a given coordinate.
+     * @details This function returns the stencil value at the provided
+     * coordinate.
+     * @param dcoord The coordinate at which the stencil value is to be
+     * returned.
+     * @return The stencil value at the provided coordinate.
+     */
     Real operator()(const DynCcoord_t & dcoord) const {
       return this->stencil[this->pixels.get_index(dcoord)];
     }
 
-    //! Return dimension of the stencil
+    /**
+     * @brief Returns the dimension of the stencil.
+     * @details This function returns the dimension of the stencil, which is the
+     * number of spatial dimensions in which the stencil operates. The stencil
+     * is a finite-differences stencil used for computing derivatives.
+     * @return A constant reference to the Dim_t object that contains the
+     * dimension of the stencil.
+     */
     const Dim_t & get_dim() const { return this->pixels.get_dim(); }
 
-    //! Return number of grid points in stencil
+    /**
+     * @brief Returns the number of grid points in the stencil.
+     * @details This function returns the number of grid points in the stencil,
+     * which is the size of the stencil. The stencil is a finite-differences
+     * stencil used for computing derivatives.
+     * @return A constant reference to the DynamicCoordinate object that
+     * contains the number of grid points in the stencil.
+     */
     const DynCcoord_t & get_nb_pts() const {
       return this->pixels.get_nb_subdomain_grid_pts();
     }
 
-    //! Return lower stencil bound
+    /**
+     * @brief Returns the lower bounds of the stencil.
+     * @details This function returns the lower bounds of the stencil, which
+     * represent the relative starting point of the stencil. For example, a
+     * value of (-2,) means that the stencil starts two pixels to the left of
+     * where the derivative should be computed.
+     * @return A constant reference to the DynamicCoordinate object that
+     * contains the lower bounds of the stencil.
+     */
     const DynCcoord_t & get_lbounds() const {
       return this->pixels.get_subdomain_locations();
     }
 
-    //! Return the pixels class that allows to iterate over pixels
+    /**
+     * @brief Returns the pixels class that allows to iterate over pixels.
+     * @details This function returns the DynamicPixels object from the
+     * muGrid::CcoordOps namespace. This object is used to iterate over the
+     * pixels of the stencil.
+     * @return A constant reference to the DynamicPixels object that allows to
+     * iterate over the pixels of the stencil.
+     */
     const muGrid::CcoordOps::DynamicPixels & get_pixels() const {
       return this->pixels;
     }
 
     /**
-     * Apply the "stencil" to a component (degree-of-freedom) of a field and
-     * store the result to a select component of a second field. Note that the
-     * compiler should have opportunity to inline this function to optimize
-     * loops over DOFs.
-     * TODO: This presently only works *without* MPI parallelization! If you
-     * need parallelization, apply the stencil in Fourier space using the
-     * `fourier` method. Currently this method is only used in the serial tests.
+     * @brief Apply the "stencil" to a component (degree-of-freedom) of a field
+     * and store the result to a select component of a second field.
+     * @details This function applies the stencil to a component of an input
+     * field and stores the result in a selected component of an output field.
+     * It performs various checks to ensure the fields are global and the
+     * specified degrees of freedom are within range. It then loops over the
+     * field pixel iterator and the stencil to compute the derivative and store
+     * it in the output field. Note that this function is designed to be inlined
+     * by the compiler to optimize loops over degrees of freedom.
+     * @note This function currently only works without MPI parallelization. If
+     * parallelization is needed, apply the stencil in Fourier space using the
+     * `fourier` method. Currently, this method is only used in the serial
+     * tests.
+     * @tparam T The type of the field elements.
+     * @param in_field The input field to which the stencil is applied.
+     * @param in_dof The degree of freedom in the input field to which the
+     * stencil is applied.
+     * @param out_field The output field where the result is stored.
+     * @param out_dof The degree of freedom in the output field where the result
+     * is stored.
+     * @param fac A factor that is multiplied with the derivative. The default
+     * value is 1.0.
+     * @throws DerivativeError If the input or output field is not global, or if
+     * the specified degree of freedom is out of range, or if the input and
+     * output fields live on incompatible grids.
      */
     template <typename T>
     void apply(const muGrid::TypedFieldBase<T> & in_field, Index_t in_dof,
@@ -320,10 +415,14 @@ namespace muFFT {
     }
 
     /**
-     * Any translationally invariant linear combination of grid values (as
-     * expressed through the "stencil") becomes a multiplication with a number
-     * in Fourier space. This method returns the Fourier representation of
-     * this stencil.
+     * @brief Returns the Fourier representation of the stencil.
+     * @details Any translationally invariant linear combination of grid values
+     * (as expressed through the "stencil") becomes a multiplication with a
+     * number in Fourier space. This method returns the Fourier representation
+     * of this stencil.
+     * @param phase The phase is the wavevector times cell dimension, but
+     * lacking a factor of 2 π.
+     * @return The Fourier representation of the stencil.
      */
     virtual Complex fourier(const Vector & phase) const {
       Complex s{0, 0};
@@ -338,18 +437,25 @@ namespace muFFT {
     }
 
     /**
-     * Return a new stencil rolled axes. Given a stencil on a
-     * three-dimensional grid with axes (x, y, z), the stencil
-     * that has been "rolled" by distance one has axes (z, x, y).
-     * This is a simple implementation of a rotation operation.
-     * For example, given a stencil that described the derivative in
-     * the x-direction, rollaxes(1) gives the derivative in the
-     * y-direction and rollaxes(2) gives the derivative in the
-     * z-direction.
+     * @brief Returns a new stencil with rolled axes.
+     * @details Given a stencil on a three-dimensional grid with axes (x, y, z),
+     * the stencil that has been "rolled" by distance one has axes (z, x, y).
+     * This is a simple implementation of a rotation operation. For example,
+     * given a stencil that described the derivative in the x-direction,
+     * rollaxes(1) gives the derivative in the y-direction and rollaxes(2) gives
+     * the derivative in the z-direction.
+     * @param distance The distance to roll the axes. Default value is 1.
+     * @return A new DiscreteDerivative object with rolled axes.
      */
     DiscreteDerivative rollaxes(int distance = 1) const;
 
-    //! return the stencil data
+    /**
+     * @brief Returns the stencil data.
+     * @details This function returns the finite-differences stencil data which
+     * is used for computing derivatives.
+     * @return A constant reference to the Eigen::ArrayXd object that contains
+     * the stencil data.
+     */
     const Eigen::ArrayXd & get_stencil() const { return this->stencil; }
 
    protected:
