@@ -54,8 +54,7 @@ namespace muFFT {
   class FFTEngineError : public RuntimeError {
    public:
     //! constructor
-    explicit FFTEngineError(const std::string & what)
-        : RuntimeError(what) {}
+    explicit FFTEngineError(const std::string & what) : RuntimeError(what) {}
     //! constructor
     explicit FFTEngineError(const char * what) : RuntimeError(what) {}
   };
@@ -90,14 +89,27 @@ namespace muFFT {
     FFTEngineBase() = delete;
 
     /**
-     * Constructor with the domain's number of grid points in each direction and
-     * the communicator
-     * @param nb_grid_pts number of grid points of the global grid
-     * @comm MPI communicator object
-     * @param allow_temporary_buffer allow the creation of temporary buffers
-     *        if the input buffer has the wrong memory layout
-     * @param allow_destroy_input allow that the input buffers are invalidated
-     *        during the FFT
+     * @brief Constructs an FFTEngineBase object with the specified parameters.
+     *
+     * This constructor initializes an FFTEngineBase object with the given
+     * number of grid points, communicator, FFT planner flags, and buffer
+     * options. The constructor does not perform any FFT computations; it merely
+     * sets up the object for future FFT operations.
+     *
+     * @param nb_grid_pts A DynCcoord_t object representing the number of grid
+     * points in each dimension of the global grid.
+     * @param comm An optional Communicator object for MPI communication.
+     * Defaults to an empty Communicator.
+     * @param plan_flags An optional FFT_PlanFlags object representing the FFT
+     * planner flags. Defaults to FFT_PlanFlags::estimate.
+     * @param allow_temporary_buffer An optional boolean flag indicating whether
+     * the creation of temporary buffers is allowed if the input buffer has the
+     * wrong memory layout. Defaults to true.
+     * @param allow_destroy_input An optional boolean flag indicating whether
+     * the input buffers can be invalidated during the FFT. Defaults to false.
+     * @param engine_has_rigid_memory_layout An optional boolean flag indicating
+     * whether the underlying FFT engine requires a fixed memory layout.
+     * Defaults to true.
      */
     FFTEngineBase(const DynCcoord_t & nb_grid_pts,
                   Communicator comm = Communicator(),
@@ -193,7 +205,7 @@ namespace muFFT {
      */
     virtual RealField_t &
     register_halfcomplex_field(const std::string & unique_name,
-                                 const Index_t & nb_dof_per_pixel);
+                               const Index_t & nb_dof_per_pixel);
 
     /**
      * Create a Fourier-space field with the ideal strides and dimensions for
@@ -203,7 +215,7 @@ namespace muFFT {
      */
     virtual RealField_t &
     register_halfcomplex_field(const std::string & unique_name,
-                                 const Shape_t & shape);
+                               const Shape_t & shape);
 
     /**
      * Fetches a Fourier-space field with the ideal strides and dimensions for
@@ -222,7 +234,6 @@ namespace muFFT {
     RealField_t &
     fetch_or_register_halfcomplex_field(const std::string & unique_name,
                                         const Shape_t & shape);
-
 
     /**
      * Create a real-space field with the ideal strides and dimensions for this
@@ -327,7 +338,6 @@ namespace muFFT {
       return this->fourier_strides;
     }
 
-
     //! returns the field collection handling fields in real space
     GFieldCollection_t & get_real_field_collection() {
       return this->real_field_collection;
@@ -357,14 +367,12 @@ namespace muFFT {
     //! return the number of spatial dimensions
     const Index_t & get_spatial_dim() const;
 
-
     //! perform a deep copy of the engine (this should never be necessary in
     //! c++)
     virtual std::unique_ptr<FFTEngineBase> clone() const = 0;
 
     //! check whether a plan for nb_dof_per_pixel exists
     bool has_plan_for(const Index_t & nb_dof_per_pixel) const;
-
 
    protected:
     //! calls initialize of the real, hc and fourier field collections
@@ -380,7 +388,7 @@ namespace muFFT {
 
     //! forward half complex transform
     virtual void compute_hcfft(const RealField_t & input_field,
-                                RealField_t & output_field);
+                               RealField_t & output_field);
 
     //! inverse half complex transform
     virtual void compute_ihcfft(const RealField_t & input_field,

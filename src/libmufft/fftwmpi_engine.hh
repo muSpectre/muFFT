@@ -57,15 +57,24 @@ namespace muFFT {
     FFTWMPIEngine() = delete;
 
     /**
-     * Constructor with the domain's number of grid points in each direction and
-     * the communicator
-     * @param nb_grid_pts number of grid points of the global grid
-     * @param comm MPI communicator object
-     * @param plan_flags MPI planner flags
-     * @param allow_temporary_buffer allow the creation of temporary buffers
-     *        if the input buffer has the wrong memory layout
-     * @param allow_destroy_input allow that the input buffers are invalidated
-     *        during the FFT
+     * @brief Constructs a FFTWMPIEngine object with the specified parameters.
+     *
+     * This constructor initializes a FFTWMPIEngine object with the given number
+     * of grid points, communicator, FFT planner flags, and buffer options. The
+     * constructor does not perform any FFT computations; it merely sets up the
+     * object for future FFT operations.
+     *
+     * @param nb_grid_pts A DynCcoord_t object representing the number of grid
+     * points in each dimension of the global grid.
+     * @param comm An optional Communicator object for MPI communication.
+     * Defaults to an empty Communicator.
+     * @param plan_flags An optional FFT_PlanFlags object representing the FFT
+     * planner flags. Defaults to FFT_PlanFlags::estimate.
+     * @param allow_temporary_buffer An optional boolean flag indicating whether
+     * the creation of temporary buffers is allowed if the input buffer has the
+     * wrong memory layout. Defaults to true.
+     * @param allow_destroy_input An optional boolean flag indicating whether
+     * the input buffers can be invalidated during the FFT. Defaults to false.
      */
     FFTWMPIEngine(const DynCcoord_t & nb_grid_pts,
                   Communicator comm = Communicator(),
@@ -111,9 +120,8 @@ namespace muFFT {
     /**
      * need to override this method here, since FFTWMPI requires field padding
      */
-    RealField_t &
-    register_real_space_field(const std::string & unique_name,
-                              const Shape_t & shape) final;
+    RealField_t & register_real_space_field(const std::string & unique_name,
+                                            const Shape_t & shape) final;
 
     /**
      * need to override this method here, since FFTWMPI requires field padding

@@ -52,13 +52,21 @@ namespace muFFT {
     template <Dim_t Dim, size_t... I>
     constexpr Ccoord_t<Dim> herm(const Ccoord_t<Dim> & nb_grid_pts,
                                  std::index_sequence<I...>) {
-      return Ccoord_t<Dim>{nb_grid_pts.front() / 2 + 1, nb_grid_pts[I+1]... };
+      return Ccoord_t<Dim>{nb_grid_pts.front() / 2 + 1, nb_grid_pts[I + 1]...};
     }
-  }
+  }  // namespace internal
 
   /**
-   * returns the hermition grid to correcsponding to a full grid, assuming
-   * that the last dimension is not fully represented in reciprocal space
+   * @brief Returns the hermitian grid corresponding to a full grid.
+   *
+   * This function template returns the hermitian grid that corresponds to a
+   * real-valued field on a full grid, assuming that the last dimension is not
+   * fully represented in reciprocal space because of symmetry.
+   *
+   * @tparam dim The dimensionality of the grid.
+   * @param full_nb_grid_pts A Ccoord_t object representing the number of grid
+   * points in the full grid.
+   * @return A Ccoord_t object representing the hermitian grid.
    */
   template <size_t dim>
   constexpr Ccoord_t<dim>
@@ -68,8 +76,18 @@ namespace muFFT {
   }
 
   /**
-   * returns the hermition grid to correcsponding to a full grid, assuming
-   * that the last dimension is not fully represented in reciprocal space
+   * @brief Returns the hermitian grid corresponding to a full grid.
+   *
+   * This function template returns the hermitian grid that corresponds to a
+   * real-valued field on a full grid, assuming that the last dimension is not
+   * fully represented in reciprocal space because of symmetry. It supports
+   * dynamic dimensionality.
+   *
+   * @tparam MaxDim The maximum dimensionality of the grid.
+   * @param full_nb_grid_pts A muGrid::DynCcoord object representing the number
+   * of grid points in the full grid.
+   * @return A muGrid::DynCcoord object representing the hermitian grid.
+   * @throws RuntimeError if the dimensionality of the grid is not 1, 2, or 3.
    */
   template <size_t MaxDim>
   inline muGrid::DynCcoord<MaxDim>
@@ -91,15 +109,20 @@ namespace muFFT {
       break;
     }
     default:
-      throw RuntimeError(
-          "One 1, 2, and 3-dimensional cases are allowed");
+      throw RuntimeError("Only 1, 2, and 3-dimensional cases are allowed");
       break;
     }
   }
 
   /**
-   * compute fft frequency (in time (or length) units of of sampling
-   * periods), see numpy's fftfreq function for reference
+   * @brief Compute nondimensional FFT frequency.
+   *
+   * This function computes the FFT frequency for a given index and number of
+   * samples. The frequency is normalized to the number of samples.
+   *
+   * @param i The index for which to compute the FFT frequency.
+   * @param nb_samples The number of samples.
+   * @return The FFT frequency for the given index and number of samples.
    */
   inline Int fft_freq(Int i, size_t nb_samples) {
     Int N = (nb_samples - 1) / 2 + 1;  // needs to be signed int for neg freqs
@@ -111,29 +134,62 @@ namespace muFFT {
   }
 
   /**
-   * compute fft frequency in correct length or time units. Here,
-   * length refers to the total size of the domain over which the fft
-   * is taken (for instance the length of an edge of an RVE)
+   * @brief Compute FFT frequency in correct length or time units.
+   *
+   * This function computes the FFT frequency for a given index and number of
+   * samples, taking into account the correct length or time units. The length
+   * refers to the total size of the domain over which the FFT is taken (for
+   * instance the length of an edge of an RVE).
+   *
+   * @param i The index for which to compute the FFT frequency.
+   * @param nb_samples The number of samples.
+   * @param length The length of the domain over which the FFT is taken.
+   * @return The FFT frequency for the given index and number of samples, in the
+   * correct length or time units.
    */
   inline Real fft_freq(Int i, size_t nb_samples, Real length) {
     return static_cast<Real>(fft_freq(i, nb_samples)) / length;
   }
 
   /**
-   * compute fft frequencies (in time (or length) units of of sampling
-   * periods), see numpy's fftfreq function for reference
+   * @brief Compute nondimensional FFT frequencies.
+   *
+   * This function computes the FFT frequencies for a given index and number of
+   * samples. The frequency is normalized to the number of samples.
+   *
+   * @param nb_samples The number of samples.
+   * @return A valarray containing the FFT frequencies for the given number of
+   * samples.
    */
   std::valarray<Real> fft_freqs(size_t nb_samples);
 
   /**
-   * compute fft frequencies in correct length or time units. Here,
-   * length refers to the total size of the domain over which the fft
-   * is taken (for instance the length of an edge of an RVE)
+   * @brief Compute FFT frequencies in correct length or time units.
+   *
+   * This function computes the FFT frequencies for a given number of samples,
+   * taking into account the correct length or time units. The length refers to
+   * the total size of the domain over which the FFT is taken (for instance the
+   * length of an edge of an RVE).
+   *
+   * @param nb_samples The number of samples.
+   * @param length The length of the domain over which the FFT is taken.
+   * @return A valarray containing the FFT frequencies for the given number of
+   * samples, in the correct length or time units.
    */
   std::valarray<Real> fft_freqs(size_t nb_samples, Real length);
 
   /**
-   * Get fft_freqs for a grid
+   * @brief Compute multidimensional nondimensional FFT frequencies.
+   *
+   * This function computes the FFT frequencies for a given index and number of
+   * samples for multidimensional fields. The frequency is normalized to the
+   * number of samples.
+   *
+   * @tparam dim The dimensionality of the grid.
+   * @param nb_grid_pts A Ccoord_t object representing the number of grid points
+   * in each dimension.
+   * @return An array of valarrays where each valarray contains the FFT
+   * frequencies for a specific dimension.
    */
   template <size_t dim>
   inline std::array<std::valarray<Real>, dim>
@@ -146,7 +202,21 @@ namespace muFFT {
   }
 
   /**
-   * Get fft_freqs for a grid in correct length or time units.
+   * @brief Compute multidimensional FFT frequencies for a grid in correct
+   * length or time units.
+   *
+   * This function template computes the FFT frequencies for a grid, taking into
+   * account the correct length or time units. It iterates over each dimension
+   * of the grid, computes the FFT frequencies for that dimension, and stores
+   * them in a return array.
+   *
+   * @tparam dim The dimensionality of the grid.
+   * @param nb_grid_pts A Ccoord_t object representing the number of grid points
+   * in each dimension.
+   * @param lengths An array representing the lengths of the domain in each
+   * dimension.
+   * @return An array of valarrays where each valarray contains the FFT
+   * frequencies for a specific dimension.
    */
   template <size_t dim>
   inline std::array<std::valarray<Real>, dim>
@@ -159,65 +229,145 @@ namespace muFFT {
   }
 
   /**
-   * simple class encapsulating the creation, and retrieval of
-   * wave vectors
+   * @brief A class that encapsulates the creation and retrieval of wave
+   * vectors.
+   *
+   * This class is templated on the dimensionality of the wave vectors. It
+   * provides methods to get unnormalized, normalized, and complex wave vectors.
+   * It also provides methods to get the number of grid points in a specific
+   * dimension.
+   *
+   * @tparam dim The dimensionality of the wave vectors.
    */
   template <Dim_t dim>
   class FFT_freqs {
    public:
-    //! Eigen variant equivalent to Ccoord_t
+    /**
+     * @brief A type alias for an Eigen matrix with dimensions equivalent to
+     * Ccoord_t.
+     */
     using CcoordVector = Eigen::Matrix<Dim_t, dim, 1>;
-    //! return type for wave vectors
+
+    /**
+     * @brief A type alias for an Eigen matrix representing a wave vector.
+     */
     using Vector = Eigen::Matrix<Real, dim, 1>;
-    //! return type for complex wave vectors
+
+    /**
+     * @brief A type alias for an Eigen matrix representing a complex wave
+     * vector.
+     */
     using VectorComplex = Eigen::Matrix<Complex, dim, 1>;
-    //! Default constructor
+
+    /**
+     * @brief Default constructor is deleted to prevent creating an object
+     * without specifying the grid points.
+     */
     FFT_freqs() = delete;
 
-    //! constructor with just number of grid points
+    /**
+     * @brief Constructor that initializes the object with the number of grid
+     * points.
+     *
+     * @param nb_grid_pts The number of grid points in each dimension.
+     */
     explicit FFT_freqs(Ccoord_t<dim> nb_grid_pts)
         : freqs{fft_freqs(nb_grid_pts)} {}
 
-    //! constructor with domain length
+    /**
+     * @brief Constructor that initializes the object with the number of grid
+     * points and the lengths of the domain.
+     *
+     * @param nb_grid_pts The number of grid points in each dimension.
+     * @param lengths The lengths of the domain in each dimension.
+     */
     FFT_freqs(Ccoord_t<dim> nb_grid_pts, std::array<Real, dim> lengths)
         : freqs{fft_freqs(nb_grid_pts, lengths)} {}
 
-    //! Copy constructor
+    /**
+     * @brief Copy constructor is deleted to prevent copying of the object.
+     */
     FFT_freqs(const FFT_freqs & other) = delete;
 
-    //! Move constructor
+    /**
+     * @brief Move constructor.
+     */
     FFT_freqs(FFT_freqs && other) = default;
 
-    //! Destructor
+    /**
+     * @brief Destructor.
+     */
     virtual ~FFT_freqs() = default;
 
-    //! Copy assignment operator
+    /**
+     * @brief Copy assignment operator is deleted to prevent copying of the
+     * object.
+     */
     FFT_freqs & operator=(const FFT_freqs & other) = delete;
 
-    //! Move assignment operator
+    /**
+     * @brief Move assignment operator.
+     */
     FFT_freqs & operator=(FFT_freqs && other) = default;
 
-    //! get unnormalised wave vector (in sampling units)
+    /**
+     * @brief Get the unnormalized wave vector in sampling units.
+     *
+     * @param ccoord The coordinates in the frequency domain.
+     * @return The unnormalized wave vector.
+     */
     inline Vector get_xi(const Ccoord_t<dim> ccoord) const;
 
-    //! get unnormalised complex wave vector (in sampling units)
+    /**
+     * @brief Get the unnormalized complex wave vector in sampling units.
+     *
+     * @param ccoord The coordinates in the frequency domain.
+     * @return The unnormalized complex wave vector.
+     */
     inline VectorComplex get_complex_xi(const Ccoord_t<dim> ccoord) const;
 
-    //! get normalised wave vector
+    /**
+     * @brief Get the normalized wave vector.
+     *
+     * @param ccoord The coordinates in the frequency domain.
+     * @return The normalized wave vector.
+     */
     inline Vector get_unit_xi(const Ccoord_t<dim> ccoord) const {
       auto && xi = this->get_xi(std::move(ccoord));
       return xi / xi.norm();
     }
 
+    /**
+     * @brief Get the number of grid points in a specific dimension.
+     *
+     * @param i The index of the dimension.
+     * @return The number of grid points in the specified dimension.
+     */
     inline Index_t get_nb_grid_pts(Index_t i) const {
       return this->freqs[i].size();
     }
 
    protected:
-    //! container for frequencies ordered by spatial dimension
+    /**
+     * @brief A container for frequencies ordered by spatial dimension.
+     */
     const std::array<std::valarray<Real>, dim> freqs;
   };
 
+  /**
+   * @brief Get the xi value for the FFT frequencies.
+   *
+   * This function is a member of the FFT_freqs class template. It takes a
+   * constant Ccoord_t object as an argument, which represents the coordinates
+   * in the frequency domain. The function iterates over each dimension and
+   * assigns the corresponding frequency to the return vector.
+   *
+   * @tparam dim The dimensionality of the FFT operation.
+   * @param ccoord A constant reference to a Ccoord_t object representing the
+   * coordinates in the frequency domain.
+   * @return A Vector object where each element is the frequency corresponding
+   * to the coordinate in the same dimension.
+   */
   template <Dim_t dim>
   typename FFT_freqs<dim>::Vector
   FFT_freqs<dim>::get_xi(const Ccoord_t<dim> ccoord) const {
@@ -227,7 +377,6 @@ namespace muFFT {
     }
     return retval;
   }
-
 }  // namespace muFFT
 
 #endif  // SRC_LIBMUFFT_FFT_UTILS_HH_
