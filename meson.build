@@ -19,12 +19,10 @@ mufft_dependencies = []
 
 fftw3 = dependency('fftw3', required: false)
 if fftw3.found()
-    message('muFFT FFTW: *** YES ***')
     mu_with_fftw3 = true
     add_project_arguments('-DWITH_FFTW', language : ['c', 'cpp'])
     mufft_dependencies += [fftw3]
 else
-    message('muFFT FFTW: no')
     mu_with_fftw3 = false
 endif
 
@@ -46,22 +44,18 @@ if mpi.found()
         dirs: ['/usr/lib', '/usr/lib/x86_64-linux-gnu'],
         required: false)
     if fftw3mpi.found() and cc.has_header('fftw3-mpi.h')
-        message('muFFT FFTW3 MPI: *** YES ***')
         mu_with_fftw3mpi = true
         add_project_arguments('-DWITH_FFTWMPI', language : ['c', 'cpp'])
         mufft_dependencies += [fftw3mpi]
     else
-        message('muFFT FFTW3 MPI: no')
         mu_with_fftw3mpi = false
     endif
     pfft = cc.find_library('pfft', required: false)
     if pfft.found() and cc.has_header('pfft.h')
-        message('muFFT PFFT: *** YES ***')
         mu_with_pfft = true
         add_project_arguments('-DWITH_PFFT', language : ['c', 'cpp'])
         mufft_dependencies += [pfft]
     else
-        message('muFFT PFFT: no')
         mu_with_pfft = false
     endif
     if mu_with_fftw3mpi or mu_with_pfft
@@ -69,11 +63,9 @@ if mpi.found()
         mpi_processes = ['1', '2']  # MPI processes to use for parallel tests
     endif
 
-    message('muFFT MPI: *** YES ***')
     add_project_arguments('-DWITH_MPI', language : ['c', 'cpp'])
     mufft_dependencies += [mpi]
 else
-    message('muFFT MPI: no')
     mu_with_fftw3mpi = false
     mu_with_pfft = false
 endif
@@ -81,6 +73,15 @@ endif
 eigen3 = dependency('eigen3', required: true)
 mugrid = dependency('mugrid', required: true)
 mufft_dependencies += [eigen3, mugrid]
+
+message('  -------------------')
+message('  muFFT configuration')
+message('    MPI      : ' + (mu_with_mpi ? '*** YES ***' : 'no'))
+message('    pocketfft: *** YES ***')
+message('    FFTW3    : ' + (mu_with_fftw3 ? '*** YES ***' : 'no'))
+message('    FFTW3 MPI: ' + (mu_with_fftw3mpi ? '*** YES ***' : 'no'))
+message('    PFFT     : ' + (mu_with_pfft ? '*** YES ***' : 'no'))
+message('  -------------------')
 
 subdir('src')
 subdir('language_bindings')
