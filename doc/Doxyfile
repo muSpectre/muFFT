@@ -1,8 +1,7 @@
-\PROJECT_NAME           = muSpectre
+PROJECT_NAME           = libmufft
 ## this is for read the docs, which builds in-place
-INPUT                  = ../../../src
+INPUT                  = ../src
 ## this overwrites the INPUT path for local builds
-@INCLUDE               = input_def
 RECURSIVE              = YES
 
 EXTRACT_ALL            = No
@@ -13,9 +12,8 @@ GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 GENERATE_XML           = YES
 ## this is for read the docs, which builds in-place
-XML_OUTPUT             = doxygenxml
+XML_OUTPUT             = xml
 ## this overwrites the XML_OUTPUT path for local builds
-@INCLUDE               =  xml_output_def
 XML_PROGRAMLISTING     = YES
 
 ALIASES                = "rst=\verbatim embed:rst"
@@ -25,5 +23,3 @@ QUIET                  = YES
 WARNINGS               = YES
 WARN_IF_UNDOCUMENTED   = YES
 SHOW_NAMESPACES        = NO
-
-EXCLUDE_PATTERNS       = */CMakeLists.txt
