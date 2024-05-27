@@ -49,55 +49,75 @@
 
 namespace muFFT {
   /**
-   * base class for projection related exceptions
+   * @class DerivativeError
+   * @brief A class that represents exceptions related to derivatives.
+   * @details This class is derived from the RuntimeError class and is used to
+   * handle exceptions related to derivatives.
    */
   class DerivativeError : public RuntimeError {
    public:
-    //! constructor
-    explicit DerivativeError(const std::string & what)
-        : RuntimeError(what) {}
-    //! constructor
+    /**
+     * @brief A constructor that takes a string as an argument.
+     * @param what A string that describes the error.
+     */
+    explicit DerivativeError(const std::string & what) : RuntimeError(what) {}
+
+    /**
+     * @brief A constructor that takes a character array as an argument.
+     * @param what A character array that describes the error.
+     */
     explicit DerivativeError(const char * what) : RuntimeError(what) {}
   };
 
   /**
-   * Representation of a derivative
+   * @class DerivativeBase
+   * @brief A base class that represents a derivative.
+   * @details This class provides the basic functionalities for a derivative.
    */
   class DerivativeBase {
    public:
-    //! convenience alias
+    //! Alias for Eigen::Matrix<Real, Eigen::Dynamic, 1>
     using Vector = Eigen::Matrix<Real, Eigen::Dynamic, 1>;
 
-    //! Deleted default constructor
+    /**
+     * @brief Deleted default constructor.
+     * @details This constructor is deleted because a DerivativeBase object
+     * requires a spatial dimension to be properly initialized.
+     */
     DerivativeBase() = delete;
 
-    //! constructor with spatial dimension
+    /**
+     * @brief Constructor that takes the spatial dimension as an argument.
+     * @param spatial_dimension The spatial dimension of the derivative.
+     */
     explicit DerivativeBase(Index_t spatial_dimension);
 
-    //! Copy constructor
+    //! Default copy constructor
     DerivativeBase(const DerivativeBase & other) = default;
 
-    //! Move constructor
+    //! Default move constructor
     DerivativeBase(DerivativeBase && other) = default;
 
-    //! Destructor
+    //! Default destructor
     virtual ~DerivativeBase() = default;
 
-    //! Copy assignment operator
+    //! Deleted copy assignment operator
     DerivativeBase & operator=(const DerivativeBase & other) = delete;
 
-    //! Move assignment operator
+    //! Deleted move assignment operator
     DerivativeBase & operator=(DerivativeBase && other) = delete;
 
     /**
-     * Return Fourier representation of the derivative as a function of the
-     * phase. The phase is the wavevector times cell dimension, but lacking a
-     * factor of 2 π.
+     * @brief A pure virtual function that returns the Fourier representation of
+     * the derivative.
+     * @param phase The phase is the wavevector times cell dimension, but
+     * lacking a factor of 2 π.
+     * @return The Fourier representation of the derivative.
      */
     virtual Complex fourier(const Vector & phase) const = 0;
 
    protected:
-    //! spatial dimension of the problem
+    //! The spatial dimension of the problem
     Index_t spatial_dimension;
   };
 
@@ -203,9 +223,7 @@ namespace muFFT {
     }
 
     //! Return dimension of the stencil
-    const Dim_t & get_dim() const {
-      return this->pixels.get_dim();
-    }
+    const Dim_t & get_dim() const { return this->pixels.get_dim(); }
 
     //! Return number of grid points in stencil
     const DynCcoord_t & get_nb_pts() const {
