@@ -49,304 +49,310 @@
 
 namespace muFFT {
   /**
-   * @class DerivativeError
-   * @brief A class that represents exceptions related to derivatives.
-   * @details This class is derived from the RuntimeError class and is used to
-   * handle exceptions related to derivatives.
+   * base class for projection related exceptions
    */
   class DerivativeError : public RuntimeError {
    public:
-    /**
-     * @brief A constructor that takes a string as an argument.
-     * @param what A string that describes the error.
-     */
-    explicit DerivativeError(const std::string & what) : RuntimeError(what) {}
-
-    /**
-     * @brief A constructor that takes a character array as an argument.
-     * @param what A character array that describes the error.
-     */
+    //! constructor
+    explicit DerivativeError(const std::string & what)
+        : RuntimeError(what) {}
+    //! constructor
     explicit DerivativeError(const char * what) : RuntimeError(what) {}
   };
 
   /**
-   * @class DerivativeBase
-   * @brief A base class that represents a derivative.
-   * @details This class provides the basic functionalities for a derivative.
+   * Representation of a derivative
    */
   class DerivativeBase {
    public:
-    //! Alias for Eigen::Matrix<Real, Eigen::Dynamic, 1>
+    //! convenience alias
     using Vector = Eigen::Matrix<Real, Eigen::Dynamic, 1>;
 
-    /**
-     * @brief Deleted default constructor.
-     * @details This constructor is deleted because a DerivativeBase object
-     * requires a spatial dimension to be properly initialized.
-     */
+    //! Deleted default constructor
     DerivativeBase() = delete;
 
-    /**
-     * @brief Constructor that takes the spatial dimension as an argument.
-     * @param spatial_dimension The spatial dimension of the derivative.
-     */
+    //! constructor with spatial dimension
     explicit DerivativeBase(Index_t spatial_dimension);
 
-    //! Default copy constructor
+    //! Copy constructor
     DerivativeBase(const DerivativeBase & other) = default;
 
-    //! Default move constructor
+    //! Move constructor
     DerivativeBase(DerivativeBase && other) = default;
 
-    //! Default destructor
+    //! Destructor
     virtual ~DerivativeBase() = default;
 
-    //! Deleted copy assignment operator
+    //! Copy assignment operator
     DerivativeBase & operator=(const DerivativeBase & other) = delete;
 
-    //! Deleted move assignment operator
+    //! Move assignment operator
     DerivativeBase & operator=(DerivativeBase && other) = delete;
 
     /**
-     * @brief A pure virtual function that returns the Fourier representation of
-     * the derivative.
-     * @param phase The phase is the wavevector times cell dimension, but
-     * lacking a factor of 2 π.
-     * @return The Fourier representation of the derivative.
+     * Return Fourier representation of the derivative as a function of the
+     * phase. The phase is the wavevector times cell dimension, but lacking a
+     * factor of 2 π.
      */
     virtual Complex fourier(const Vector & phase) const = 0;
 
    protected:
-    //! The spatial dimension of the problem
+    //! spatial dimension of the problem
     Index_t spatial_dimension;
   };
 
   /**
-   * @class FourierDerivative
-   * @brief A class that represents a derivative computed by Fourier
-   * interpolation.
-   * @details This class is derived from the DerivativeBase class and provides
-   * functionalities for Fourier interpolated derivatives.
+   * Representation of a derivative computed by Fourier interpolation
    */
   class FourierDerivative : public DerivativeBase {
    public:
-    //! Alias for the base class
-    using Parent = DerivativeBase;
-
-    //! Alias for Eigen::Matrix<Real, Eigen::Dynamic, 1>
+    using Parent = DerivativeBase;  //!< base class
+    //! convenience alias
     using Vector = typename Parent::Vector;
 
-    /**
-     * @brief Deleted default constructor.
-     * @details This constructor is deleted because a FourierDerivative object
-     * requires a spatial dimension and direction to be properly initialized.
-     */
+    //! Default constructor
     FourierDerivative() = delete;
 
-    /**
-     * @brief Constructor that takes the spatial dimension and direction as
-     * arguments.
-     * @param spatial_dimension The spatial dimension of the derivative.
-     * @param direction The direction of the derivative.
-     */
+    //! Constructor with raw FourierDerivative information
     explicit FourierDerivative(Index_t spatial_dimension, Index_t direction);
 
-    /**
-     * @brief Constructor that takes the spatial dimension, direction, and shift
-     * info as arguments.
-     * @param spatial_dimension The spatial dimension of the derivative.
-     * @param direction The direction of the derivative.
-     * @param shift The shift information for the derivative.
-     */
+    //! Constructor with raw FourierDerivative information and shift info
     explicit FourierDerivative(Index_t spatial_dimension, Index_t direction,
                                const Eigen::ArrayXd & shift);
 
-    //! Default copy constructor
+    //! Copy constructor
     FourierDerivative(const FourierDerivative & other) = default;
 
-    //! Default move constructor
+    //! Move constructor
     FourierDerivative(FourierDerivative && other) = default;
 
-    //! Default destructor
+    //! Destructor
     virtual ~FourierDerivative() = default;
 
-    //! Deleted copy assignment operator
+    //! Copy assignment operator
     FourierDerivative & operator=(const FourierDerivative & other) = delete;
 
-    //! Deleted move assignment operator
+    //! Move assignment operator
     FourierDerivative & operator=(FourierDerivative && other) = delete;
 
     /**
-     * @brief Returns the Fourier representation of the Fourier interpolated
-     * derivative shifted to the new position of the derivative.
-     * @param phase The phase is the wavevector times cell dimension, but
-     * lacking a factor of 2 π.
-     * @return The Fourier representation of the derivative.
-     */
-    virtual Complex fourier(const Vector & phase) const;
+     * Return Fourier representation of the Fourier interpolated derivative
+     * shifted to the new position of the derivative. This here simply returns
+     * I*2*pi*phase * e^(I*2*pi*shift*phase). (I*2*pi*wavevector is the
+     * Fourier representation of the derivative and e^(I*2*pi*shift*phase)
+     * shifts the derivative to its new position.)
+     **/
+    virtual Complex fourier(const Vector & phase) const {
+      return Complex(0, 2 * muGrid::pi * phase[this->direction]) *
+             std::exp(
+                 Complex(0, 2 * muGrid::pi * this->shift.matrix().dot(phase)));
+    }
 
    protected:
-    //! The spatial direction in which to perform differentiation
+    //! spatial direction in which to perform differentiation
     Index_t direction;
-
-    //! The real space shift from the position of the center of the cell.
+    //! real space shift from the position of the center of the cell.
     const Eigen::ArrayXd shift;
   };
 
   /**
-   * @class DiscreteDerivative
-   * @brief A class that represents a finite-differences stencil.
-   * @details This class is derived from the DerivativeBase class and provides
-   * functionalities for finite-differences stencils.
+   * Representation of a finite-differences stencil
    */
   class DiscreteDerivative : public DerivativeBase {
    public:
-    //! Alias for the base class
-    using Parent = DerivativeBase;
-
-    //! Alias for Eigen::Matrix<Real, Eigen::Dynamic, 1>
+    using Parent = DerivativeBase;  //!< base class
+    //! convenience alias
     using Vector = typename Parent::Vector;
 
-    /**
-     * @brief Deleted default constructor.
-     * @details This constructor is deleted because a DiscreteDerivative object
-     * requires stencil information to be properly initialized.
-     */
+    //! Default constructor
     DiscreteDerivative() = delete;
 
     /**
-     * @brief Constructor with raw stencil information.
-     * @param nb_pts The size of the stencil.
-     * @param lbounds The relative starting point of the stencil. For example,
-     * (-2,) means that the stencil starts two pixels to the left of where the
-     * derivative should be computed.
-     * @param stencil The coefficients of the stencil.
+     * Constructor with raw stencil information
+     * @param nb_pts: stencil size
+     * @param lbounds: relative starting point of stencil, e.g. (-2,) means
+     * that the stencil start two pixels to the left of where the derivative
+     * should be computed
+     * @param stencil: stencil coefficients
      */
     DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
                        const std::vector<Real> & stencil);
 
-    /**
-     * @brief Constructor with raw stencil information.
-     * @param nb_pts The size of the stencil.
-     * @param lbounds The relative starting point of the stencil.
-     * @param stencil The coefficients of the stencil.
-     */
+    //! Constructor with raw stencil information
     DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
                        const Eigen::ArrayXd & stencil);
 
-    //! Default copy constructor
+    //! Copy constructor
     DiscreteDerivative(const DiscreteDerivative & other) = default;
 
-    //! Default move constructor
+    //! Move constructor
     DiscreteDerivative(DiscreteDerivative && other) = default;
 
-    //! Default destructor
+    //! Destructor
     virtual ~DiscreteDerivative() = default;
 
-    //! Deleted copy assignment operator
+    //! Copy assignment operator
     DiscreteDerivative & operator=(const DiscreteDerivative & other) = delete;
 
-    //! Deleted move assignment operator
+    //! Move assignment operator
     DiscreteDerivative & operator=(DiscreteDerivative && other) = delete;
 
-    /**
-     * @brief Returns the stencil value at a given coordinate.
-     * @param dcoord The coordinate.
-     * @return The stencil value at the given coordinate.
-     */
+    //! Return stencil value
     Real operator()(const DynCcoord_t & dcoord) const {
       return this->stencil[this->pixels.get_index(dcoord)];
     }
 
-    //! Returns the dimension of the stencil.
-    const Dim_t & get_dim() const { return this->pixels.get_dim(); }
+    //! Return dimension of the stencil
+    const Dim_t & get_dim() const {
+      return this->pixels.get_dim();
+    }
 
-    //! Returns the number of grid points in the stencil.
+    //! Return number of grid points in stencil
     const DynCcoord_t & get_nb_pts() const {
       return this->pixels.get_nb_subdomain_grid_pts();
     }
 
-    //! Returns the lower bound of the stencil.
+    //! Return lower stencil bound
     const DynCcoord_t & get_lbounds() const {
       return this->pixels.get_subdomain_locations();
     }
 
-    //! Returns the pixels class that allows to iterate over pixels.
+    //! Return the pixels class that allows to iterate over pixels
     const muGrid::CcoordOps::DynamicPixels & get_pixels() const {
       return this->pixels;
     }
 
     /**
-     * @brief Applies the "stencil" to a component (degree-of-freedom) of a
-     * field and stores the result to a select component of a second field.
-     * @details Note that the compiler should have opportunity to inline this
-     * function to optimize loops over DOFs.
-     * @param in_field The input field.
-     * @param in_dof The degree-of-freedom of the input field.
-     * @param out_field The output field.
-     * @param out_dof The degree-of-freedom of the output field.
-     * @param fac A factor to multiply the result with. Defaults to 1.0.
+     * Apply the "stencil" to a component (degree-of-freedom) of a field and
+     * store the result to a select component of a second field. Note that the
+     * compiler should have opportunity to inline this function to optimize
+     * loops over DOFs.
+     * TODO: This presently only works *without* MPI parallelization! If you
+     * need parallelization, apply the stencil in Fourier space using the
+     * `fourier` method. Currently this method is only used in the serial tests.
      */
     template <typename T>
     void apply(const muGrid::TypedFieldBase<T> & in_field, Index_t in_dof,
                muGrid::TypedFieldBase<T> & out_field, Index_t out_dof,
-               Real fac = 1.0) const;
+               Real fac = 1.0) const {
+      // check whether fields are global
+      if (!in_field.is_global()) {
+        throw DerivativeError("Input field must be a global field.");
+      }
+      if (!out_field.is_global()) {
+        throw DerivativeError("Output field must be a global field.");
+      }
+      // check whether specified dofs are in range
+      if (in_dof < 0 or in_dof >= in_field.get_nb_dof_per_pixel()) {
+        std::stringstream ss{};
+        ss << "Component " << in_dof << " of input field does not exist."
+           << "(Input field has " << in_field.get_nb_dof_per_pixel()
+           << " components.)";
+        throw DerivativeError(ss.str());
+      }
+      if (out_dof < 0 or out_dof >= out_field.get_nb_dof_per_pixel()) {
+        std::stringstream ss{};
+        ss << "Component " << out_dof << " of output field does not exist."
+           << "(Input field has " << out_field.get_nb_dof_per_pixel()
+           << " components.)";
+        throw DerivativeError(ss.str());
+      }
+      // get global field collections
+      const auto & in_collection{
+          dynamic_cast<const muGrid::GlobalFieldCollection &>(
+              in_field.get_collection())};
+      const auto & out_collection{
+          dynamic_cast<const muGrid::GlobalFieldCollection &>(
+              in_field.get_collection())};
+      if (in_collection.get_nb_pixels() != out_collection.get_nb_pixels()) {
+        std::stringstream ss{};
+        ss << "Input fields lives on a " << in_collection.get_nb_pixels()
+           << " grid, but output fields lives on an incompatible "
+           << out_collection.get_nb_pixels() << " grid.";
+        throw DerivativeError(ss.str());
+      }
+
+      // construct maps
+      muGrid::FieldMap<Real, Mapping::Const> in_map{in_field,
+                                                    muGrid::IterUnit::Pixel};
+      muGrid::FieldMap<Real, Mapping::Mut> out_map{out_field,
+                                                   muGrid::IterUnit::Pixel};
+      // loop over field pixel iterator
+      Index_t ndim{in_collection.get_spatial_dim()};
+      auto & nb_grid_pts{
+          in_collection.get_pixels().get_nb_subdomain_grid_pts()};
+      in_collection.get_pixels().get_nb_subdomain_grid_pts();
+      for (const auto && coord : in_collection.get_pixels()) {
+        T derivative{};
+        // loop over stencil
+        for (const auto && dcoord : this->pixels) {
+          auto coord2{coord + dcoord};
+          // TODO(pastewka): This only works in serial. For this to work
+          //  properly in (MPI) parallel, we need ghost buffers (which will
+          //  affect large parts of the code).
+          for (Index_t dim{0}; dim < ndim; ++dim) {
+            coord2[dim] =
+                muGrid::CcoordOps::modulo(coord2[dim], nb_grid_pts[dim]);
+          }
+          derivative += this->stencil[this->pixels.get_index(dcoord)] *
+                        in_map[in_collection.get_index(coord2)](in_dof);
+        }
+        out_map[out_collection.get_index(coord)](out_dof) = fac * derivative;
+      }
+    }
 
     /**
-     * @brief Returns the Fourier representation of this stencil.
-     * @param phase The phase is the wavevector times cell dimension, but
-     * lacking a factor of 2 π.
-     * @return The Fourier representation of the stencil.
+     * Any translationally invariant linear combination of grid values (as
+     * expressed through the "stencil") becomes a multiplication with a number
+     * in Fourier space. This method returns the Fourier representation of
+     * this stencil.
      */
-    virtual Complex fourier(const Vector & phase) const;
+    virtual Complex fourier(const Vector & phase) const {
+      Complex s{0, 0};
+      for (auto && dcoord : muGrid::CcoordOps::DynamicPixels(
+               this->pixels.get_nb_subdomain_grid_pts(),
+               this->pixels.get_subdomain_locations())) {
+        const Real arg{phase.matrix().dot(eigen(dcoord).template cast<Real>())};
+        s += this->operator()(dcoord) *
+             std::exp(Complex(0, 2 * muGrid::pi * arg));
+      }
+      return s;
+    }
 
     /**
-     * @brief Returns a new stencil with rolled axes.
-     * @details Given a stencil on a three-dimensional grid with axes (x, y, z),
-     * the stencil that has been "rolled" by distance one has axes (z, x, y).
-     * This is a simple implementation of a rotation operation. For example,
-     * given a stencil that described the derivative in the x-direction,
-     * rollaxes(1) gives the derivative in the y-direction and rollaxes(2) gives
-     * the derivative in the z-direction.
-     * @param distance The distance to roll the axes by. Defaults to 1.
-     * @return A new stencil with rolled axes.
+     * Return a new stencil rolled axes. Given a stencil on a
+     * three-dimensional grid with axes (x, y, z), the stencil
+     * that has been "rolled" by distance one has axes (z, x, y).
+     * This is a simple implementation of a rotation operation.
+     * For example, given a stencil that described the derivative in
+     * the x-direction, rollaxes(1) gives the derivative in the
+     * y-direction and rollaxes(2) gives the derivative in the
+     * z-direction.
      */
     DiscreteDerivative rollaxes(int distance = 1) const;
 
-    //! Returns the stencil data.
+    //! return the stencil data
     const Eigen::ArrayXd & get_stencil() const { return this->stencil; }
 
    protected:
-    //! An object to iterate over the stencil.
-    muGrid::CcoordOps::DynamicPixels pixels;
-
-    //! The finite-differences stencil.
-    const Eigen::ArrayXd stencil;
+    muGrid::CcoordOps::DynamicPixels pixels{};  //!< iterate over the stencil
+    const Eigen::ArrayXd stencil;               //!< Finite-differences stencil
   };
 
   /**
-   * @brief Overloads the insertion operator for `muFFT::DiscreteDerivative`.
-   * @details This function allows inserting `muFFT::DiscreteDerivative` objects
-   * into `std::ostream` objects.
-   * @param os The output stream.
-   * @param derivative The `muFFT::DiscreteDerivative` object.
-   * @return The output stream with the `muFFT::DiscreteDerivative` object
-   * inserted.
+   * Allows inserting `muFFT::DiscreteDerivative`s into `std::ostream`s
    */
   std::ostream & operator<<(std::ostream & os,
                             const DiscreteDerivative & derivative);
 
-  //! @brief A convenience alias for a vector of shared pointers to
-  //! `DerivativeBase` objects.
+  //! convenience alias
   using Gradient_t = std::vector<std::shared_ptr<DerivativeBase>>;
 
   /**
-   * @brief A convenience function to build a gradient operator using exact
-   * Fourier differentiation.
-   * @details This function creates a gradient operator for a given number of
-   * spatial dimensions using Fourier differentiation.
-   * @param spatial_dimension The number of spatial dimensions.
-   * @return A `Gradient_t` object representing the gradient operator.
+   * convenience function to build a spatial_dimension-al gradient operator
+   * using exact Fourier differentiation
+   *
+   * @param spatial_dimension number of spatial dimensions
    */
   Gradient_t make_fourier_gradient(const Index_t & spatial_dimension);
 }  // namespace muFFT
