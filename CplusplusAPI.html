@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Coding Convention" href="CodingConvention.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>C++ API Reference - µFFT 0.90.0-10-gd537b37 documentation</title>
+        <title>C++ API Reference - µFFT 0.90.0-18-geca7110 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.90.0-10-gd537b37
+      <a href="index.html"><div class="brand">µFFT 0.90.0-18-geca7110
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.90.0-10-gd537b37
+  <span class="sidebar-brand-text">µFFT 0.90.0-18-geca7110
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -217,6 +217,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Python.html">Python Bindings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodingConvention.html">Coding Convention</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">C++ API Reference</a></li>
 </ul>
@@ -266,14 +267,15 @@
 <span id="_CPPv3N5muFFT14DerivativeBaseE"></span><span id="_CPPv2N5muFFT14DerivativeBaseE"></span><span id="muFFT::DerivativeBase"></span><span class="target" id="classmuFFT_1_1DerivativeBase"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeBase</span></span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBaseE" title="Link to this definition">¶</a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;<a class="reference internal" href="#derivative_8hh"><span class="std std-ref">derivative.hh</span></a>&gt;</em></div>
-<p>Representation of a derivative </p>
+<p>A base class that represents a derivative. </p>
+<p>This class provides the basic functionalities for a derivative. </p>
 <p>Subclassed by <a class="reference internal" href="#classmuFFT_1_1DiscreteDerivative"><span class="std std-ref">muFFT::DiscreteDerivative</span></a>, <a class="reference internal" href="#classmuFFT_1_1FourierDerivative"><span class="std std-ref">muFFT::FourierDerivative</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBase6VectorE">
 <span id="_CPPv3N5muFFT14DerivativeBase6VectorE"></span><span id="_CPPv2N5muFFT14DerivativeBase6VectorE"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1a67cee13a02f279a452009f545c1b5e3e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Vector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBase6VectorE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>convenience alias </p>
+<dd><p>Alias for Eigen::Matrix&lt;Real, Eigen::Dynamic, 1&gt; </p>
 </dd></dl>
 
 </div>
@@ -283,48 +285,62 @@
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBase14DerivativeBaseEv">
 <span id="_CPPv3N5muFFT14DerivativeBase14DerivativeBaseEv"></span><span id="_CPPv2N5muFFT14DerivativeBase14DerivativeBaseEv"></span><span id="muFFT::DerivativeBase::DerivativeBase"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1a54e43ad88637b5c5566d1ffd0eb1e04d"></span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeBase</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBase14DerivativeBaseEv" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Deleted default constructor. </p>
+<p>This constructor is deleted because a <a class="reference internal" href="#classmuFFT_1_1DerivativeBase"><span class="std std-ref">DerivativeBase</span></a> object requires a spatial dimension to be properly initialized. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBase14DerivativeBaseE7Index_t">
 <span id="_CPPv3N5muFFT14DerivativeBase14DerivativeBaseE7Index_t"></span><span id="_CPPv2N5muFFT14DerivativeBase14DerivativeBaseE7Index_t"></span><span id="muFFT::DerivativeBase::DerivativeBase__Index_t"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1a08ffc3be745d6d504b8a01ed287b2e47"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeBase</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">spatial_dimension</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBase14DerivativeBaseE7Index_t" title="Link to this definition">¶</a><br /></dt>
-<dd><p>constructor with spatial dimension </p>
+<dd><p>Constructor that takes the spatial dimension as an argument. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spatial_dimension</strong> – The spatial dimension of the derivative. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBase14DerivativeBaseERK14DerivativeBase">
 <span id="_CPPv3N5muFFT14DerivativeBase14DerivativeBaseERK14DerivativeBase"></span><span id="_CPPv2N5muFFT14DerivativeBase14DerivativeBaseERK14DerivativeBase"></span><span id="muFFT::DerivativeBase::DerivativeBase__DerivativeBaseCR"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1abe2fbba9a63350f3e1e6f000fda36c26"></span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeBase</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBase14DerivativeBaseERK14DerivativeBase" title="muFFT::DerivativeBase::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBase14DerivativeBaseERK14DerivativeBase" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy constructor. </p>
+<dd><p>Default copy constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBase14DerivativeBaseERR14DerivativeBase">
 <span id="_CPPv3N5muFFT14DerivativeBase14DerivativeBaseERR14DerivativeBase"></span><span id="_CPPv2N5muFFT14DerivativeBase14DerivativeBaseERR14DerivativeBase"></span><span id="muFFT::DerivativeBase::DerivativeBase__DerivativeBaseRR"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1ae4f442fc1b7393542fae78c5039d8872"></span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeBase</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBase14DerivativeBaseERR14DerivativeBase" title="muFFT::DerivativeBase::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBase14DerivativeBaseERR14DerivativeBase" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Move constructor. </p>
+<dd><p>Default move constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBaseD0Ev">
 <span id="_CPPv3N5muFFT14DerivativeBaseD0Ev"></span><span id="_CPPv2N5muFFT14DerivativeBaseD0Ev"></span><span id="muFFT::DerivativeBase::~DerivativeBase"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1ab1954f571945627924f59791a5e6aa7d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~DerivativeBase</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBaseD0Ev" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Destructor. </p>
+<dd><p>Default destructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBaseaSERK14DerivativeBase">
 <span id="_CPPv3N5muFFT14DerivativeBaseaSERK14DerivativeBase"></span><span id="_CPPv2N5muFFT14DerivativeBaseaSERK14DerivativeBase"></span><span id="muFFT::DerivativeBase::assign-operator__DerivativeBaseCR"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1a29c111a78635750de237eec868e5384f"></span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBaseaSERK14DerivativeBase" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy assignment operator. </p>
+<dd><p>Deleted copy assignment operator. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBaseaSERR14DerivativeBase">
 <span id="_CPPv3N5muFFT14DerivativeBaseaSERR14DerivativeBase"></span><span id="_CPPv2N5muFFT14DerivativeBaseaSERR14DerivativeBase"></span><span id="muFFT::DerivativeBase::assign-operator__DerivativeBaseRR"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1a6a799dfb910212996cb46a9361237ad2"></span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBaseaSERR14DerivativeBase" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Move assignment operator. </p>
+<dd><p>Deleted move assignment operator. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT14DerivativeBase7fourierERK6Vector">
 <span id="_CPPv3NK5muFFT14DerivativeBase7fourierERK6Vector"></span><span id="_CPPv2NK5muFFT14DerivativeBase7fourierERK6Vector"></span><span id="muFFT::DerivativeBase::fourier__VectorCRC"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1a552e5bdc93776418000fa0f5ba3966f0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">Complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fourier</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBase6VectorE" title="muFFT::DerivativeBase::Vector"><span class="n"><span class="pre">Vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">phase</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK5muFFT14DerivativeBase7fourierERK6Vector" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return Fourier representation of the derivative as a function of the phase. The phase is the wavevector times cell dimension, but lacking a factor of 2 π. </p>
+<dd><p>A pure virtual function that returns the Fourier representation of the derivative. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phase</strong> – The phase is the wavevector times cell dimension, but lacking a factor of 2 π. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Fourier representation of the derivative. </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -333,7 +349,7 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT14DerivativeBase17spatial_dimensionE">
 <span id="_CPPv3N5muFFT14DerivativeBase17spatial_dimensionE"></span><span id="_CPPv2N5muFFT14DerivativeBase17spatial_dimensionE"></span><span id="muFFT::DerivativeBase::spatial_dimension__Index_t"></span><span class="target" id="classmuFFT_1_1DerivativeBase_1a191d3dab16b01fbb10765a5a66e786c3"></span><span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">spatial_dimension</span></span></span><a class="headerlink" href="#_CPPv4N5muFFT14DerivativeBase17spatial_dimensionE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>spatial dimension of the problem </p>
+<dd><p>The spatial dimension of the problem. </p>
 </dd></dl>
 
 </div>
@@ -344,19 +360,30 @@
 <span id="_CPPv3N5muFFT15DerivativeErrorE"></span><span id="_CPPv2N5muFFT15DerivativeErrorE"></span><span id="muFFT::DerivativeError"></span><span class="target" id="classmuFFT_1_1DerivativeError"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeError</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">RuntimeError</span></span><a class="headerlink" href="#_CPPv4N5muFFT15DerivativeErrorE" title="Link to this definition">¶</a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;<a class="reference internal" href="#derivative_8hh"><span class="std std-ref">derivative.hh</span></a>&gt;</em></div>
-<p>base class for projection related exceptions </p>
+<p>A class that represents exceptions related to derivatives. </p>
+<p>This class is derived from the RuntimeError class and is used to handle exceptions related to derivatives. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT15DerivativeError15DerivativeErrorERKNSt6stringE">
 <span id="_CPPv3N5muFFT15DerivativeError15DerivativeErrorERKNSt6stringE"></span><span id="_CPPv2N5muFFT15DerivativeError15DerivativeErrorERKNSt6stringE"></span><span id="muFFT::DerivativeError::DerivativeError__ssCR"></span><span class="target" id="classmuFFT_1_1DerivativeError_1a5e293bca74b2e2f6b56399191c023528"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeError</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">what</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT15DerivativeError15DerivativeErrorERKNSt6stringE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>constructor </p>
+<dd><p>A constructor that takes a string as an argument. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>what</strong> – A string that describes the error. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT15DerivativeError15DerivativeErrorEPKc">
 <span id="_CPPv3N5muFFT15DerivativeError15DerivativeErrorEPKc"></span><span id="_CPPv2N5muFFT15DerivativeError15DerivativeErrorEPKc"></span><span id="muFFT::DerivativeError::DerivativeError__cCP"></span><span class="target" id="classmuFFT_1_1DerivativeError_1a9f6633d44532babda297e77b652793a6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivativeError</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">what</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT15DerivativeError15DerivativeErrorEPKc" title="Link to this definition">¶</a><br /></dt>
-<dd><p>constructor </p>
+<dd><p>A constructor that takes a character array as an argument. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>what</strong> – A character array that describes the error. </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -367,19 +394,20 @@
 <span id="_CPPv3N5muFFT18DiscreteDerivativeE"></span><span id="_CPPv2N5muFFT18DiscreteDerivativeE"></span><span id="muFFT::DiscreteDerivative"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv45muFFT" title="muFFT"><span class="n"><span class="pre">muFFT</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivativeE" title="Link to this definition">¶</a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;<a class="reference internal" href="#derivative_8hh"><span class="std std-ref">derivative.hh</span></a>&gt;</em></div>
-<p>Representation of a finite-differences stencil </p>
+<p>A class that represents a discrete derivative. </p>
+<p>This class is derived from the <a class="reference internal" href="#classmuFFT_1_1DerivativeBase"><span class="std std-ref">DerivativeBase</span></a> class and provides functionalities for discrete derivatives. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivative6ParentE">
 <span id="_CPPv3N5muFFT18DiscreteDerivative6ParentE"></span><span id="_CPPv2N5muFFT18DiscreteDerivative6ParentE"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1abaa11ae1d3be64b622d3195d99374ce5"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parent</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivative6ParentE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>base class </p>
+<dd><p>Base class alias. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivative6VectorE">
 <span id="_CPPv3N5muFFT18DiscreteDerivative6VectorE"></span><span id="_CPPv2N5muFFT18DiscreteDerivative6VectorE"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a89cb8e4db347cc03a9daca347560d48f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Vector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivative6ParentE" title="muFFT::DiscreteDerivative::Parent"><span class="n"><span class="pre">Parent</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivative6VectorE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>convenience alias </p>
+<dd><p>Vector type alias from the base class. </p>
 </dd></dl>
 
 </div>
@@ -388,19 +416,20 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeEv">
 <span id="_CPPv3N5muFFT18DiscreteDerivative18DiscreteDerivativeEv"></span><span id="_CPPv2N5muFFT18DiscreteDerivative18DiscreteDerivativeEv"></span><span id="muFFT::DiscreteDerivative::DiscreteDerivative"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a57fe205b668ce96c784f3e03d3f26f74"></span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Default constructor. </p>
+<dd><p>Default constructor is deleted as a <a class="reference internal" href="#classmuFFT_1_1DiscreteDerivative"><span class="std std-ref">DiscreteDerivative</span></a> object requires raw stencil information for proper initialization </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKNSt6vectorI4RealEE">
 <span id="_CPPv3N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKNSt6vectorI4RealEE"></span><span id="_CPPv2N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKNSt6vectorI4RealEE"></span><span id="muFFT::DiscreteDerivative::DiscreteDerivative__DynCcoord_t.DynCcoord_t.std::vector:Real:CR"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1aea65d3238c2a7d9594b0537576c35c8d"></span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_pts</span></span>, <span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lbounds</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stencil</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKNSt6vectorI4RealEE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with raw stencil information </p>
+<dd><p>Constructor with raw stencil information. </p>
+<p>This constructor initializes a <a class="reference internal" href="#classmuFFT_1_1DiscreteDerivative"><span class="std std-ref">DiscreteDerivative</span></a> object with the provided stencil size, relative starting point of stencil, and stencil coefficients. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nb_pts</strong> – stencil size </p></li>
-<li><p><strong>lbounds</strong> – relative starting point of stencil, e.g. (-2,) means that the stencil start two pixels to the left of where the derivative should be computed </p></li>
-<li><p><strong>stencil</strong> – stencil coefficients </p></li>
+<li><p><strong>nb_pts</strong> – The stencil size. </p></li>
+<li><p><strong>lbounds</strong> – The relative starting point of stencil. For example, a value of (-2,) means that the stencil starts two pixels to the left of where the derivative should be computed. </p></li>
+<li><p><strong>stencil</strong> – The stencil coefficients. </p></li>
 </ul>
 </dd>
 </dl>
@@ -410,90 +439,179 @@
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKN5Eigen7ArrayXdE">
 <span id="_CPPv3N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKN5Eigen7ArrayXdE"></span><span id="_CPPv2N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKN5Eigen7ArrayXdE"></span><span id="muFFT::DiscreteDerivative::DiscreteDerivative__DynCcoord_t.DynCcoord_t.Eigen::ArrayXdCR"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a4489a37c8f881c5ea5f7aeb53419ab82"></span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_pts</span></span>, <span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lbounds</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ArrayXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stencil</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeE11DynCcoord_t11DynCcoord_tRKN5Eigen7ArrayXdE" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Constructor with raw stencil information. </p>
+<p>This constructor initializes a <a class="reference internal" href="#classmuFFT_1_1DiscreteDerivative"><span class="std std-ref">DiscreteDerivative</span></a> object with the provided stencil size, relative starting point of stencil, and stencil coefficients. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nb_pts</strong> – The stencil size. </p></li>
+<li><p><strong>lbounds</strong> – The relative starting point of stencil. For example, a value of (-2,) means that the stencil starts two pixels to the left of where the derivative should be computed. </p></li>
+<li><p><strong>stencil</strong> – The stencil coefficients. </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeERK18DiscreteDerivative">
 <span id="_CPPv3N5muFFT18DiscreteDerivative18DiscreteDerivativeERK18DiscreteDerivative"></span><span id="_CPPv2N5muFFT18DiscreteDerivative18DiscreteDerivativeERK18DiscreteDerivative"></span><span id="muFFT::DiscreteDerivative::DiscreteDerivative__DiscreteDerivativeCR"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1abe12cd6d91d58b5ba0ecc6dc7a1d2324"></span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeERK18DiscreteDerivative" title="muFFT::DiscreteDerivative::DiscreteDerivative"><span class="n"><span class="pre">DiscreteDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeERK18DiscreteDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy constructor. </p>
+<dd><p>Default copy constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeERR18DiscreteDerivative">
 <span id="_CPPv3N5muFFT18DiscreteDerivative18DiscreteDerivativeERR18DiscreteDerivative"></span><span id="_CPPv2N5muFFT18DiscreteDerivative18DiscreteDerivativeERR18DiscreteDerivative"></span><span id="muFFT::DiscreteDerivative::DiscreteDerivative__DiscreteDerivativeRR"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a3c02a93d842d3b6883ee9214e56abf74"></span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeERR18DiscreteDerivative" title="muFFT::DiscreteDerivative::DiscreteDerivative"><span class="n"><span class="pre">DiscreteDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivative18DiscreteDerivativeERR18DiscreteDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Move constructor. </p>
+<dd><p>Default move constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivativeD0Ev">
 <span id="_CPPv3N5muFFT18DiscreteDerivativeD0Ev"></span><span id="_CPPv2N5muFFT18DiscreteDerivativeD0Ev"></span><span id="muFFT::DiscreteDerivative::~DiscreteDerivative"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a3ccb5f6eadda17c473583926f39adc29"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~DiscreteDerivative</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivativeD0Ev" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Destructor. </p>
+<dd><p>Default destructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivativeaSERK18DiscreteDerivative">
 <span id="_CPPv3N5muFFT18DiscreteDerivativeaSERK18DiscreteDerivative"></span><span id="_CPPv2N5muFFT18DiscreteDerivativeaSERK18DiscreteDerivative"></span><span id="muFFT::DiscreteDerivative::assign-operator__DiscreteDerivativeCR"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1aa0c31b57ecf0a656c17a11261978219c"></span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivativeE" title="muFFT::DiscreteDerivative"><span class="n"><span class="pre">DiscreteDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivativeE" title="muFFT::DiscreteDerivative"><span class="n"><span class="pre">DiscreteDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivativeaSERK18DiscreteDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy assignment operator. </p>
+<dd><p>Copy assignment operator is deleted as copying is not allowed for <a class="reference internal" href="#classmuFFT_1_1DiscreteDerivative"><span class="std std-ref">DiscreteDerivative</span></a> objects </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT18DiscreteDerivativeaSERR18DiscreteDerivative">
 <span id="_CPPv3N5muFFT18DiscreteDerivativeaSERR18DiscreteDerivative"></span><span id="_CPPv2N5muFFT18DiscreteDerivativeaSERR18DiscreteDerivative"></span><span id="muFFT::DiscreteDerivative::assign-operator__DiscreteDerivativeRR"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1afb30a339223a4f94c66eb0a16e50356c"></span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivativeE" title="muFFT::DiscreteDerivative"><span class="n"><span class="pre">DiscreteDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivativeE" title="muFFT::DiscreteDerivative"><span class="n"><span class="pre">DiscreteDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT18DiscreteDerivativeaSERR18DiscreteDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Move assignment operator. </p>
+<dd><p>Move assignment operator is deleted as moving is not allowed for <a class="reference internal" href="#classmuFFT_1_1DiscreteDerivative"><span class="std std-ref">DiscreteDerivative</span></a> objects </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivativeclERK11DynCcoord_t">
 <span id="_CPPv3NK5muFFT18DiscreteDerivativeclERK11DynCcoord_t"></span><span id="_CPPv2NK5muFFT18DiscreteDerivativeclERK11DynCcoord_t"></span><span id="muFFT::DiscreteDerivative::call-operator__DynCcoord_tCRC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1aac516e13bcf2b0206aa9f1fca4b546d3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Real</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dcoord</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivativeclERK11DynCcoord_t" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return stencil value. </p>
+<dd><p>Returns the stencil value at a given coordinate. </p>
+<p>This function returns the stencil value at the provided coordinate. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dcoord</strong> – The coordinate at which the stencil value is to be returned. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The stencil value at the provided coordinate. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivative7get_dimEv">
 <span id="_CPPv3NK5muFFT18DiscreteDerivative7get_dimEv"></span><span id="_CPPv2NK5muFFT18DiscreteDerivative7get_dimEv"></span><span id="muFFT::DiscreteDerivative::get_dimC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1adc9a619f247666bef014c28b8fc486f6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_dim</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivative7get_dimEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return dimension of the stencil. </p>
+<dd><p>Returns the dimension of the stencil. </p>
+<p>This function returns the dimension of the stencil, which is the number of spatial dimensions in which the stencil operates. The stencil is a finite-differences stencil used for computing derivatives. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A constant reference to the Dim_t object that contains the dimension of the stencil. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivative10get_nb_ptsEv">
 <span id="_CPPv3NK5muFFT18DiscreteDerivative10get_nb_ptsEv"></span><span id="_CPPv2NK5muFFT18DiscreteDerivative10get_nb_ptsEv"></span><span id="muFFT::DiscreteDerivative::get_nb_ptsC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1ad48deeaa48ac77da67602182358cc5b2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_nb_pts</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivative10get_nb_ptsEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return number of grid points in stencil. </p>
+<dd><p>Returns the number of grid points in the stencil. </p>
+<p>This function returns the number of grid points in the stencil, which is the size of the stencil. The stencil is a finite-differences stencil used for computing derivatives. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A constant reference to the DynamicCoordinate object that contains the number of grid points in the stencil. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivative11get_lboundsEv">
 <span id="_CPPv3NK5muFFT18DiscreteDerivative11get_lboundsEv"></span><span id="_CPPv2NK5muFFT18DiscreteDerivative11get_lboundsEv"></span><span id="muFFT::DiscreteDerivative::get_lboundsC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a33874a008b484fe30902e84a6f63ef46"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_lbounds</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivative11get_lboundsEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return lower stencil bound. </p>
+<dd><p>Returns the lower bounds of the stencil. </p>
+<p>This function returns the lower bounds of the stencil, which represent the relative starting point of the stencil. For example, a value of (-2,) means that the stencil starts two pixels to the left of where the derivative should be computed. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A constant reference to the DynamicCoordinate object that contains the lower bounds of the stencil. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivative10get_pixelsEv">
 <span id="_CPPv3NK5muFFT18DiscreteDerivative10get_pixelsEv"></span><span id="_CPPv2NK5muFFT18DiscreteDerivative10get_pixelsEv"></span><span id="muFFT::DiscreteDerivative::get_pixelsC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1abaaffbfd858554c8500a5990a43720c4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">muGrid</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">CcoordOps</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DynamicPixels</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_pixels</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivative10get_pixelsEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return the pixels class that allows to iterate over pixels. </p>
+<dd><p>Returns the pixels class that allows to iterate over pixels. </p>
+<p>This function returns the DynamicPixels object from the muGrid::CcoordOps namespace. This object is used to iterate over the pixels of the stencil. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A constant reference to the DynamicPixels object that allows to iterate over the pixels of the stencil. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0ENK5muFFT18DiscreteDerivative5applyEvRKN6muGrid14TypedFieldBaseI1TEE7Index_tRN6muGrid14TypedFieldBaseI1TEE7Index_t4Real">
 <span id="_CPPv3I0ENK5muFFT18DiscreteDerivative5applyERKN6muGrid14TypedFieldBaseI1TEE7Index_tRN6muGrid14TypedFieldBaseI1TEE7Index_t4Real"></span><span id="_CPPv2I0ENK5muFFT18DiscreteDerivative5applyERKN6muGrid14TypedFieldBaseI1TEE7Index_tRN6muGrid14TypedFieldBaseI1TEE7Index_t4Real"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a3f1b8569cb25fe306d2aa376a1e0267d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">apply</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">muGrid</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TypedFieldBase</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK5muFFT18DiscreteDerivative5applyEvRKN6muGrid14TypedFieldBaseI1TEE7Index_tRN6muGrid14TypedFieldBaseI1TEE7Index_t4Real" title="muFFT::DiscreteDerivative::apply::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">in_field</span></span>, <span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">in_dof</span></span>, <span class="n"><span class="pre">muGrid</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TypedFieldBase</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK5muFFT18DiscreteDerivative5applyEvRKN6muGrid14TypedFieldBaseI1TEE7Index_tRN6muGrid14TypedFieldBaseI1TEE7Index_t4Real" title="muFFT::DiscreteDerivative::apply::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">out_field</span></span>, <span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">out_dof</span></span>, <span class="n"><span class="pre">Real</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fac</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.0</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK5muFFT18DiscreteDerivative5applyEvRKN6muGrid14TypedFieldBaseI1TEE7Index_tRN6muGrid14TypedFieldBaseI1TEE7Index_t4Real" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Apply the “stencil” to a component (degree-of-freedom) of a field and store the result to a select component of a second field. Note that the compiler should have opportunity to inline this function to optimize loops over DOFs. TODO: This presently only works <em>without</em> MPI parallelization! If you need parallelization, apply the stencil in Fourier space using the <code class="docutils literal notranslate"><span class="pre">fourier</span></code> method. Currently this method is only used in the serial tests. </p>
+<dd><p>Apply the “stencil” to a component (degree-of-freedom) of a field and store the result to a select component of a second field. </p>
+<p>This function applies the stencil to a component of an input field and stores the result in a selected component of an output field. It performs various checks to ensure the fields are global and the specified degrees of freedom are within range. It then loops over the field pixel iterator and the stencil to compute the derivative and store it in the output field. Note that this function is designed to be inlined by the compiler to optimize loops over degrees of freedom. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function currently only works without MPI parallelization. If parallelization is needed, apply the stencil in Fourier space using the <code class="docutils literal notranslate"><span class="pre">fourier</span></code> method. Currently, this method is only used in the serial tests. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – The type of the field elements. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>in_field</strong> – The input field to which the stencil is applied. </p></li>
+<li><p><strong>in_dof</strong> – The degree of freedom in the input field to which the stencil is applied. </p></li>
+<li><p><strong>out_field</strong> – The output field where the result is stored. </p></li>
+<li><p><strong>out_dof</strong> – The degree of freedom in the output field where the result is stored. </p></li>
+<li><p><strong>fac</strong> – A factor that is multiplied with the derivative. The default value is 1.0. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="#_CPPv4N5muFFT15DerivativeErrorE" title="muFFT::DerivativeError"><span class="n">DerivativeError</span></a></span></span> – If the input or output field is not global, or if the specified degree of freedom is out of range, or if the input and output fields live on incompatible grids. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivative7fourierERK6Vector">
 <span id="_CPPv3NK5muFFT18DiscreteDerivative7fourierERK6Vector"></span><span id="_CPPv2NK5muFFT18DiscreteDerivative7fourierERK6Vector"></span><span id="muFFT::DiscreteDerivative::fourier__VectorCRC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a6034783548d883eaa9dd09d569503df3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">Complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fourier</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivative6VectorE" title="muFFT::DiscreteDerivative::Vector"><span class="n"><span class="pre">Vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">phase</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivative7fourierERK6Vector" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Any translationally invariant linear combination of grid values (as expressed through the “stencil”) becomes a multiplication with a number in Fourier space. This method returns the Fourier representation of this stencil. </p>
+<dd><p>Returns the Fourier representation of the stencil. </p>
+<p>Any translationally invariant linear combination of grid values (as expressed through the “stencil”) becomes a multiplication with a number in Fourier space. This method returns the Fourier representation of this stencil. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phase</strong> – The phase is the wavevector times cell dimension, but lacking a factor of 2 π. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Fourier representation of the stencil. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivative8rollaxesEi">
 <span id="_CPPv3NK5muFFT18DiscreteDerivative8rollaxesEi"></span><span id="_CPPv2NK5muFFT18DiscreteDerivative8rollaxesEi"></span><span id="muFFT::DiscreteDerivative::rollaxes__iC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a6f06f95f004676f1ceb8736f06306666"></span><a class="reference internal" href="#_CPPv4N5muFFT18DiscreteDerivativeE" title="muFFT::DiscreteDerivative"><span class="n"><span class="pre">DiscreteDerivative</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rollaxes</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">distance</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivative8rollaxesEi" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return a new stencil rolled axes. Given a stencil on a three-dimensional grid with axes (x, y, z), the stencil that has been “rolled” by distance one has axes (z, x, y). This is a simple implementation of a rotation operation. For example, given a stencil that described the derivative in the x-direction, rollaxes(1) gives the derivative in the y-direction and rollaxes(2) gives the derivative in the z-direction. </p>
+<dd><p>Returns a new stencil with rolled axes. </p>
+<p>Given a stencil on a three-dimensional grid with axes (x, y, z), the stencil that has been “rolled” by distance one has axes (z, x, y). This is a simple implementation of a rotation operation. For example, given a stencil that described the derivative in the x-direction, rollaxes(1) gives the derivative in the y-direction and rollaxes(2) gives the derivative in the z-direction. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>distance</strong> – The distance to roll the axes. Default value is 1. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new <a class="reference internal" href="#classmuFFT_1_1DiscreteDerivative"><span class="std std-ref">DiscreteDerivative</span></a> object with rolled axes. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT18DiscreteDerivative11get_stencilEv">
 <span id="_CPPv3NK5muFFT18DiscreteDerivative11get_stencilEv"></span><span id="_CPPv2NK5muFFT18DiscreteDerivative11get_stencilEv"></span><span id="muFFT::DiscreteDerivative::get_stencilC"></span><span class="target" id="classmuFFT_1_1DiscreteDerivative_1a5f25a64a620f0cf0df7baf9df678392c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ArrayXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_stencil</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT18DiscreteDerivative11get_stencilEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>return the stencil data </p>
+<dd><p>Returns the stencil data. </p>
+<p>This function returns the finite-differences stencil data which is used for computing derivatives. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A constant reference to the Eigen::ArrayXd object that contains the stencil data. </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -519,25 +637,31 @@
 <span id="_CPPv3I_5Dim_tEN5muFFT9FFT_freqsE"></span><span id="_CPPv2I_5Dim_tEN5muFFT9FFT_freqsE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Dim_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmuFFT_1_1FFT__freqs"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FFT_freqs</span></span></span><a class="headerlink" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="Link to this definition">¶</a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;<a class="reference internal" href="#fft__utils_8hh"><span class="std std-ref">fft_utils.hh</span></a>&gt;</em></div>
-<p>simple class encapsulating the creation, and retrieval of wave vectors </p>
+<p>A class that encapsulates the creation and retrieval of wave vectors. </p>
+<p>This class is templated on the dimensionality of the wave vectors. It provides methods to get unnormalized, normalized, and complex wave vectors. It also provides methods to get the number of grid points in a specific dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dim</strong> – The dimensionality of the wave vectors. </p>
+</dd>
+</dl>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs12CcoordVectorE">
 <span id="_CPPv3N5muFFT9FFT_freqs12CcoordVectorE"></span><span id="_CPPv2N5muFFT9FFT_freqs12CcoordVectorE"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a4df1acdaec6561eb0cdb499896bc6372"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CcoordVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Dim_t</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs12CcoordVectorE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Eigen variant equivalent to Ccoord_t. </p>
+<dd><p>A type alias for an Eigen matrix with dimensions equivalent to Ccoord_t. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs6VectorE">
 <span id="_CPPv3N5muFFT9FFT_freqs6VectorE"></span><span id="_CPPv2N5muFFT9FFT_freqs6VectorE"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a9179786e65e537d02e138eb8d04cde9b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Vector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs6VectorE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>return type for wave vectors </p>
+<dd><p>A type alias for an Eigen matrix representing a wave vector. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs13VectorComplexE">
 <span id="_CPPv3N5muFFT9FFT_freqs13VectorComplexE"></span><span id="_CPPv2N5muFFT9FFT_freqs13VectorComplexE"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a59610334c589425812afd95337715967"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VectorComplex</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Complex</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs13VectorComplexE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>return type for complex wave vectors </p>
+<dd><p>A type alias for an Eigen matrix representing a complex wave vector. </p>
 </dd></dl>
 
 </div>
@@ -546,25 +670,38 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs9FFT_freqsEv">
 <span id="_CPPv3N5muFFT9FFT_freqs9FFT_freqsEv"></span><span id="_CPPv2N5muFFT9FFT_freqs9FFT_freqsEv"></span><span id="muFFT::FFT_freqs::FFT_freqs"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a66c6c14c3cc205acbdf454cefeb4bb86"></span><span class="sig-name descname"><span class="n"><span class="pre">FFT_freqs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs9FFT_freqsEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Default constructor. </p>
+<dd><p>Default constructor is deleted to prevent creating an object without specifying the grid points. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimE">
 <span id="_CPPv3N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimE"></span><span id="_CPPv2N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimE"></span><span id="muFFT::FFT_freqs::FFT_freqs__Ccoord_t:dim:"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a2309cc444a938442632d7ef76fe70f8c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FFT_freqs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>constructor with just number of grid points </p>
+<dd><p>Constructor that initializes the object with the number of grid points. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nb_grid_pts</strong> – The number of grid points in each dimension. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimENSt5arrayI4Real3dimEE">
 <span id="_CPPv3N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimENSt5arrayI4Real3dimEE"></span><span id="_CPPv2N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimENSt5arrayI4Real3dimEE"></span><span id="muFFT::FFT_freqs::FFT_freqs__Ccoord_t:dim:.std::array:Real.dim:"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1ada68902719d6d55bf65b9fa8c78da6d7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FFT_freqs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lengths</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs9FFT_freqsE8Ccoord_tI3dimENSt5arrayI4Real3dimEE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>constructor with domain length </p>
+<dd><p>Constructor that initializes the object with the number of grid points and the lengths of the domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nb_grid_pts</strong> – The number of grid points in each dimension. </p></li>
+<li><p><strong>lengths</strong> – The lengths of the domain in each dimension. </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs9FFT_freqsERK9FFT_freqs">
 <span id="_CPPv3N5muFFT9FFT_freqs9FFT_freqsERK9FFT_freqs"></span><span id="_CPPv2N5muFFT9FFT_freqs9FFT_freqsERK9FFT_freqs"></span><span id="muFFT::FFT_freqs::FFT_freqs__FFT_freqsCR"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1aebf2049286bec676aec0fca2872c0cfe"></span><span class="sig-name descname"><span class="n"><span class="pre">FFT_freqs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT9FFT_freqs9FFT_freqsERK9FFT_freqs" title="muFFT::FFT_freqs::FFT_freqs"><span class="n"><span class="pre">FFT_freqs</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs9FFT_freqsERK9FFT_freqs" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy constructor. </p>
+<dd><p>Copy constructor is deleted to prevent copying of the object. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -582,7 +719,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqsaSERK9FFT_freqs">
 <span id="_CPPv3N5muFFT9FFT_freqsaSERK9FFT_freqs"></span><span id="_CPPv2N5muFFT9FFT_freqsaSERK9FFT_freqs"></span><span id="muFFT::FFT_freqs::assign-operator__FFT_freqsCR"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a9d29f6439b04e0a95629e2cca3d01608"></span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs"><span class="n"><span class="pre">FFT_freqs</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs"><span class="n"><span class="pre">FFT_freqs</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqsaSERK9FFT_freqs" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy assignment operator. </p>
+<dd><p>Copy assignment operator is deleted to prevent copying of the object. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -594,25 +731,70 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT9FFT_freqs6get_xiEK8Ccoord_tI3dimE">
 <span id="_CPPv3NK5muFFT9FFT_freqs6get_xiEK8Ccoord_tI3dimE"></span><span id="_CPPv2NK5muFFT9FFT_freqs6get_xiEK8Ccoord_tI3dimE"></span><span id="muFFT::FFT_freqs::get_xi__Ccoord_t:dim:CC"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a6bd7e66409b04dc34ad3d2e2e6a020f7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT9FFT_freqs6VectorE" title="muFFT::FFT_freqs::Vector"><span class="n"><span class="pre">Vector</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_xi</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ccoord</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT9FFT_freqs6get_xiEK8Ccoord_tI3dimE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>get unnormalised wave vector (in sampling units) </p>
+<dd><p>Get the unnormalized wave vector in sampling units. </p>
+<p>Get the xi value for the FFT frequencies.</p>
+<p>
+This function is a member of the <a class="reference internal" href="#classmuFFT_1_1FFT__freqs"><span class="std std-ref">FFT_freqs</span></a> class template. It takes a constant Ccoord_t object as an argument, which represents the coordinates in the frequency domain. The function iterates over each dimension and assigns the corresponding frequency to the return vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ccoord</strong> – The coordinates in the frequency domain. </p></li>
+<li><p><strong>ccoord</strong> – A constant reference to a Ccoord_t object representing the coordinates in the frequency domain. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The unnormalized wave vector.</p>
+</dd>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dim</strong> – The dimensionality of the FFT operation. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Vector object where each element is the frequency corresponding to the coordinate in the same dimension. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT9FFT_freqs14get_complex_xiEK8Ccoord_tI3dimE">
 <span id="_CPPv3NK5muFFT9FFT_freqs14get_complex_xiEK8Ccoord_tI3dimE"></span><span id="_CPPv2NK5muFFT9FFT_freqs14get_complex_xiEK8Ccoord_tI3dimE"></span><span id="muFFT::FFT_freqs::get_complex_xi__Ccoord_t:dim:CC"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a821e0630c832c7a0d4b60847cd5c69bd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT9FFT_freqs13VectorComplexE" title="muFFT::FFT_freqs::VectorComplex"><span class="n"><span class="pre">VectorComplex</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_complex_xi</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ccoord</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT9FFT_freqs14get_complex_xiEK8Ccoord_tI3dimE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>get unnormalised complex wave vector (in sampling units) </p>
+<dd><p>Get the unnormalized complex wave vector in sampling units. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ccoord</strong> – The coordinates in the frequency domain. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The unnormalized complex wave vector. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT9FFT_freqs11get_unit_xiEK8Ccoord_tI3dimE">
 <span id="_CPPv3NK5muFFT9FFT_freqs11get_unit_xiEK8Ccoord_tI3dimE"></span><span id="_CPPv2NK5muFFT9FFT_freqs11get_unit_xiEK8Ccoord_tI3dimE"></span><span id="muFFT::FFT_freqs::get_unit_xi__Ccoord_t:dim:CC"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a97ffbb858ef1b8b7832c752c46b7070e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT9FFT_freqs6VectorE" title="muFFT::FFT_freqs::Vector"><span class="n"><span class="pre">Vector</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_unit_xi</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ccoord</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT9FFT_freqs11get_unit_xiEK8Ccoord_tI3dimE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>get normalised wave vector </p>
+<dd><p>Get the normalized wave vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ccoord</strong> – The coordinates in the frequency domain. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The normalized wave vector. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT9FFT_freqs15get_nb_grid_ptsE7Index_t">
 <span id="_CPPv3NK5muFFT9FFT_freqs15get_nb_grid_ptsE7Index_t"></span><span id="_CPPv2NK5muFFT9FFT_freqs15get_nb_grid_ptsE7Index_t"></span><span id="muFFT::FFT_freqs::get_nb_grid_pts__Index_tC"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1a97260de4cd6be69172f7a8fe112c1442"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_nb_grid_pts</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT9FFT_freqs15get_nb_grid_ptsE7Index_t" title="Link to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Get the number of grid points in a specific dimension. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i</strong> – The index of the dimension. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of grid points in the specified dimension. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -620,7 +802,7 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9FFT_freqs5freqsE">
 <span id="_CPPv3N5muFFT9FFT_freqs5freqsE"></span><span id="_CPPv2N5muFFT9FFT_freqs5freqsE"></span><span id="muFFT::FFT_freqs::freqs__std::array:std::valarray:Real:.dim:C"></span><span class="target" id="classmuFFT_1_1FFT__freqs_1ae47952099e2bf2ecbb3cfe47b9fc9260"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">valarray</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_5Dim_tEN5muFFT9FFT_freqsE" title="muFFT::FFT_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">freqs</span></span></span><a class="headerlink" href="#_CPPv4N5muFFT9FFT_freqs5freqsE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>container for frequencies ordered by spatial dimension </p>
+<dd><p>A container for frequencies ordered by spatial dimension. </p>
 </dd></dl>
 
 </div>
@@ -677,13 +859,17 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT13FFTEngineBase13FFTEngineBaseERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbbb">
 <span id="_CPPv3N5muFFT13FFTEngineBase13FFTEngineBaseERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbbb"></span><span id="_CPPv2N5muFFT13FFTEngineBase13FFTEngineBaseERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbbb"></span><span id="muFFT::FFTEngineBase::FFTEngineBase__DynCcoord_tCR.Communicator.FFT_PlanFlagsCR.b.b.b"></span><span class="target" id="classmuFFT_1_1FFTEngineBase_1a689039a954f17d25469a440389e383da"></span><span class="sig-name descname"><span class="n"><span class="pre">FFTEngineBase</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="n"><span class="pre">Communicator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Communicator</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">plan_flags</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlags8estimateE" title="muFFT::FFT_PlanFlags::estimate"><span class="n"><span class="pre">estimate</span></span></a>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_temporary_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_destroy_input</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">engine_has_rigid_memory_layout</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT13FFTEngineBase13FFTEngineBaseERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbbb" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with the domain’s number of grid points in each direction and the communicator </p>
+<dd><p>Constructs an <a class="reference internal" href="#classmuFFT_1_1FFTEngineBase"><span class="std std-ref">FFTEngineBase</span></a> object with the specified parameters. </p>
+<p>This constructor initializes an <a class="reference internal" href="#classmuFFT_1_1FFTEngineBase"><span class="std std-ref">FFTEngineBase</span></a> object with the given number of grid points, communicator, FFT planner flags, and buffer options. The constructor does not perform any FFT computations; it merely sets up the object for future FFT operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nb_grid_pts</strong> – number of grid points of the global grid &#64;comm MPI communicator object </p></li>
-<li><p><strong>allow_temporary_buffer</strong> – allow the creation of temporary buffers if the input buffer has the wrong memory layout </p></li>
-<li><p><strong>allow_destroy_input</strong> – allow that the input buffers are invalidated during the FFT </p></li>
+<li><p><strong>nb_grid_pts</strong> – A DynCcoord_t object representing the number of grid points in each dimension of the global grid. </p></li>
+<li><p><strong>comm</strong> – An optional Communicator object for MPI communication. Defaults to an empty Communicator. </p></li>
+<li><p><strong>plan_flags</strong> – An optional FFT_PlanFlags object representing the FFT planner flags. Defaults to <a class="reference internal" href="#mufft__common_8hh_1a200ed99fcf8fc99699905449d717a6afa94e7e210543475d2dc1ee610e7b4af1d"><span class="std std-ref">FFT_PlanFlags::estimate</span></a>. </p></li>
+<li><p><strong>allow_temporary_buffer</strong> – An optional boolean flag indicating whether the creation of temporary buffers is allowed if the input buffer has the wrong memory layout. Defaults to true. </p></li>
+<li><p><strong>allow_destroy_input</strong> – An optional boolean flag indicating whether the input buffers can be invalidated during the FFT. Defaults to false. </p></li>
+<li><p><strong>engine_has_rigid_memory_layout</strong> – An optional boolean flag indicating whether the underlying FFT engine requires a fixed memory layout. Defaults to true. </p></li>
 </ul>
 </dd>
 </dl>
@@ -1181,13 +1367,16 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb">
 <span id="_CPPv3N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb"></span><span id="_CPPv2N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb"></span><span id="muFFT::FFTWEngine::FFTWEngine__DynCcoord_tCR.Communicator.FFT_PlanFlagsCR.b.b"></span><span class="target" id="classmuFFT_1_1FFTWEngine_1abb5cdf5300e10e821d93ee0f920a8f1e"></span><span class="sig-name descname"><span class="n"><span class="pre">FFTWEngine</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="n"><span class="pre">Communicator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Communicator</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">plan_flags</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlags8estimateE" title="muFFT::FFT_PlanFlags::estimate"><span class="n"><span class="pre">estimate</span></span></a>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_temporary_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_destroy_input</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with the domain’s number of grid points in each direction, the communicator, and fft planner flags </p>
+<dd><p>Constructs a <a class="reference internal" href="#classmuFFT_1_1FFTWEngine"><span class="std std-ref">FFTWEngine</span></a> object with the specified parameters. </p>
+<p>This constructor initializes a <a class="reference internal" href="#classmuFFT_1_1FFTWEngine"><span class="std std-ref">FFTWEngine</span></a> object with the given number of grid points, communicator, FFT planner flags, and buffer options. The constructor does not perform any FFT computations; it merely sets up the object for future FFT operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nb_grid_pts</strong> – number of grid points of the global grid </p></li>
-<li><p><strong>allow_temporary_buffer</strong> – allow the creation of temporary buffers if the input buffer has the wrong memory layout </p></li>
-<li><p><strong>allow_destroy_input</strong> – allow that the input buffers are invalidated during the FFT &#64;comm MPI communicator object </p></li>
+<li><p><strong>nb_grid_pts</strong> – A DynCcoord_t object representing the number of grid points in each dimension of the global grid. </p></li>
+<li><p><strong>comm</strong> – An optional Communicator object for MPI communication. Defaults to an empty Communicator. </p></li>
+<li><p><strong>plan_flags</strong> – An optional FFT_PlanFlags object representing the FFT planner flags. Defaults to <a class="reference internal" href="#mufft__common_8hh_1a200ed99fcf8fc99699905449d717a6afa94e7e210543475d2dc1ee610e7b4af1d"><span class="std std-ref">FFT_PlanFlags::estimate</span></a>. </p></li>
+<li><p><strong>allow_temporary_buffer</strong> – An optional boolean flag indicating whether the creation of temporary buffers is allowed if the input buffer has the wrong memory layout. Defaults to true. </p></li>
+<li><p><strong>allow_destroy_input</strong> – An optional boolean flag indicating whether the input buffers can be invalidated during the FFT. Defaults to false. </p></li>
 </ul>
 </dd>
 </dl>
@@ -1196,13 +1385,15 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb">
 <span id="_CPPv3N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb"></span><span id="_CPPv2N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb"></span><span id="muFFT::FFTWEngine::FFTWEngine__DynCcoord_tCR.FFT_PlanFlagsCR.b.b"></span><span class="target" id="classmuFFT_1_1FFTWEngine_1a8d3bd72f4c46c9f4823dfe672f623004"></span><span class="sig-name descname"><span class="n"><span class="pre">FFTWEngine</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">plan_flags</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_temporary_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_destroy_input</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT10FFTWEngine10FFTWEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with the domain’s number of grid points in each direction and the fft planner flags </p>
+<dd><p>Constructs a <a class="reference internal" href="#classmuFFT_1_1FFTWEngine"><span class="std std-ref">FFTWEngine</span></a> object with the specified parameters. </p>
+<p>This constructor initializes a <a class="reference internal" href="#classmuFFT_1_1FFTWEngine"><span class="std std-ref">FFTWEngine</span></a> object with the given number of grid points and FFT planner flags. The constructor does not perform any FFT computations; it merely sets up the object for future FFT operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nb_grid_pts</strong> – number of grid points of the global grid </p></li>
-<li><p><strong>allow_temporary_buffer</strong> – allow the creation of temporary buffers if the input buffer has the wrong memory layout </p></li>
-<li><p><strong>allow_destroy_input</strong> – allow that the input buffers are invalidated during the FFT &#64;comm MPI communicator object </p></li>
+<li><p><strong>nb_grid_pts</strong> – A DynCcoord_t object representing the number of grid points in each dimension of the global grid. </p></li>
+<li><p><strong>plan_flags</strong> – An FFT_PlanFlags object representing the FFT planner flags. </p></li>
+<li><p><strong>allow_temporary_buffer</strong> – A boolean flag indicating whether the creation of temporary buffers is allowed if the input buffer has the wrong memory layout. Defaults to true. </p></li>
+<li><p><strong>allow_destroy_input</strong> – A boolean flag indicating whether the input buffers can be invalidated during the FFT. Defaults to false. </p></li>
 </ul>
 </dd>
 </dl>
@@ -1353,15 +1544,16 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT13FFTWMPIEngine13FFTWMPIEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb">
 <span id="_CPPv3N5muFFT13FFTWMPIEngine13FFTWMPIEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb"></span><span id="_CPPv2N5muFFT13FFTWMPIEngine13FFTWMPIEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb"></span><span id="muFFT::FFTWMPIEngine::FFTWMPIEngine__DynCcoord_tCR.Communicator.FFT_PlanFlagsCR.b.b"></span><span class="target" id="classmuFFT_1_1FFTWMPIEngine_1ac927961de6f535a5c6b34d056e3bd6ce"></span><span class="sig-name descname"><span class="n"><span class="pre">FFTWMPIEngine</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="n"><span class="pre">Communicator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Communicator</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">plan_flags</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlags8estimateE" title="muFFT::FFT_PlanFlags::estimate"><span class="n"><span class="pre">estimate</span></span></a>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_temporary_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_destroy_input</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT13FFTWMPIEngine13FFTWMPIEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with the domain’s number of grid points in each direction and the communicator </p>
+<dd><p>Constructs a <a class="reference internal" href="#classmuFFT_1_1FFTWMPIEngine"><span class="std std-ref">FFTWMPIEngine</span></a> object with the specified parameters. </p>
+<p>This constructor initializes a <a class="reference internal" href="#classmuFFT_1_1FFTWMPIEngine"><span class="std std-ref">FFTWMPIEngine</span></a> object with the given number of grid points, communicator, FFT planner flags, and buffer options. The constructor does not perform any FFT computations; it merely sets up the object for future FFT operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nb_grid_pts</strong> – number of grid points of the global grid </p></li>
-<li><p><strong>comm</strong> – MPI communicator object </p></li>
-<li><p><strong>plan_flags</strong> – MPI planner flags </p></li>
-<li><p><strong>allow_temporary_buffer</strong> – allow the creation of temporary buffers if the input buffer has the wrong memory layout </p></li>
-<li><p><strong>allow_destroy_input</strong> – allow that the input buffers are invalidated during the FFT </p></li>
+<li><p><strong>nb_grid_pts</strong> – A DynCcoord_t object representing the number of grid points in each dimension of the global grid. </p></li>
+<li><p><strong>comm</strong> – An optional Communicator object for MPI communication. Defaults to an empty Communicator. </p></li>
+<li><p><strong>plan_flags</strong> – An optional FFT_PlanFlags object representing the FFT planner flags. Defaults to <a class="reference internal" href="#mufft__common_8hh_1a200ed99fcf8fc99699905449d717a6afa94e7e210543475d2dc1ee610e7b4af1d"><span class="std std-ref">FFT_PlanFlags::estimate</span></a>. </p></li>
+<li><p><strong>allow_temporary_buffer</strong> – An optional boolean flag indicating whether the creation of temporary buffers is allowed if the input buffer has the wrong memory layout. Defaults to true. </p></li>
+<li><p><strong>allow_destroy_input</strong> – An optional boolean flag indicating whether the input buffers can be invalidated during the FFT. Defaults to false. </p></li>
 </ul>
 </dd>
 </dl>
@@ -1516,19 +1708,20 @@
 <span id="_CPPv3N5muFFT17FourierDerivativeE"></span><span id="_CPPv2N5muFFT17FourierDerivativeE"></span><span id="muFFT::FourierDerivative"></span><span class="target" id="classmuFFT_1_1FourierDerivative"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FourierDerivative</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv45muFFT" title="muFFT"><span class="n"><span class="pre">muFFT</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivativeE" title="Link to this definition">¶</a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;<a class="reference internal" href="#derivative_8hh"><span class="std std-ref">derivative.hh</span></a>&gt;</em></div>
-<p>Representation of a derivative computed by Fourier interpolation </p>
+<p>A class that represents a derivative computed by Fourier interpolation. </p>
+<p>This class is derived from the <a class="reference internal" href="#classmuFFT_1_1DerivativeBase"><span class="std std-ref">DerivativeBase</span></a> class and provides functionalities for Fourier interpolated derivatives. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative6ParentE">
 <span id="_CPPv3N5muFFT17FourierDerivative6ParentE"></span><span id="_CPPv2N5muFFT17FourierDerivative6ParentE"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1ac73dc11fdf889a8b732c4084ab77eeba"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parent</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT14DerivativeBaseE" title="muFFT::DerivativeBase"><span class="n"><span class="pre">DerivativeBase</span></span></a><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative6ParentE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>base class </p>
+<dd><p>Alias for the base class. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative6VectorE">
 <span id="_CPPv3N5muFFT17FourierDerivative6VectorE"></span><span id="_CPPv2N5muFFT17FourierDerivative6VectorE"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1ab2b5dfbe228a412b5f91183d78657dd2"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Vector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivative6ParentE" title="muFFT::FourierDerivative::Parent"><span class="n"><span class="pre">Parent</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative6VectorE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>convenience alias </p>
+<dd><p>Alias for Eigen::Matrix&lt;Real, Eigen::Dynamic, 1&gt; </p>
 </dd></dl>
 
 </div>
@@ -1537,55 +1730,82 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative17FourierDerivativeEv">
 <span id="_CPPv3N5muFFT17FourierDerivative17FourierDerivativeEv"></span><span id="_CPPv2N5muFFT17FourierDerivative17FourierDerivativeEv"></span><span id="muFFT::FourierDerivative::FourierDerivative"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a7c541a15adbdf3e415c718041956917f"></span><span class="sig-name descname"><span class="n"><span class="pre">FourierDerivative</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative17FourierDerivativeEv" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Default constructor. </p>
+<dd><p>Deleted default constructor. </p>
+<p>This constructor is deleted because a <a class="reference internal" href="#classmuFFT_1_1FourierDerivative"><span class="std std-ref">FourierDerivative</span></a> object requires a spatial dimension and direction to be properly initialized. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_t">
 <span id="_CPPv3N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_t"></span><span id="_CPPv2N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_t"></span><span id="muFFT::FourierDerivative::FourierDerivative__Index_t.Index_t"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1abfe9ed6fcc2a65b25adb2b9ee7bace4e"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FourierDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">spatial_dimension</span></span>, <span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">direction</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_t" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with raw <a class="reference internal" href="#classmuFFT_1_1FourierDerivative"><span class="std std-ref">FourierDerivative</span></a> information. </p>
+<dd><p>Constructor that takes the spatial dimension and direction as arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spatial_dimension</strong> – The spatial dimension of the derivative. </p></li>
+<li><p><strong>direction</strong> – The direction of the derivative. </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_tRKN5Eigen7ArrayXdE">
 <span id="_CPPv3N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_tRKN5Eigen7ArrayXdE"></span><span id="_CPPv2N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_tRKN5Eigen7ArrayXdE"></span><span id="muFFT::FourierDerivative::FourierDerivative__Index_t.Index_t.Eigen::ArrayXdCR"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a64ed01967b01b50462144feb9949af46"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FourierDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">spatial_dimension</span></span>, <span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">direction</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ArrayXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">shift</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative17FourierDerivativeE7Index_t7Index_tRKN5Eigen7ArrayXdE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with raw <a class="reference internal" href="#classmuFFT_1_1FourierDerivative"><span class="std std-ref">FourierDerivative</span></a> information and shift info. </p>
+<dd><p>Constructor that takes the spatial dimension, direction, and shift info as arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spatial_dimension</strong> – The spatial dimension of the derivative. </p></li>
+<li><p><strong>direction</strong> – The direction of the derivative. </p></li>
+<li><p><strong>shift</strong> – The shift information for the derivative. </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative17FourierDerivativeERK17FourierDerivative">
 <span id="_CPPv3N5muFFT17FourierDerivative17FourierDerivativeERK17FourierDerivative"></span><span id="_CPPv2N5muFFT17FourierDerivative17FourierDerivativeERK17FourierDerivative"></span><span id="muFFT::FourierDerivative::FourierDerivative__FourierDerivativeCR"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a421d7793755b2932ab98b5d7bcff4bc1"></span><span class="sig-name descname"><span class="n"><span class="pre">FourierDerivative</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivative17FourierDerivativeERK17FourierDerivative" title="muFFT::FourierDerivative::FourierDerivative"><span class="n"><span class="pre">FourierDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative17FourierDerivativeERK17FourierDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy constructor. </p>
+<dd><p>Default copy constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative17FourierDerivativeERR17FourierDerivative">
 <span id="_CPPv3N5muFFT17FourierDerivative17FourierDerivativeERR17FourierDerivative"></span><span id="_CPPv2N5muFFT17FourierDerivative17FourierDerivativeERR17FourierDerivative"></span><span id="muFFT::FourierDerivative::FourierDerivative__FourierDerivativeRR"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a898d29b62af2d9faa2c1e585f33488b4"></span><span class="sig-name descname"><span class="n"><span class="pre">FourierDerivative</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivative17FourierDerivativeERR17FourierDerivative" title="muFFT::FourierDerivative::FourierDerivative"><span class="n"><span class="pre">FourierDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative17FourierDerivativeERR17FourierDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Move constructor. </p>
+<dd><p>Default move constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivativeD0Ev">
 <span id="_CPPv3N5muFFT17FourierDerivativeD0Ev"></span><span id="_CPPv2N5muFFT17FourierDerivativeD0Ev"></span><span id="muFFT::FourierDerivative::~FourierDerivative"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a105cb509e36811a5d6dbe0522943a35b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~FourierDerivative</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivativeD0Ev" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Destructor. </p>
+<dd><p>Default destructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivativeaSERK17FourierDerivative">
 <span id="_CPPv3N5muFFT17FourierDerivativeaSERK17FourierDerivative"></span><span id="_CPPv2N5muFFT17FourierDerivativeaSERK17FourierDerivative"></span><span id="muFFT::FourierDerivative::assign-operator__FourierDerivativeCR"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1af25bb6640c88805e98fc0ed9c171ee65"></span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivativeE" title="muFFT::FourierDerivative"><span class="n"><span class="pre">FourierDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivativeE" title="muFFT::FourierDerivative"><span class="n"><span class="pre">FourierDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivativeaSERK17FourierDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Copy assignment operator. </p>
+<dd><p>Deleted copy assignment operator. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivativeaSERR17FourierDerivative">
 <span id="_CPPv3N5muFFT17FourierDerivativeaSERR17FourierDerivative"></span><span id="_CPPv2N5muFFT17FourierDerivativeaSERR17FourierDerivative"></span><span id="muFFT::FourierDerivative::assign-operator__FourierDerivativeRR"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a00d72c7a6860cd4d03a8ef304996b8d4"></span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivativeE" title="muFFT::FourierDerivative"><span class="n"><span class="pre">FourierDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivativeE" title="muFFT::FourierDerivative"><span class="n"><span class="pre">FourierDerivative</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivativeaSERR17FourierDerivative" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Move assignment operator. </p>
+<dd><p>Deleted move assignment operator. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5muFFT17FourierDerivative7fourierERK6Vector">
 <span id="_CPPv3NK5muFFT17FourierDerivative7fourierERK6Vector"></span><span id="_CPPv2NK5muFFT17FourierDerivative7fourierERK6Vector"></span><span id="muFFT::FourierDerivative::fourier__VectorCRC"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1ac2d244e37e161db46f8d8c07c5a581ce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">Complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fourier</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT17FourierDerivative6VectorE" title="muFFT::FourierDerivative::Vector"><span class="n"><span class="pre">Vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">phase</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5muFFT17FourierDerivative7fourierERK6Vector" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Return Fourier representation of the Fourier interpolated derivative shifted to the new position of the derivative. This here simply returns I*2*pi*phase * e^(I*2*pi*shift*phase). (I*2*pi*wavevector is the Fourier representation of the derivative and e^(I*2*pi*shift*phase) shifts the derivative to its new position.) </p>
+<dd><p>Returns the Fourier derivative. </p>
+<p>Returns the derivative of the Fourier interpolated field. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phase</strong> – The phase is the wavevector times cell dimension, but lacking a factor of 2 π. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Fourier representation of the derivative. </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -1594,13 +1814,13 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative9directionE">
 <span id="_CPPv3N5muFFT17FourierDerivative9directionE"></span><span id="_CPPv2N5muFFT17FourierDerivative9directionE"></span><span id="muFFT::FourierDerivative::direction__Index_t"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a6a7820644330fdee549f5c4953d0e2d7"></span><span class="n"><span class="pre">Index_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">direction</span></span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative9directionE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>spatial direction in which to perform differentiation </p>
+<dd><p>The spatial direction in which to perform differentiation. </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT17FourierDerivative5shiftE">
 <span id="_CPPv3N5muFFT17FourierDerivative5shiftE"></span><span id="_CPPv2N5muFFT17FourierDerivative5shiftE"></span><span id="muFFT::FourierDerivative::shift__Eigen::ArrayXdC"></span><span class="target" id="classmuFFT_1_1FourierDerivative_1a6a3fd35a53ea7af141accfdee8ac04c9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ArrayXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shift</span></span></span><a class="headerlink" href="#_CPPv4N5muFFT17FourierDerivative5shiftE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>real space shift from the position of the center of the cell. </p>
+<dd><p>The real space shift from the position of the center of the cell. </p>
 </dd></dl>
 
 </div>
@@ -1834,13 +2054,16 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb">
 <span id="_CPPv3N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb"></span><span id="_CPPv2N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb"></span><span id="muFFT::PocketFFTEngine::PocketFFTEngine__DynCcoord_tCR.Communicator.FFT_PlanFlagsCR.b.b"></span><span class="target" id="classmuFFT_1_1PocketFFTEngine_1a1b40fad7d67317ce2ba70b8a0c252f9c"></span><span class="sig-name descname"><span class="n"><span class="pre">PocketFFTEngine</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="n"><span class="pre">Communicator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comm</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Communicator</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">plan_flags</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlags8estimateE" title="muFFT::FFT_PlanFlags::estimate"><span class="n"><span class="pre">estimate</span></span></a>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_temporary_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_destroy_input</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_t12CommunicatorRK13FFT_PlanFlagsbb" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with the domain’s number of grid points in each direction, the communicator, and fft planner flags </p>
+<dd><p>Constructs a <a class="reference internal" href="#classmuFFT_1_1PocketFFTEngine"><span class="std std-ref">PocketFFTEngine</span></a> object with the specified parameters. </p>
+<p>This constructor initializes a <a class="reference internal" href="#classmuFFT_1_1PocketFFTEngine"><span class="std std-ref">PocketFFTEngine</span></a> object with the given number of grid points, communicator, FFT planner flags, and buffer options. The constructor does not perform any FFT computations; it merely sets up the object for future FFT operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nb_grid_pts</strong> – number of grid points of the global grid </p></li>
-<li><p><strong>allow_temporary_buffer</strong> – allow the creation of temporary buffers if the input buffer has the wrong memory layout </p></li>
-<li><p><strong>allow_destroy_input</strong> – allow that the input buffers are invalidated during the FFT &#64;comm MPI communicator object </p></li>
+<li><p><strong>nb_grid_pts</strong> – A DynCcoord_t object representing the number of grid points in each dimension of the global grid. </p></li>
+<li><p><strong>comm</strong> – An optional Communicator object for MPI communication. Defaults to an empty Communicator. </p></li>
+<li><p><strong>plan_flags</strong> – An optional FFT_PlanFlags object representing the FFT planner flags. Defaults to <a class="reference internal" href="#mufft__common_8hh_1a200ed99fcf8fc99699905449d717a6afa94e7e210543475d2dc1ee610e7b4af1d"><span class="std std-ref">FFT_PlanFlags::estimate</span></a>. </p></li>
+<li><p><strong>allow_temporary_buffer</strong> – An optional boolean flag indicating whether the creation of temporary buffers is allowed if the input buffer has the wrong memory layout. Defaults to true. </p></li>
+<li><p><strong>allow_destroy_input</strong> – An optional boolean flag indicating whether the input buffers can be invalidated during the FFT. Defaults to false. </p></li>
 </ul>
 </dd>
 </dl>
@@ -1849,13 +2072,15 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb">
 <span id="_CPPv3N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb"></span><span id="_CPPv2N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb"></span><span id="muFFT::PocketFFTEngine::PocketFFTEngine__DynCcoord_tCR.FFT_PlanFlagsCR.b.b"></span><span class="target" id="classmuFFT_1_1PocketFFTEngine_1a2286431d03fdc8b2c3692e28af5c6402"></span><span class="sig-name descname"><span class="n"><span class="pre">PocketFFTEngine</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DynCcoord_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5muFFT13FFT_PlanFlagsE" title="muFFT::FFT_PlanFlags"><span class="n"><span class="pre">FFT_PlanFlags</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">plan_flags</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_temporary_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_destroy_input</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT15PocketFFTEngine15PocketFFTEngineERK11DynCcoord_tRK13FFT_PlanFlagsbb" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Constructor with the domain’s number of grid points in each direction and the fft planner flags </p>
+<dd><p>Constructs a <a class="reference internal" href="#classmuFFT_1_1PocketFFTEngine"><span class="std std-ref">PocketFFTEngine</span></a> object with the specified parameters. </p>
+<p>This constructor initializes a <a class="reference internal" href="#classmuFFT_1_1PocketFFTEngine"><span class="std std-ref">PocketFFTEngine</span></a> object with the given number of grid points and FFT planner flags. The constructor does not perform any FFT computations; it merely sets up the object for future FFT operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nb_grid_pts</strong> – number of grid points of the global grid </p></li>
-<li><p><strong>allow_temporary_buffer</strong> – allow the creation of temporary buffers if the input buffer has the wrong memory layout </p></li>
-<li><p><strong>allow_destroy_input</strong> – allow that the input buffers are invalidated during the FFT &#64;comm MPI communicator object </p></li>
+<li><p><strong>nb_grid_pts</strong> – A DynCcoord_t object representing the number of grid points in each dimension of the global grid. </p></li>
+<li><p><strong>plan_flags</strong> – An FFT_PlanFlags object representing the FFT planner flags. </p></li>
+<li><p><strong>allow_temporary_buffer</strong> – A boolean flag indicating whether the creation of temporary buffers is allowed if the input buffer has the wrong memory layout. Defaults to true. </p></li>
+<li><p><strong>allow_destroy_input</strong> – A boolean flag indicating whether the input buffers can be invalidated during the FFT. Defaults to false. </p></li>
 </ul>
 </dd>
 </dl>
@@ -2005,49 +2230,149 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9fft_freqsE6size_t">
 <span id="_CPPv3N5muFFT9fft_freqsE6size_t"></span><span id="_CPPv2N5muFFT9fft_freqsE6size_t"></span><span id="muFFT::fft_freqs__s"></span><span class="target" id="fft__utils_8cc_1a2e58fb4a6d48fbd1c07b517d845e70cc"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">valarray</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fft_freqs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_samples</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT9fft_freqsE6size_t" title="Link to this definition">¶</a><br /></dt>
-<dd><p>compute fft frequencies (in time (or length) units of of sampling periods), see numpy’s fftfreq function for reference </p>
+<dd><p>Compute nondimensional FFT frequencies. </p>
+<p>This function computes the FFT frequencies for a given index and number of samples. The frequency is normalized to the number of samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nb_samples</strong> – The number of samples. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A valarray containing the FFT frequencies for the given number of samples. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT9fft_freqsE6size_t4Real">
 <span id="_CPPv3N5muFFT9fft_freqsE6size_t4Real"></span><span id="_CPPv2N5muFFT9fft_freqsE6size_t4Real"></span><span id="muFFT::fft_freqs__s.Real"></span><span class="target" id="fft__utils_8cc_1a3e1cf782fab2dcf274bca67011e53798"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">valarray</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fft_freqs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_samples</span></span>, <span class="n"><span class="pre">Real</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT9fft_freqsE6size_t4Real" title="Link to this definition">¶</a><br /></dt>
-<dd><p>compute fft frequencies in correct length or time units. Here, length refers to the total size of the domain over which the fft is taken (for instance the length of an edge of an RVE) </p>
+<dd><p>Compute FFT frequencies in correct length or time units. </p>
+<p>This function computes the FFT frequencies for a given number of samples, taking into account the correct length or time units. The length refers to the total size of the domain over which the FFT is taken (for instance the length of an edge of an RVE).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nb_samples</strong> – The number of samples. </p></li>
+<li><p><strong>length</strong> – The length of the domain over which the FFT is taken. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A valarray containing the FFT frequencies for the given number of samples, in the correct length or time units. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsE8Ccoord_tI3dimE8Ccoord_tI3dimE">
 <span id="_CPPv3I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsE8Ccoord_tI3dimE"></span><span id="_CPPv2I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsE8Ccoord_tI3dimE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="fft__utils_8hh_1a55cec382c863283cbba0328a35482cc9"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsE8Ccoord_tI3dimE8Ccoord_tI3dimE" title="muFFT::get_nb_hermitian_grid_pts::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_nb_hermitian_grid_pts</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsE8Ccoord_tI3dimE8Ccoord_tI3dimE" title="muFFT::get_nb_hermitian_grid_pts::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">full_nb_grid_pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsE8Ccoord_tI3dimE8Ccoord_tI3dimE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>returns the hermition grid to correcsponding to a full grid, assuming that the last dimension is not fully represented in reciprocal space </p>
+<dd><p>Returns the hermitian grid corresponding to a full grid. </p>
+<p>This function template returns the hermitian grid that corresponds to a real-valued field on a full grid, assuming that the last dimension is not fully represented in reciprocal space because of symmetry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dim</strong> – The dimensionality of the grid. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>full_nb_grid_pts</strong> – A Ccoord_t object representing the number of grid points in the full grid. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Ccoord_t object representing the hermitian grid. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsEN6muGrid9DynCcoordI6MaxDimEEN6muGrid9DynCcoordI6MaxDimEE">
 <span id="_CPPv3I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsEN6muGrid9DynCcoordI6MaxDimEE"></span><span id="_CPPv2I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsEN6muGrid9DynCcoordI6MaxDimEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaxDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="fft__utils_8hh_1ada349a0f2456af4c42c4ac0dd9d5a902"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">muGrid</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DynCcoord</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsEN6muGrid9DynCcoordI6MaxDimEEN6muGrid9DynCcoordI6MaxDimEE" title="muFFT::get_nb_hermitian_grid_pts::MaxDim"><span class="n"><span class="pre">MaxDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_nb_hermitian_grid_pts</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">muGrid</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DynCcoord</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsEN6muGrid9DynCcoordI6MaxDimEEN6muGrid9DynCcoordI6MaxDimEE" title="muFFT::get_nb_hermitian_grid_pts::MaxDim"><span class="n"><span class="pre">MaxDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">full_nb_grid_pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_6size_tEN5muFFT25get_nb_hermitian_grid_ptsEN6muGrid9DynCcoordI6MaxDimEEN6muGrid9DynCcoordI6MaxDimEE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>returns the hermition grid to correcsponding to a full grid, assuming that the last dimension is not fully represented in reciprocal space </p>
+<dd><p>Returns the hermitian grid corresponding to a full grid. </p>
+<p>This function template returns the hermitian grid that corresponds to a real-valued field on a full grid, assuming that the last dimension is not fully represented in reciprocal space because of symmetry. It supports dynamic dimensionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>MaxDim</strong> – The maximum dimensionality of the grid. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>full_nb_grid_pts</strong> – A muGrid::DynCcoord object representing the number of grid points in the full grid. </p>
+</dd>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">RuntimeError</span></span></span> – if the dimensionality of the grid is not 1, 2, or 3. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A muGrid::DynCcoord object representing the hermitian grid. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT8fft_freqE3Int6size_t">
 <span id="_CPPv3N5muFFT8fft_freqE3Int6size_t"></span><span id="_CPPv2N5muFFT8fft_freqE3Int6size_t"></span><span id="muFFT::fft_freq__Int.s"></span><span class="target" id="fft__utils_8hh_1aea04cbefcfbb191351d50952fa4266c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fft_freq</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_samples</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT8fft_freqE3Int6size_t" title="Link to this definition">¶</a><br /></dt>
-<dd><p>compute fft frequency (in time (or length) units of of sampling periods), see numpy’s fftfreq function for reference </p>
+<dd><p>Compute nondimensional FFT frequency. </p>
+<p>This function computes the FFT frequency for a given index and number of samples. The frequency is normalized to the number of samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> – The index for which to compute the FFT frequency. </p></li>
+<li><p><strong>nb_samples</strong> – The number of samples. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The FFT frequency for the given index and number of samples. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5muFFT8fft_freqE3Int6size_t4Real">
 <span id="_CPPv3N5muFFT8fft_freqE3Int6size_t4Real"></span><span id="_CPPv2N5muFFT8fft_freqE3Int6size_t4Real"></span><span id="muFFT::fft_freq__Int.s.Real"></span><span class="target" id="fft__utils_8hh_1a8c6f64f7a1209876938f66cafb5962fc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Real</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fft_freq</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_samples</span></span>, <span class="n"><span class="pre">Real</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5muFFT8fft_freqE3Int6size_t4Real" title="Link to this definition">¶</a><br /></dt>
-<dd><p>compute fft frequency in correct length or time units. Here, length refers to the total size of the domain over which the fft is taken (for instance the length of an edge of an RVE) </p>
+<dd><p>Compute FFT frequency in correct length or time units. </p>
+<p>This function computes the FFT frequency for a given index and number of samples, taking into account the correct length or time units. The length refers to the total size of the domain over which the FFT is taken (for instance the length of an edge of an RVE).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> – The index for which to compute the FFT frequency. </p></li>
+<li><p><strong>nb_samples</strong> – The number of samples. </p></li>
+<li><p><strong>length</strong> – The length of the domain over which the FFT is taken. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The FFT frequency for the given index and number of samples, in the correct length or time units. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimE">
 <span id="_CPPv3I_6size_tEN5muFFT9fft_freqsE8Ccoord_tI3dimE"></span><span id="_CPPv2I_6size_tEN5muFFT9fft_freqsE8Ccoord_tI3dimE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="fft__utils_8hh_1ab1571c5d708f96e6fa73db994ea13e92"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">valarray</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimE" title="muFFT::fft_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fft_freqs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimE" title="muFFT::fft_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Get fft_freqs for a grid </p>
+<dd><p>Compute multidimensional nondimensional FFT frequencies. </p>
+<p>This function computes the FFT frequencies for a given index and number of samples for multidimensional fields. The frequency is normalized to the number of samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dim</strong> – The dimensionality of the grid. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nb_grid_pts</strong> – A Ccoord_t object representing the number of grid points in each dimension. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An array of valarrays where each valarray contains the FFT frequencies for a specific dimension. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimENSt5arrayI4Real3dimEE">
 <span id="_CPPv3I_6size_tEN5muFFT9fft_freqsE8Ccoord_tI3dimENSt5arrayI4Real3dimEE"></span><span id="_CPPv2I_6size_tEN5muFFT9fft_freqsE8Ccoord_tI3dimENSt5arrayI4Real3dimEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="fft__utils_8hh_1a5ccef294d66ae47587f0c120f09a4dad"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">valarray</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimENSt5arrayI4Real3dimEE" title="muFFT::fft_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fft_freqs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Ccoord_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimENSt5arrayI4Real3dimEE" title="muFFT::fft_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_grid_pts</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimENSt5arrayI4Real3dimEE" title="muFFT::fft_freqs::dim"><span class="n"><span class="pre">dim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lengths</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_6size_tEN5muFFT9fft_freqsENSt5arrayINSt8valarrayI4RealEE3dimEE8Ccoord_tI3dimENSt5arrayI4Real3dimEE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Get fft_freqs for a grid in correct length or time units. </p>
+<dd><p>Compute multidimensional FFT frequencies for a grid in correct length or time units. </p>
+<p>This function template computes the FFT frequencies for a grid, taking into account the correct length or time units. It iterates over each dimension of the grid, computes the FFT frequencies for that dimension, and stores them in a return array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dim</strong> – The dimensionality of the grid. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>nb_grid_pts</strong> – A Ccoord_t object representing the number of grid points in each dimension. </p></li>
+<li><p><strong>lengths</strong> – An array representing the lengths of the domain in each dimension. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An array of valarrays where each valarray contains the FFT frequencies for a specific dimension. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
@@ -2927,7 +3252,7 @@ Copyright © 2020 Till Junge<dl class="simple">
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=285af610"></script>
+</div><script src="_static/documentation_options.js?v=30b8c5c2"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
