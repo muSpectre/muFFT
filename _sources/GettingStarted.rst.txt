@@ -37,8 +37,10 @@ The following dependencies are included as Meson subprojects:
 The following dependencies are optional:
 
 - `Boost unit test framework <http://www.boost.org/doc/libs/1_66_0/libs/test/doc/html/index.html>`_
-- `Unidata NetCDF <https://unidata.github.io/netcdf4-python/netCDF4/index.html>`_
-- `PnetCDF <https://parallel-netcdf.github.io/>`_
+- `FFTW <https://www.fftw.org>`_
+- `MPI <https://www.mpi-forum.org/>`_ and `mpi4py <https://mpi4py.readthedocs.io>`_
+- `MPIFFTW <https://www.fftw.org/fftw3_doc/FFTW-MPI-Installation.html>`_
+- `PFFT <https://github.com/mpip/pfft>`_
 
 Recommended:
 
