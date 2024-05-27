@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Python Bindings" href="Python.html" /><link rel="prev" title="Summary" href="Summary.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Coding Convention" href="CodingConvention.html" /><link rel="prev" title="Summary" href="Summary.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Getting Started - µGrid 0.90.1-22-g39f6774 documentation</title>
+        <title>Getting Started - µFFT 0.90.0-10-gd537b37 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µGrid 0.90.1-22-g39f6774
+      <a href="index.html"><div class="brand">µFFT 0.90.0-10-gd537b37
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µGrid 0.90.1-22-g39f6774
+  <span class="sidebar-brand-text">µFFT 0.90.0-10-gd537b37
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -217,8 +217,6 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Python.html">Python Bindings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Cplusplus.html">C++ Bindings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodingConvention.html">Coding Convention</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CplusplusAPI.html">C++ API Reference</a></li>
 </ul>
@@ -263,21 +261,21 @@
         <article role="main" id="furo-main-content">
           <section id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h1>
-<section id="obtaining-grid">
-<h2>Obtaining <em>µ</em>Grid<a class="headerlink" href="#obtaining-grid" title="Link to this heading">¶</a></h2>
-<p><em>µ</em>Grid is hosted on a git repository on <a class="reference external" href="https://github.com/">GitHub</a>. To clone it, run</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/muSpectre/muGrid.git
+<section id="obtaining-fft">
+<h2>Obtaining <em>µ</em>FFT<a class="headerlink" href="#obtaining-fft" title="Link to this heading">¶</a></h2>
+<p><em>µ</em>FFT is hosted on a git repository on <a class="reference external" href="https://github.com/">GitHub</a>. To clone it, run</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/muSpectre/muFFT.git
 </pre></div>
 </div>
 <p>or if you prefer identifying yourself using a public ssh-key, run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:muSpectre/muGrid.git
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:muSpectre/muFFT.git
 </pre></div>
 </div>
 <p>The latter option requires you to have a user account on <a class="reference external" href="https://github.com/">GitHub</a>.</p>
 </section>
-<section id="building-grid">
-<h2>Building <em>µ</em>Grid<a class="headerlink" href="#building-grid" title="Link to this heading">¶</a></h2>
-<p><em>µ</em>Grid uses <a class="reference external" href="https://mesonbuild.com/">Meson</a> (0.42.0 or higher) as its build system.</p>
+<section id="building-fft">
+<h2>Building <em>µ</em>FFT<a class="headerlink" href="#building-fft" title="Link to this heading">¶</a></h2>
+<p><em>µ</em>FFT uses <a class="reference external" href="https://mesonbuild.com/">Meson</a> (0.42.0 or higher) as its build system.</p>
 <p>The current (and possibly incomplete list of) dependencies are</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://mesonbuild.com/">Meson</a></p></li>
@@ -301,7 +299,7 @@
 <li><p><a class="reference external" href="http://www.sphinx-doc.org">Sphinx</a> and <a class="reference external" href="https://breathe.readthedocs.io">Breathe</a> (necessary if you want to build the
 documentation (turned off by default)</p></li>
 </ul>
-<p><em>µ</em>Grid requires a relatively modern compiler as it makes heavy use of C++17 features.</p>
+<p><em>µ</em>FFT requires a relatively modern compiler as it makes heavy use of C++17 features.</p>
 <p>To compile for <em>development</em>, i.e. with debug options turned on, first setup
 the build folder:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>meson<span class="w"> </span>setup<span class="w"> </span>meson-build-debug
@@ -320,9 +318,9 @@ Navigate to the build folder and run:</p>
 </section>
 <section id="getting-help-and-reporting-bugs">
 <h2>Getting help and reporting bugs<a class="headerlink" href="#getting-help-and-reporting-bugs" title="Link to this heading">¶</a></h2>
-<p><em>µ</em>Grid is under active development and the documentation
+<p><em>µ</em>FFT is under active development and the documentation
 may be spotty. If you run into trouble,
-please contact us by opening an <a class="reference external" href="https://github.com/muSpectre/muGrid/issues">issue</a> and someone will answer as
+please contact us by opening an <a class="reference external" href="https://github.com/muSpectre/muFFT/issues">issue</a> and someone will answer as
 soon as possible. You can also check the API <span class="xref std std-ref">reference</span>.</p>
 </section>
 <section id="contribute">
@@ -337,12 +335,12 @@ be documented and have unit tests. Please submit merge requests for review.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="Python.html">
+          <a class="next-page" href="CodingConvention.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Python Bindings</div>
+                <div class="title">Coding Convention</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -388,8 +386,8 @@ be documented and have unit tests. Please submit merge requests for review.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#obtaining-grid">Obtaining <em>µ</em>Grid</a></li>
-<li><a class="reference internal" href="#building-grid">Building <em>µ</em>Grid</a></li>
+<li><a class="reference internal" href="#obtaining-fft">Obtaining <em>µ</em>FFT</a></li>
+<li><a class="reference internal" href="#building-fft">Building <em>µ</em>FFT</a></li>
 <li><a class="reference internal" href="#getting-help-and-reporting-bugs">Getting help and reporting bugs</a></li>
 <li><a class="reference internal" href="#contribute">Contribute</a></li>
 </ul>
@@ -403,7 +401,7 @@ be documented and have unit tests. Please submit merge requests for review.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=2508a9a1"></script>
+</div><script src="_static/documentation_options.js?v=285af610"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
