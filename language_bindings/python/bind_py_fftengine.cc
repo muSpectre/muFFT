@@ -143,8 +143,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
       .def(py::init([](std::vector<Index_t> nb_grid_pts,
                        muFFT::Communicator & comm,
                        const muFFT::FFT_PlanFlags & plan_flags,
-                       bool allow_temporary_buffer,
-                       bool allow_destroy_input) {
+                       bool allow_temporary_buffer, bool allow_destroy_input) {
              // Initialise with muFFT Communicator object
              return new Engine(DynCcoord_t(nb_grid_pts), comm, plan_flags,
                                allow_temporary_buffer, allow_destroy_input);
@@ -155,20 +154,16 @@ void add_engine_helper(py::module & mod, const std::string & name) {
 #ifdef WITH_MPI
       .def(py::init([](std::vector<Index_t> nb_grid_pts,
                        const muFFT::FFT_PlanFlags & plan_flags,
-                       bool allow_temporary_buffer,
-                       bool allow_destroy_input,
+                       bool allow_temporary_buffer, bool allow_destroy_input,
                        size_t comm) {
              // Initialise with bare MPI handle
              return new Engine(DynCcoord_t(nb_grid_pts),
-                               muFFT::Communicator(MPI_Comm(comm)),
-                               plan_flags,
-                               allow_temporary_buffer,
-                               allow_destroy_input);
+                               muFFT::Communicator(MPI_Comm(comm)), plan_flags,
+                               allow_temporary_buffer, allow_destroy_input);
            }),
            "nb_grid_pts"_a, "communicator"_a = size_t(MPI_COMM_SELF),
            "flags"_a = muFFT::FFT_PlanFlags::estimate,
-           "allow_temporary_buffer"_a = true,
-           "allow_destroy_input"_a = false)
+           "allow_temporary_buffer"_a = true, "allow_destroy_input"_a = false)
 #endif
       .def("fft", &Engine::fft)
       .def("ifft", &Engine::ifft)
@@ -190,13 +185,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
       .def("real_space_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Index_t &)) &
-               Engine::fetch_or_register_real_space_field,
+               Engine::real_space_field,
            "unique_name"_a, "nb_dof_per_pixel"_a,
            py::return_value_policy::reference_internal)
       .def("real_space_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Shape_t &)) &
-               Engine::fetch_or_register_real_space_field,
+               Engine::real_space_field,
            "unique_name"_a, "shape"_a,
            py::return_value_policy::reference_internal)
       .def("register_halfcomplex_field",
@@ -214,13 +209,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
       .def("halfcomplex_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Index_t &)) &
-               Engine::fetch_or_register_halfcomplex_field,
+               Engine::halfcomplex_field,
            "unique_name"_a, "nb_dof_per_pixel"_a,
            py::return_value_policy::reference_internal)
       .def("halfcomplex_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Shape_t &)) &
-               Engine::fetch_or_register_halfcomplex_field,
+               Engine::halfcomplex_field,
            "unique_name"_a, "shape"_a,
            py::return_value_policy::reference_internal)
       .def("register_fourier_space_field",
@@ -238,13 +233,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
       .def("fourier_space_field",
            (FFTEngineBase::FourierField_t &
             (Engine::*)(const std::string &, const Index_t &)) &
-               Engine::fetch_or_register_fourier_space_field,
+               Engine::fourier_space_field,
            "unique_name"_a, "nb_dof_per_pixel"_a,
            py::return_value_policy::reference_internal)
       .def("fourier_space_field",
            (FFTEngineBase::FourierField_t &
             (Engine::*)(const std::string &, const Shape_t &)) &
-               Engine::fetch_or_register_fourier_space_field,
+               Engine::fourier_space_field,
            "unique_name"_a, "shape"_a,
            py::return_value_policy::reference_internal)
       .def_property_readonly("normalisation", &Engine::normalisation)
@@ -317,34 +312,35 @@ void add_engine_helper(py::module & mod, const std::string & name) {
           py::return_value_policy::reference)
       .def_property_readonly("spatial_dim", &Engine::get_spatial_dim)
       .def("has_plan_for", &Engine::has_plan_for, "nb_dof_per_pixel"_a)
-      .def_property_readonly("fftfreq", [](const Engine & eng) {
-        std::vector<Index_t> shape{}, strides{};
-        Index_t dim{eng.get_spatial_dim()};
-        shape.push_back(dim);
-        strides.push_back(sizeof(Real));
-        for (auto && n : eng.get_nb_fourier_grid_pts()) {
-          shape.push_back(n);
-        }
-        for (auto && s : eng.get_fourier_pixels().get_strides()) {
-          strides.push_back(s * dim * sizeof(Real));
-        }
-        py::array_t<Real> fftfreqs(shape, strides);
-        Real * ptr{static_cast<Real *>(fftfreqs.request().ptr)};
-        auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
-        for (auto && pix : eng.get_fourier_pixels()) {
-          for (int i = 0; i < dim; ++i) {
-            ptr[i] =
-                static_cast<Real>(fft_freq(pix[i], nb_domain_grid_pts[i])) /
-                nb_domain_grid_pts[i];
-          }
-          ptr += dim;
-        }
-        return fftfreqs;
-      })
+      .def_property_readonly(
+          "fftfreq",
+          [](const Engine & eng) {
+            std::vector<Index_t> shape{}, strides{};
+            Index_t dim{eng.get_spatial_dim()};
+            shape.push_back(dim);
+            strides.push_back(sizeof(Real));
+            for (auto && n : eng.get_nb_fourier_grid_pts()) {
+              shape.push_back(n);
+            }
+            for (auto && s : eng.get_fourier_pixels().get_strides()) {
+              strides.push_back(s * dim * sizeof(Real));
+            }
+            py::array_t<Real> fftfreqs(shape, strides);
+            Real * ptr{static_cast<Real *>(fftfreqs.request().ptr)};
+            auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
+            for (auto && pix : eng.get_fourier_pixels()) {
+              for (int i = 0; i < dim; ++i) {
+                ptr[i] =
+                    static_cast<Real>(fft_freq(pix[i], nb_domain_grid_pts[i])) /
+                    nb_domain_grid_pts[i];
+              }
+              ptr += dim;
+            }
+            return fftfreqs;
+          })
       .def(
           "fft",
-          [](Engine & eng,
-             py::array_t<Real> & input_array,
+          [](Engine & eng, py::array_t<Real> & input_array,
              py::array_t<Complex> & output_array) {
             const py::buffer_info & info = input_array.request();
             auto & dim{eng.get_fourier_pixels().get_dim()};
@@ -354,25 +350,22 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                 << "but FFT engine was set up for " << dim << " dimensions.";
               throw muFFT::FFTEngineError(s.str());
             }
-            auto nb_dof_per_pixel{
-                std::accumulate(info.shape.begin(), info.shape.end()-dim, 1,
-                                std::multiplies<Index_t>())};
-            NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                         eng.get_nb_subdomain_grid_pts(),
-                                         eng.get_subdomain_locations(),
-                                         nb_dof_per_pixel, input_array);
-            NumpyProxy<Complex> output_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_fourier_grid_pts(),
-                                             eng.get_fourier_locations(),
-                                             nb_dof_per_pixel, output_array);
+            auto nb_dof_per_pixel{std::accumulate(info.shape.begin(),
+                                                  info.shape.end() - dim, 1,
+                                                  std::multiplies<Index_t>())};
+            NumpyProxy<Real> input_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
+                eng.get_subdomain_locations(), nb_dof_per_pixel, input_array);
+            NumpyProxy<Complex> output_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
+                eng.get_fourier_locations(), nb_dof_per_pixel, output_array);
             eng.fft(input_proxy.get_field(), output_proxy.get_field());
           },
           "real_input_array"_a, "complex_output_array"_a,
           "Perform forward FFT of the input array into the output array")
       .def(
           "ifft",
-          [](Engine & eng,
-             py::array_t<Complex> & input_array,
+          [](Engine & eng, py::array_t<Complex> & input_array,
              py::array_t<Real> & output_array) {
             const py::buffer_info & info = input_array.request();
             auto & dim{eng.get_fourier_pixels().get_dim()};
@@ -382,25 +375,22 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                 << "but FFT engine was set up for " << dim << " dimensions.";
               throw muFFT::FFTEngineError(s.str());
             }
-            auto nb_dof_per_pixel{
-                std::accumulate(info.shape.begin(), info.shape.end()-dim, 1,
-                                std::multiplies<Index_t>())};
-            NumpyProxy<Complex> input_proxy(eng.get_nb_domain_grid_pts(),
-                                            eng.get_nb_fourier_grid_pts(),
-                                            eng.get_fourier_locations(),
-                                            nb_dof_per_pixel, input_array);
-            NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                          eng.get_nb_subdomain_grid_pts(),
-                                          eng.get_subdomain_locations(),
-                                          nb_dof_per_pixel, output_array);
+            auto nb_dof_per_pixel{std::accumulate(info.shape.begin(),
+                                                  info.shape.end() - dim, 1,
+                                                  std::multiplies<Index_t>())};
+            NumpyProxy<Complex> input_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
+                eng.get_fourier_locations(), nb_dof_per_pixel, input_array);
+            NumpyProxy<Real> output_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
+                eng.get_subdomain_locations(), nb_dof_per_pixel, output_array);
             eng.ifft(input_proxy.get_field(), output_proxy.get_field());
           },
           "fourier_input_array"_a, "real_output_array"_a,
           "Perform inverse FFT of the input array into the output array.")
       .def(
           "fft",
-          [](Engine & eng,
-             py::array_t<Real> & input_array) {
+          [](Engine & eng, py::array_t<Real> & input_array) {
             const py::buffer_info & info = input_array.request();
             auto & dim{eng.get_fourier_pixels().get_dim()};
             if (info.shape.size() < static_cast<size_t>(dim)) {
@@ -409,17 +399,14 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                 << "but FFT engine was set up for " << dim << " dimensions.";
               throw muFFT::FFTEngineError(s.str());
             }
-            auto nb_dof_per_pixel{
-                std::accumulate(info.shape.begin(), info.shape.end()-dim, 1,
-                                std::multiplies<Index_t>())};
-            NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                         eng.get_nb_subdomain_grid_pts(),
-                                         eng.get_subdomain_locations(),
-                                         nb_dof_per_pixel, input_array);
-            auto & output_field{
-                eng.fetch_or_register_fourier_space_field(
-                    "fft return buffer",
-                    input_proxy.get_components_shape())};
+            auto nb_dof_per_pixel{std::accumulate(info.shape.begin(),
+                                                  info.shape.end() - dim, 1,
+                                                  std::multiplies<Index_t>())};
+            NumpyProxy<Real> input_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
+                eng.get_subdomain_locations(), nb_dof_per_pixel, input_array);
+            auto & output_field{eng.fourier_space_field(
+                "fft return buffer", input_proxy.get_components_shape())};
             eng.fft(input_proxy.get_field(), output_field);
             return numpy_wrap(output_field, IterUnit::Pixel);
           },
@@ -427,8 +414,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
           "Perform forward FFT of the input array into the output array")
       .def(
           "ifft",
-          [](Engine & eng,
-             py::array_t<Complex> & input_array) {
+          [](Engine & eng, py::array_t<Complex> & input_array) {
             const py::buffer_info & info = input_array.request();
             auto & dim{eng.get_fourier_pixels().get_dim()};
             if (info.shape.size() < static_cast<size_t>(dim)) {
@@ -437,17 +423,14 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                 << "but FFT engine was set up for " << dim << " dimensions.";
               throw muFFT::FFTEngineError(s.str());
             }
-            auto nb_dof_per_pixel{
-                std::accumulate(info.shape.begin(), info.shape.end()-dim, 1,
-                                std::multiplies<Index_t>())};
-            NumpyProxy<Complex> input_proxy(eng.get_nb_domain_grid_pts(),
-                                            eng.get_nb_fourier_grid_pts(),
-                                            eng.get_fourier_locations(),
-                                            nb_dof_per_pixel, input_array);
-            auto & output_field{
-                eng.fetch_or_register_real_space_field(
-                    "ifft return buffer",
-                    input_proxy.get_components_shape())};
+            auto nb_dof_per_pixel{std::accumulate(info.shape.begin(),
+                                                  info.shape.end() - dim, 1,
+                                                  std::multiplies<Index_t>())};
+            NumpyProxy<Complex> input_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
+                eng.get_fourier_locations(), nb_dof_per_pixel, input_array);
+            auto & output_field{eng.real_space_field(
+                "ifft return buffer", input_proxy.get_components_shape())};
             eng.ifft(input_proxy.get_field(), output_field);
             return numpy_wrap(output_field, IterUnit::Pixel);
           },
@@ -455,18 +438,15 @@ void add_engine_helper(py::module & mod, const std::string & name) {
           "Perform inverse FFT of the input array into the output array.")
       .def(
           "hcfft",
-          [](Engine & eng,
-             py::array_t<Real> & input_array,
+          [](Engine & eng, py::array_t<Real> & input_array,
              py::array_t<Real> & output_array) {
             auto nb_dof_per_pixel{input_array.size() / eng.size()};
-            NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                         eng.get_nb_subdomain_grid_pts(),
-                                         eng.get_subdomain_locations(),
-                                         nb_dof_per_pixel, input_array);
-            NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                          eng.get_nb_subdomain_grid_pts(),
-                                          eng.get_subdomain_locations(),
-                                          nb_dof_per_pixel, output_array);
+            NumpyProxy<Real> input_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
+                eng.get_subdomain_locations(), nb_dof_per_pixel, input_array);
+            NumpyProxy<Real> output_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
+                eng.get_subdomain_locations(), nb_dof_per_pixel, output_array);
             auto && input_proxy_field{input_proxy.get_field()};
             eng.hcfft(input_proxy_field, output_proxy.get_field());
           },
@@ -474,18 +454,15 @@ void add_engine_helper(py::module & mod, const std::string & name) {
           "Perform forward FFT of the input array into the output array")
       .def(
           "ihcfft",
-          [](Engine & eng,
-             py::array_t<Real> & input_array,
+          [](Engine & eng, py::array_t<Real> & input_array,
              py::array_t<Real> & output_array) {
             auto nb_dof_per_pixel{output_array.size() / eng.size()};
-            NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                         eng.get_nb_subdomain_grid_pts(),
-                                         eng.get_subdomain_locations(),
-                                         nb_dof_per_pixel, input_array);
-            NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                          eng.get_nb_subdomain_grid_pts(),
-                                          eng.get_subdomain_locations(),
-                                          nb_dof_per_pixel, output_array);
+            NumpyProxy<Real> input_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
+                eng.get_subdomain_locations(), nb_dof_per_pixel, input_array);
+            NumpyProxy<Real> output_proxy(
+                eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
+                eng.get_subdomain_locations(), nb_dof_per_pixel, output_array);
             eng.ihcfft(input_proxy.get_field(), output_proxy.get_field());
           },
           "real_input_array"_a, "real_output_array"_a,

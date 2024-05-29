@@ -132,14 +132,14 @@ namespace muFFT {
         std::stringstream iname, oname;
         iname << "temp_real_space_" << input_field.get_nb_dof_per_pixel();
         oname << "temp_fourier_space_" << output_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ifield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ifield{this->real_space_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
         tmp_ifield.reshape(input_field.get_components_shape(),
                            input_field.get_sub_division_tag());
         tmp_ifield = input_field;
-        FourierField_t & tmp_ofield{this->fetch_or_register_fourier_space_field(
+        FourierField_t & tmp_ofield{this->fourier_space_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -150,7 +150,7 @@ namespace muFFT {
       } else if (input_copy_necessary) {
         std::stringstream iname;
         iname << "temp_real_space_" << input_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ifield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ifield{this->real_space_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
@@ -161,7 +161,7 @@ namespace muFFT {
       } else {  // output_copy_necessary
         std::stringstream oname;
         oname << "temp_fourier_space_" << output_field.get_nb_dof_per_pixel();
-        FourierField_t & tmp_ofield{this->fetch_or_register_fourier_space_field(
+        FourierField_t & tmp_ofield{this->fourier_space_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -244,14 +244,14 @@ namespace muFFT {
         std::stringstream iname, oname;
         iname << "temp_fourier_space_" << input_field.get_nb_dof_per_pixel();
         oname << "temp_real_space_" << output_field.get_nb_dof_per_pixel();
-        FourierField_t & tmp_ifield{this->fetch_or_register_fourier_space_field(
+        FourierField_t & tmp_ifield{this->fourier_space_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
         tmp_ifield.reshape(input_field.get_components_shape(),
                            input_field.get_sub_division_tag());
         tmp_ifield = input_field;
-        RealField_t & tmp_ofield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ofield{this->real_space_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -262,7 +262,7 @@ namespace muFFT {
       } else if (input_copy_necessary) {
         std::stringstream iname;
         iname << "temp_fourier_space_" << input_field.get_nb_dof_per_pixel();
-        FourierField_t & tmp_ifield{this->fetch_or_register_fourier_space_field(
+        FourierField_t & tmp_ifield{this->fourier_space_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
@@ -273,7 +273,7 @@ namespace muFFT {
       } else {  // output_copy_necessary
         std::stringstream oname;
         oname << "temp_real_space_" << output_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ofield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ofield{this->real_space_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -356,14 +356,14 @@ namespace muFFT {
         std::stringstream iname, oname;
         iname << "temp_real_space_" << input_field.get_nb_dof_per_pixel();
         oname << "temp_fourier_space_" << output_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ifield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ifield{this->real_space_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
         tmp_ifield.reshape(input_field.get_components_shape(),
                            input_field.get_sub_division_tag());
         tmp_ifield = input_field;
-        RealField_t & tmp_ofield{this->fetch_or_register_halfcomplex_field(
+        RealField_t & tmp_ofield{this->halfcomplex_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -374,7 +374,7 @@ namespace muFFT {
       } else if (input_copy_necessary) {
         std::stringstream iname;
         iname << "temp_real_space_" << input_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ifield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ifield{this->real_space_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
@@ -385,7 +385,7 @@ namespace muFFT {
       } else {  // output_copy_necessary
         std::stringstream oname;
         oname << "temp_fourier_space_" << output_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ofield{this->fetch_or_register_halfcomplex_field(
+        RealField_t & tmp_ofield{this->halfcomplex_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -468,14 +468,14 @@ namespace muFFT {
         std::stringstream iname, oname;
         iname << "temp_fourier_space_" << input_field.get_nb_dof_per_pixel();
         oname << "temp_real_space_" << output_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ifield{this->fetch_or_register_halfcomplex_field(
+        RealField_t & tmp_ifield{this->halfcomplex_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
         tmp_ifield.reshape(input_field.get_components_shape(),
                            input_field.get_sub_division_tag());
         tmp_ifield = input_field;
-        RealField_t & tmp_ofield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ofield{this->real_space_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -486,7 +486,7 @@ namespace muFFT {
       } else if (input_copy_necessary) {
         std::stringstream iname;
         iname << "temp_fourier_space_" << input_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ifield{this->fetch_or_register_halfcomplex_field(
+        RealField_t & tmp_ifield{this->halfcomplex_field(
             iname.str(), input_field.get_nb_dof_per_pixel())};
         tmp_ifield.get_collection().set_nb_sub_pts(
             input_field.get_sub_division_tag(), input_field.get_nb_sub_pts());
@@ -497,7 +497,7 @@ namespace muFFT {
       } else {  // output_copy_necessary
         std::stringstream oname;
         oname << "temp_real_space_" << output_field.get_nb_dof_per_pixel();
-        RealField_t & tmp_ofield{this->fetch_or_register_real_space_field(
+        RealField_t & tmp_ofield{this->real_space_field(
             oname.str(), output_field.get_nb_dof_per_pixel())};
         tmp_ofield.get_collection().set_nb_sub_pts(
             output_field.get_sub_division_tag(), output_field.get_nb_sub_pts());
@@ -522,28 +522,26 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  auto
-  FFTEngineBase::register_fourier_space_field(const std::string & unique_name,
-                                              const Index_t & nb_dof_per_pixel)
-      -> muGrid::ComplexField & {
+  auto FFTEngineBase::register_fourier_space_field(
+      const std::string & unique_name,
+      const Index_t & nb_dof_per_pixel) -> muGrid::ComplexField & {
     this->create_plan(nb_dof_per_pixel);
     return this->fourier_field_collection.register_complex_field(
         unique_name, nb_dof_per_pixel, PixelTag);
   }
 
   /* ---------------------------------------------------------------------- */
-  auto
-  FFTEngineBase::register_fourier_space_field(const std::string & unique_name,
-                                              const Shape_t & shape)
-      -> muGrid::ComplexField & {
+  auto FFTEngineBase::register_fourier_space_field(
+      const std::string & unique_name,
+      const Shape_t & shape) -> muGrid::ComplexField & {
     this->create_plan(shape);
     return this->fourier_field_collection.register_complex_field(
         unique_name, shape, PixelTag);
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::fetch_or_register_fourier_space_field(
-      const std::string & unique_name, const Index_t & nb_dof_per_pixel)
+  auto FFTEngineBase::fourier_space_field(const std::string & unique_name,
+                                          const Index_t & nb_dof_per_pixel)
       -> FourierField_t & {
     this->create_plan(nb_dof_per_pixel);
     if (this->fourier_field_collection.field_exists(unique_name)) {
@@ -563,8 +561,8 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::fetch_or_register_fourier_space_field(
-      const std::string & unique_name, const Shape_t & shape)
+  auto FFTEngineBase::fourier_space_field(const std::string & unique_name,
+                                          const Shape_t & shape)
       -> FourierField_t & {
     this->create_plan(shape);
     if (this->fourier_field_collection.field_exists(unique_name)) {
@@ -582,10 +580,9 @@ namespace muFFT {
     return this->register_fourier_space_field(unique_name, shape);
   }
 
-  auto
-  FFTEngineBase::register_halfcomplex_field(const std::string & unique_name,
-                                            const Index_t & nb_dof_per_pixel)
-      -> RealField_t & {
+  auto FFTEngineBase::register_halfcomplex_field(
+      const std::string & unique_name,
+      const Index_t & nb_dof_per_pixel) -> RealField_t & {
     this->create_plan(nb_dof_per_pixel);
     return this->halfcomplex_field_collection.register_real_field(
         unique_name, nb_dof_per_pixel, PixelTag);
@@ -600,8 +597,8 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::fetch_or_register_halfcomplex_field(
-      const std::string & unique_name, const Index_t & nb_dof_per_pixel)
+  auto FFTEngineBase::halfcomplex_field(const std::string & unique_name,
+                                        const Index_t & nb_dof_per_pixel)
       -> RealField_t & {
     this->create_plan(nb_dof_per_pixel);
     if (this->halfcomplex_field_collection.field_exists(unique_name)) {
@@ -621,8 +618,9 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::fetch_or_register_halfcomplex_field(
-      const std::string & unique_name, const Shape_t & shape) -> RealField_t & {
+  auto
+  FFTEngineBase::halfcomplex_field(const std::string & unique_name,
+                                   const Shape_t & shape) -> RealField_t & {
     this->create_plan(shape);
     if (this->halfcomplex_field_collection.field_exists(unique_name)) {
       auto & field{dynamic_cast<RealField_t &>(
@@ -642,27 +640,25 @@ namespace muFFT {
   /* ---------------------------------------------------------------------- */
 
   /* ---------------------------------------------------------------------- */
-  auto
-  FFTEngineBase::register_real_space_field(const std::string & unique_name,
-                                           const Index_t & nb_dof_per_pixel)
-      -> RealField_t & {
+  auto FFTEngineBase::register_real_space_field(
+      const std::string & unique_name,
+      const Index_t & nb_dof_per_pixel) -> RealField_t & {
     this->create_plan(nb_dof_per_pixel);
     return this->real_field_collection.register_real_field(
         unique_name, nb_dof_per_pixel, PixelTag);
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::register_real_space_field(const std::string & unique_name,
-                                                const Shape_t & shape)
-      -> RealField_t & {
+  auto FFTEngineBase::register_real_space_field(
+      const std::string & unique_name, const Shape_t & shape) -> RealField_t & {
     this->create_plan(shape);
     return this->real_field_collection.register_real_field(unique_name, shape,
                                                            PixelTag);
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::fetch_or_register_real_space_field(
-      const std::string & unique_name, const Index_t & nb_dof_per_pixel)
+  auto FFTEngineBase::real_space_field(const std::string & unique_name,
+                                       const Index_t & nb_dof_per_pixel)
       -> RealField_t & {
     this->create_plan(nb_dof_per_pixel);
     if (this->real_field_collection.field_exists(unique_name)) {
@@ -682,8 +678,8 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::fetch_or_register_real_space_field(
-      const std::string & unique_name, const Shape_t & shape) -> RealField_t & {
+  auto FFTEngineBase::real_space_field(const std::string & unique_name,
+                                       const Shape_t & shape) -> RealField_t & {
     this->create_plan(shape);
     if (this->real_field_collection.field_exists(unique_name)) {
       auto & field{dynamic_cast<RealField_t &>(

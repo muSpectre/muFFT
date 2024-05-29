@@ -55,7 +55,7 @@ namespace muFFT {
                                    const FFT_PlanFlags & plan_flags,
                                    bool allow_temporary_buffer,
                                    bool allow_destroy_input)
-      : Parent{nb_grid_pts, comm, plan_flags, allow_temporary_buffer,
+      : Parent{nb_grid_pts,         comm, plan_flags, allow_temporary_buffer,
                allow_destroy_input, false} {
     this->initialise_field_collections();
   }
@@ -161,24 +161,18 @@ namespace muFFT {
     if (nb_dim == 1) {
       // One dimensional transforms can be carried out directly
       for (Index_t i{0}; i < nb_dof; ++i) {
-        pocketfft::r2c(real_shape,
-                       pixel_input_strides,
-                       pixel_output_strides,
-                       0,
+        pocketfft::r2c(real_shape, pixel_input_strides, pixel_output_strides, 0,
                        pocketfft::FORWARD,  // forward transform
-                       input_field.data() +
-                           _get_offset(i, sub_pt_input_shape,
-                                       sub_pt_input_strides),
-                       output_field.data() +
-                           _get_offset(i, sub_pt_output_shape,
-                                       sub_pt_output_strides),
+                       input_field.data() + _get_offset(i, sub_pt_input_shape,
+                                                        sub_pt_input_strides),
+                       output_field.data() + _get_offset(i, sub_pt_output_shape,
+                                                         sub_pt_output_strides),
                        1.0);  // additional multiplicative factor
       }
     } else {
       // For n-dimensional transforms we need to carry out n-transforms in the
       // respective directions
-      FourierField_t & tmp_field{
-          this->fetch_or_register_fourier_space_field("pocketfft_tmp", 1)};
+      FourierField_t & tmp_field{this->fourier_space_field("pocketfft_tmp", 1)};
       pocketfft::stride_t tmp_strides{
           tmp_field.get_strides(muGrid::IterUnit::Pixel, sizeof(Complex))};
 
@@ -188,24 +182,18 @@ namespace muFFT {
 
       // Loop over all components and sub-points and carry out transform
       for (Index_t i{0}; i < nb_dof; ++i) {
-        pocketfft::r2c(real_shape,
-                       pixel_input_strides,
-                       tmp_strides,
+        pocketfft::r2c(real_shape, pixel_input_strides, tmp_strides,
                        0,  // see comment above on Hermitian index
                        pocketfft::FORWARD,  // forward transform
-                       input_field.data() +
-                           _get_offset(i, sub_pt_input_shape,
-                                       sub_pt_input_strides),
+                       input_field.data() + _get_offset(i, sub_pt_input_shape,
+                                                        sub_pt_input_strides),
                        tmp_field.data(),
                        1.0);  // additional multiplicative factor
-        pocketfft::c2c(fourier_shape,
-                       tmp_strides,
-                       pixel_output_strides, axes,
+        pocketfft::c2c(fourier_shape, tmp_strides, pixel_output_strides, axes,
                        pocketfft::FORWARD,  // forward transform
                        tmp_field.data(),
-                       output_field.data() +
-                           _get_offset(i, sub_pt_output_shape,
-                                       sub_pt_output_strides),
+                       output_field.data() + _get_offset(i, sub_pt_output_shape,
+                                                         sub_pt_output_strides),
                        1.0);  // additional multiplicative factor
       }
     }
@@ -265,52 +253,40 @@ namespace muFFT {
     if (nb_dim == 1) {
       // One dimensional transforms can be carried out directly
       for (Index_t i{0}; i < nb_dof; ++i) {
-        pocketfft::c2r(real_shape,
-                       pixel_input_strides,
-                       pixel_output_strides, 0,
+        pocketfft::c2r(real_shape, pixel_input_strides, pixel_output_strides, 0,
                        pocketfft::BACKWARD,  // backward transform
-                       input_field.data() +
-                           _get_offset(i, sub_pt_input_shape,
-                                       sub_pt_input_strides),
-                       output_field.data() +
-                           _get_offset(i, sub_pt_output_shape,
-                                       sub_pt_output_strides),
+                       input_field.data() + _get_offset(i, sub_pt_input_shape,
+                                                        sub_pt_input_strides),
+                       output_field.data() + _get_offset(i, sub_pt_output_shape,
+                                                         sub_pt_output_strides),
                        1.0);  // additional multiplicative factor
       }
     } else {
       // For n-dimensional transforms we need to carry out n-transforms in the
       // respective directions
-      FourierField_t & tmp_field{
-          this->fetch_or_register_fourier_space_field("pocketfft_tmp", 1)};
+      FourierField_t & tmp_field{this->fourier_space_field("pocketfft_tmp", 1)};
       pocketfft::stride_t tmp_strides{
           tmp_field.get_strides(muGrid::IterUnit::Pixel, sizeof(Complex))};
 
       // Prepare axes array -> 1, 2, 3, ..., nb_dim-1
       pocketfft::shape_t axes(nb_dim - 1);
       auto n{nb_dim - 1};
-      std::generate(axes.begin(), axes.end(), [&n]{ return n--;});
+      std::generate(axes.begin(), axes.end(), [&n] { return n--; });
 
       // Loop over all components and sub-points and carry out transform
       for (Index_t i{0}; i < nb_dof; ++i) {
-        pocketfft::c2c(fourier_shape,
-                       pixel_input_strides,
-                       tmp_strides,
-                       axes,
+        pocketfft::c2c(fourier_shape, pixel_input_strides, tmp_strides, axes,
                        pocketfft::BACKWARD,  // backward transform
-                       input_field.data() +
-                           _get_offset(i, sub_pt_input_shape,
-                                       sub_pt_input_strides),
+                       input_field.data() + _get_offset(i, sub_pt_input_shape,
+                                                        sub_pt_input_strides),
                        tmp_field.data(),
                        1.0);  // additional multiplicative factor
-        pocketfft::c2r(real_shape,
-                       tmp_strides,
-                       pixel_output_strides,
+        pocketfft::c2r(real_shape, tmp_strides, pixel_output_strides,
                        0,  // see comment above on Hermitian index
                        pocketfft::BACKWARD,  // backward transform
                        tmp_field.data(),
-                       output_field.data() +
-                           _get_offset(i, sub_pt_output_shape,
-                                       sub_pt_output_strides),
+                       output_field.data() + _get_offset(i, sub_pt_output_shape,
+                                                         sub_pt_output_strides),
                        1.0);  // additional multiplicative factor
       }
     }

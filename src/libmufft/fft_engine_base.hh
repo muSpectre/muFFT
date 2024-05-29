@@ -184,18 +184,16 @@ namespace muFFT {
      * this engine. If the field does not exist, it is created using
      * `register_fourier_space_field`.
      */
-    FourierField_t &
-    fetch_or_register_fourier_space_field(const std::string & unique_name,
-                                          const Index_t & nb_dof_per_pixel);
+    FourierField_t & fourier_space_field(const std::string & unique_name,
+                                         const Index_t & nb_dof_per_pixel);
 
     /**
      * Fetches a Fourier-space field with the ideal strides and dimensions for
      * this engine. If the field does not exist, it is created using
      * `register_fourier_space_field`.
      */
-    FourierField_t &
-    fetch_or_register_fourier_space_field(const std::string & unique_name,
-                                          const Shape_t & shape);
+    FourierField_t & fourier_space_field(const std::string & unique_name,
+                                         const Shape_t & shape);
 
     /**
      * Create a Fourier-space field with the ideal strides and dimensions for
@@ -222,18 +220,16 @@ namespace muFFT {
      * this engine. If the field does not exist, it is created using
      * `register_fourier_space_field`.
      */
-    RealField_t &
-    fetch_or_register_halfcomplex_field(const std::string & unique_name,
-                                        const Index_t & nb_dof_per_pixel);
+    RealField_t & halfcomplex_field(const std::string & unique_name,
+                                    const Index_t & nb_dof_per_pixel);
 
     /**
      * Fetches a Fourier-space field with the ideal strides and dimensions for
      * this engine. If the field does not exist, it is created using
      * `register_fourier_space_field`.
      */
-    RealField_t &
-    fetch_or_register_halfcomplex_field(const std::string & unique_name,
-                                        const Shape_t & shape);
+    RealField_t & halfcomplex_field(const std::string & unique_name,
+                                    const Shape_t & shape);
 
     /**
      * Create a real-space field with the ideal strides and dimensions for this
@@ -260,18 +256,16 @@ namespace muFFT {
      * engine. If the field does not exist, it is created using
      * `register_real_space_field`.
      */
-    RealField_t &
-    fetch_or_register_real_space_field(const std::string & unique_name,
-                                       const Index_t & nb_dof_per_pixel);
+    RealField_t & real_space_field(const std::string & unique_name,
+                                   const Index_t & nb_dof_per_pixel);
 
     /**
      * Fetches a real-space field with the ideal strides and dimensions for this
      * engine. If the field does not exist, it is created using
      * `register_real_space_field`.
      */
-    RealField_t &
-    fetch_or_register_real_space_field(const std::string & unique_name,
-                                       const Shape_t & shape);
+    RealField_t & real_space_field(const std::string & unique_name,
+                                   const Shape_t & shape);
 
     //! return whether this engine is active
     virtual bool has_grid_pts() const { return true; }
