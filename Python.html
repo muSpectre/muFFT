@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Coding Convention" href="CodingConvention.html" /><link rel="prev" title="Getting Started" href="GettingStarted.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Python Bindings - µFFT 0.90.0-20-gd673e70 documentation</title>
+        <title>Python Bindings - µFFT 0.90.0-22-geeac8c5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.90.0-20-gd673e70
+      <a href="index.html"><div class="brand">µFFT 0.90.0-22-geeac8c5
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.90.0-20-gd673e70
+  <span class="sidebar-brand-text">µFFT 0.90.0-22-geeac8c5
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -264,7 +264,7 @@
 <h1>Python Bindings<a class="headerlink" href="#python-bindings" title="Link to this heading">¶</a></h1>
 <section id="fast-fourier-transform">
 <h2>Fast-Fourier Transform<a class="headerlink" href="#fast-fourier-transform" title="Link to this heading">¶</a></h2>
-<p>The core of <em>µ</em>FFT is the Fast-Fourier-Transform (FFT) abstraction layer,
+<p>The core of µFFT is the Fast-Fourier-Transform (FFT) abstraction layer,
 implemented as a class which is specialized for a given FFT engine. Currently
 supported are
 <a class="reference external" href="https://github.com/mreineck/pocketfft">pocketfft</a>,
@@ -274,24 +274,28 @@ and
 <a class="reference external" href="https://github.com/mpip/pfft">PFFT</a>.
 In our experience, <em>PFFT</em> has the best scaling properties for large-scale parallel
 FFTs because it uses pencil decomposition. Only <em>pocketfft</em> is enabled by default.</p>
+<p>The FFTs operate on <a class="reference external" href="https://github.com/muSpectre/muGrid">µGrid</a> fields. The
+engines creates fields with the right memory layout for the respective FFT engine.
+Please read the µGrid
+<a class="reference external" href="https://muspectre.github.io/muGrid/Python.html">documentation</a> before starting here.</p>
 </section>
 <section id="the-fft-class">
 <h2>The FFT class<a class="headerlink" href="#the-fft-class" title="Link to this heading">¶</a></h2>
 <p>Instantiating an FFT class is a simple as</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muFFT</span> <span class="kn">import</span> <span class="n">FFT</span>
-<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">([</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">],</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;pocketfft&#39;</span><span class="p">)</span>
+<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">fft</span><span class="o">=</span><span class="s1">&#39;pocketfft&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where <cite>[nx, ny, nz]</cite> is the shape of the grid and the optional <cite>engine</cite> is the FFT
 engine to use. The FFT class takes another optional <cite>comm</cite> parameter that can be
 either a <cite>mpi4py</cite> communicator or an native muFFT <cite>Communicator</cite>. If no communicator
-is provided, the FFT class will use the default communicator <cite>MPI_COMM_NULL</cite>.</p>
-</section>
-<section id="convenience-interface">
-<h2>Convenience interface<a class="headerlink" href="#convenience-interface" title="Link to this heading">¶</a></h2>
+is provided, the FFT class will use the default communicator <cite>MPI_COMM_SELF</cite>.</p>
 </section>
 <section id="grid-interface">
-<h2><em>µ</em>Grid interface<a class="headerlink" href="#grid-interface" title="Link to this heading">¶</a></h2>
+<h2>µGrid interface<a class="headerlink" href="#grid-interface" title="Link to this heading">¶</a></h2>
+<p>The FFT class provides methods to obtain real-valued real-space fields and complex-valued
+Fourier-space fields. The transform operates between these fields. An example of a simple
+transform is shown here:</p>
 </section>
 </section>
 
@@ -353,8 +357,7 @@ is provided, the FFT class will use the default communicator <cite>MPI_COMM_NULL
 <li><a class="reference internal" href="#">Python Bindings</a><ul>
 <li><a class="reference internal" href="#fast-fourier-transform">Fast-Fourier Transform</a></li>
 <li><a class="reference internal" href="#the-fft-class">The FFT class</a></li>
-<li><a class="reference internal" href="#convenience-interface">Convenience interface</a></li>
-<li><a class="reference internal" href="#grid-interface"><em>µ</em>Grid interface</a></li>
+<li><a class="reference internal" href="#grid-interface">µGrid interface</a></li>
 </ul>
 </li>
 </ul>
@@ -366,7 +369,7 @@ is provided, the FFT class will use the default communicator <cite>MPI_COMM_NULL
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=23bee014"></script>
+</div><script src="_static/documentation_options.js?v=5ea0ae25"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>

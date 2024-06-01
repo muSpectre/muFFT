@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Python Bindings" href="Python.html" /><link rel="prev" title="Summary" href="Summary.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Getting Started - µFFT 0.90.0-20-gd673e70 documentation</title>
+        <title>Getting Started - µFFT 0.90.0-22-geeac8c5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.90.0-20-gd673e70
+      <a href="index.html"><div class="brand">µFFT 0.90.0-22-geeac8c5
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.90.0-20-gd673e70
+  <span class="sidebar-brand-text">µFFT 0.90.0-22-geeac8c5
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -262,8 +262,27 @@
         <article role="main" id="furo-main-content">
           <section id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h1>
-<section id="obtaining-fft">
-<h2>Obtaining <em>µ</em>FFT<a class="headerlink" href="#obtaining-fft" title="Link to this heading">¶</a></h2>
+<section id="python-quick-start">
+<h2>Python quick start<a class="headerlink" href="#python-quick-start" title="Link to this heading">¶</a></h2>
+<p>To install µFFT’s Python bindings, run</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>muFFT
+</pre></div>
+</div>
+<p>Note that on most platforms this will install a binary wheel that was
+compiled with a minimal configuration. To compile for your specific platform
+use</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-v<span class="w"> </span>--no-binary<span class="w"> </span>muFFT<span class="w"> </span>muFFT
+</pre></div>
+</div>
+<p>which will compile the code. µFFT will autodetect
+<a class="reference external" href="https://www.mpi-forum.org/">MPI</a>,
+<a class="reference external" href="https://www.fftw.org/">FFTW</a>,
+<a class="reference external" href="https://www.fftw.org/fftw3_doc/FFTW-MPI-Installation.html">MPIFFTW</a>
+and
+<a class="reference external" href="https://github.com/mpip/pfft">PFFT</a>.</p>
+</section>
+<section id="obtaining-fft-s-source-code">
+<h2>Obtaining <em>µ</em>FFT’s source code<a class="headerlink" href="#obtaining-fft-s-source-code" title="Link to this heading">¶</a></h2>
 <p><em>µ</em>FFT is hosted on a git repository on <a class="reference external" href="https://github.com/">GitHub</a>. To clone it, run</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/muSpectre/muFFT.git
 </pre></div>
@@ -389,7 +408,8 @@ be documented and have unit tests. Please submit merge requests for review.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#obtaining-fft">Obtaining <em>µ</em>FFT</a></li>
+<li><a class="reference internal" href="#python-quick-start">Python quick start</a></li>
+<li><a class="reference internal" href="#obtaining-fft-s-source-code">Obtaining <em>µ</em>FFT’s source code</a></li>
 <li><a class="reference internal" href="#building-fft">Building <em>µ</em>FFT</a></li>
 <li><a class="reference internal" href="#getting-help-and-reporting-bugs">Getting help and reporting bugs</a></li>
 <li><a class="reference internal" href="#contribute">Contribute</a></li>
@@ -404,7 +424,7 @@ be documented and have unit tests. Please submit merge requests for review.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=23bee014"></script>
+</div><script src="_static/documentation_options.js?v=5ea0ae25"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>

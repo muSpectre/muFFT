@@ -1,8 +1,32 @@
 Getting Started
 ~~~~~~~~~~~~~~~
 
-Obtaining *µ*\FFT
-*****************
+Python quick start
+******************
+
+To install µFFT's Python bindings, run
+
+.. code-block:: sh
+
+    $ pip install muFFT
+
+Note that on most platforms this will install a binary wheel that was
+compiled with a minimal configuration. To compile for your specific platform
+use
+
+.. code-block:: sh
+
+    $ pip install -v --no-binary muFFT muFFT
+
+which will compile the code. µFFT will autodetect
+`MPI <https://www.mpi-forum.org/>`_,
+`FFTW <https://www.fftw.org/>`_,
+`MPIFFTW <https://www.fftw.org/fftw3_doc/FFTW-MPI-Installation.html>`_
+and
+`PFFT <https://github.com/mpip/pfft>`_.
+
+Obtaining *µ*\FFT's source code
+*******************************
 
 *µ*\FFT is hosted on a git repository on `GitHub <https://github.com/>`_. To clone it, run
 
@@ -20,6 +44,7 @@ The latter option requires you to have a user account on `GitHub`_.
 
 Building *µ*\FFT
 ****************
+
 *µ*\FFT uses `Meson <https://mesonbuild.com/>`_ (0.42.0 or higher) as its build system.
 
 The current (and possibly incomplete list of) dependencies are
