@@ -42,5 +42,5 @@ The FFT class provides methods to obtain real-valued real-space fields and compl
 Fourier-space fields. The transform operates between these fields. An example of a simple
 transform is shown here:
 
-
-
+.. literalinclude:: ../../examples/transform.py
+    :language: python
