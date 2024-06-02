@@ -90,7 +90,7 @@ def _find_fft_engines():
 fft_engines = _find_fft_engines()
 
 
-def mangle_engine_identifier(fft, communicator=None):
+def mangle_engine_identifier(engine, communicator=None):
     """
     Return normalized engine identifier. This will turn 'serial' and 'mpi'
     engine identifiers into the respective best-performing engine compiled
@@ -98,7 +98,7 @@ def mangle_engine_identifier(fft, communicator=None):
 
     Parameters
     ----------
-    fft : string
+    engine : string
         FFT engine to use. Use 'mpi' if you want a parallel engine and 'serial'
         if you need a serial engine. It is also possible to specifically
         choose 'pocketfft', 'fftw', 'fftwmpi' or 'pfft'.
@@ -108,16 +108,16 @@ def mangle_engine_identifier(fft, communicator=None):
         Default: None
     """
     communicator = Communicator(communicator)
-    if fft == 'mpi' and communicator.size == 1:
-        fft = 'serial'
-    if fft == 'serial':
+    if engine == 'mpi' and communicator.size == 1:
+        engine = 'serial'
+    if engine == 'serial':
         if 'fftw' in fft_engines:
             # Use FFTW for serial calculations if available since it is more
             # optimized than PocketFFT.
             return 'fftw', communicator
         else:
             return 'pocketfft', communicator
-    elif fft == 'mpi':
+    elif engine == 'mpi':
         if 'fftwmpi' in fft_engines:
             return 'fftwmpi', communicator
         elif 'pfft' in fft_engines:
@@ -127,16 +127,16 @@ def mangle_engine_identifier(fft, communicator=None):
         else:
             raise RuntimeError('No MPI parallel FFT engine was compiled into the code.')
 
-    return fft, communicator
+    return engine, communicator
 
 
-def get_engine_factory(fft, communicator=None):
+def get_engine_factory(engine, communicator=None):
     """
     Get engine factory given factory string identifier.
 
     Parameters
     ----------
-    fft : string
+    engine : string
         FFT engine to use. Use 'mpi' if you want a parallel engine and 'serial'
         if you need a serial engine. It is also possible to specifically
         choose 'pocketfft', 'fftw', 'fftwmpi' or 'pfft'.
@@ -145,11 +145,11 @@ def get_engine_factory(fft, communicator=None):
         the 'pocketfft' and 'fftw' engines do not support parallel execution.
         Default: None
     """
-    original_identifier = fft
-    fft, communicator = mangle_engine_identifier(fft, communicator)
+    original_identifier = engine
+    engine, communicator = mangle_engine_identifier(engine, communicator)
 
     try:
-        factory, is_transposed, is_parallel = fft_engines[fft]
+        factory, is_transposed, is_parallel = fft_engines[engine]
     except KeyError:
         factory = None
 
@@ -158,12 +158,12 @@ def get_engine_factory(fft, communicator=None):
             "FFT engine with identifier '{}' (internally mangled to '{}') "
             "does not exist. If you believe this engine should exist, check "
             "that the code has been compiled with support for it."
-            .format(original_identifier, fft))
+            .format(original_identifier, engine))
 
     return factory, communicator
 
 
-def FFT(nb_grid_pts, fft='serial', communicator=None, **kwargs):
+def FFT(nb_grid_pts, engine='serial', communicator=None, **kwargs):
     """
     The FFT class handles forward and inverse transforms and instantiates
     the correct engine object to carry out the transform.
@@ -176,7 +176,7 @@ def FFT(nb_grid_pts, fft='serial', communicator=None, **kwargs):
     ----------
     nb_grid_pts : list
         Grid nb_grid_pts in the Cartesian directions.
-    fft : string
+    engine : string
         FFT engine to use. Use 'mpi' if you want a parallel engine and 'serial'
         if you need a serial engine. It is also possible to specifically
         choose 'pocketfft', 'fftw', 'fftwmpi' or 'pfft'.
@@ -186,5 +186,5 @@ def FFT(nb_grid_pts, fft='serial', communicator=None, **kwargs):
         the 'pocketfft' and 'fftw' engines do not support parallel execution.
         Default: None
     """
-    factory, communicator = get_engine_factory(fft, communicator)
+    factory, communicator = get_engine_factory(engine, communicator)
     return factory(nb_grid_pts, communicator, **kwargs)

@@ -3,7 +3,7 @@ from muFFT import FFT
 
 # Instantiate a FFT object with the PocketFFT engine
 nb_grid_pts = (32, 32)
-fft = FFT(nb_grid_pts, fft='pocketfft')
+fft = FFT(nb_grid_pts, engine='pocketfft')
 
 # Obtain a real and a Fourie-space field
 rfield = fft.real_space_field('rfield')

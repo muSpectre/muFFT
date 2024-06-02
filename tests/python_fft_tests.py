@@ -76,7 +76,7 @@ class FFT_Check(unittest.TestCase):
                 s = MPI.COMM_WORLD.Get_size()
                 try:
                     nb_dof = 6
-                    engine = muFFT.FFT([6 * s, 4 * s], fft=engine_str,
+                    engine = muFFT.FFT([6 * s, 4 * s], engine=engine_str,
                                        communicator=MPI.COMM_WORLD)
                     engine.create_plan(nb_dof)
                 except muFFT.UnknownFFTEngineError:
@@ -88,7 +88,7 @@ class FFT_Check(unittest.TestCase):
             nb_dof = 6
             try:
                 engine = muFFT.FFT([6 * s, 4 * s],
-                                   fft=engine_str,
+                                   engine=engine_str,
                                    communicator=self.communicator)
                 engine.create_plan(nb_dof)
             except muFFT.UnknownFFTEngineError:
@@ -110,7 +110,7 @@ class FFT_Check(unittest.TestCase):
     # because it initializes the pixel_indices array, which is large.
     # def test_large_transform(self):
     #     for engine_str in self.engines:
-    #         muFFT.FFT([65536, 65536], fft=engine_str,
+    #         muFFT.FFT([65536, 65536], engine=engine_str,
     #                   communicator=self.communicator)
 
     def test_forward_transform_numpy_interface(self):
@@ -120,7 +120,7 @@ class FFT_Check(unittest.TestCase):
                 nb_grid_pts = s * np.array(nb_grid_pts)
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -161,7 +161,7 @@ class FFT_Check(unittest.TestCase):
 
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -209,7 +209,7 @@ class FFT_Check(unittest.TestCase):
 
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -259,7 +259,7 @@ class FFT_Check(unittest.TestCase):
 
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -312,7 +312,7 @@ class FFT_Check(unittest.TestCase):
 
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -345,7 +345,7 @@ class FFT_Check(unittest.TestCase):
 
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -396,7 +396,7 @@ class FFT_Check(unittest.TestCase):
 
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -433,7 +433,7 @@ class FFT_Check(unittest.TestCase):
 
             # Only serial engines support 1d transforms
             try:
-                engine = muFFT.FFT(nb_grid_pts, fft=fft)
+                engine = muFFT.FFT(nb_grid_pts, engine=fft)
             except muFFT.UnknownFFTEngineError:
                 # This FFT engine has not been compiled into the code. Skip
                 # test.
@@ -467,7 +467,7 @@ class FFT_Check(unittest.TestCase):
 
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
-                                       fft=engine_str,
+                                       engine=engine_str,
                                        communicator=self.communicator)
                 except muFFT.UnknownFFTEngineError:
                     # This FFT engine has not been compiled into the code. Skip
@@ -486,7 +486,7 @@ class FFT_Check(unittest.TestCase):
         nb_grid_pts = [7, 4]
         nx, ny = nb_grid_pts
         nb_dof = 1
-        engine = muFFT.FFT(nb_grid_pts, fft='serial')
+        engine = muFFT.FFT(nb_grid_pts, engine='serial')
         engine.create_plan(nb_dof)
         qx, qy = engine.fftfreq
 
@@ -514,7 +514,7 @@ class FFT_Check(unittest.TestCase):
         # right after the call to fft. However, since fft returns a pointer
         # to an *internal* buffer of the object, garbage collection should
         # be deferred until `tested` is destroyed.
-        engine = muFFT.FFT(res, fft="serial")
+        engine = muFFT.FFT(res, engine="serial")
         engine.create_plan(1)
         f_data = engine.register_fourier_space_field("fourier work space", 1)
         self.assertFalse(f_data.array().flags.owndata)
@@ -531,7 +531,7 @@ class FFT_Check(unittest.TestCase):
     def test_strides(self):
         for engine_str in self.engines:
             try:
-                engine = muFFT.FFT([3, 5, 7], fft=engine_str,
+                engine = muFFT.FFT([3, 5, 7], engine=engine_str,
                                    communicator=self.communicator)
                 engine.create_plan(1)
             except muFFT.UnknownFFTEngineError:
@@ -565,7 +565,7 @@ class FFT_Check(unittest.TestCase):
         for fft in ['fftw']:
             try:
                 engine = muFFT.FFT([3, 2],
-                                   fft=fft, allow_temporary_buffer=False)
+                                   engine=fft, allow_temporary_buffer=False)
             except muFFT.UnknownFFTEngineError:
                 # This FFT engine has not been compiled into the code. Skip
                 # test.
@@ -584,7 +584,7 @@ class FFT_Check(unittest.TestCase):
 
         try:
             engine = muFFT.FFT(nb_grid_pts,
-                               fft='fftwmpi',
+                               engine='fftwmpi',
                                communicator=self.communicator)
             engine.create_plan(1)
         except muFFT.UnknownFFTEngineError:
@@ -636,7 +636,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
     def test_rffth2c_2d_sin(self):
 
         try:
-            engine = muFFT.FFT([5, 5], fft="fftw",
+            engine = muFFT.FFT([5, 5], engine="fftw",
                                allow_temporary_buffer=False,
                                allow_destroy_input=True)
         except muFFT.UnkownFFTEngineError:
@@ -681,7 +681,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
             nx, ny = nb_grid_pts
 
             try:
-                engine = muFFT.FFT(nb_grid_pts, fft="fftw",
+                engine = muFFT.FFT(nb_grid_pts, engine="fftw",
                                    allow_temporary_buffer=False,
                                    allow_destroy_input=True)
             except muFFT.UnkownFFTEngineError:
@@ -708,7 +708,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
         nx, ny = nb_grid_pts
 
         try:
-            engine = muFFT.FFT(nb_grid_pts, fft="fftw")
+            engine = muFFT.FFT(nb_grid_pts, engine="fftw")
         except muFFT.UnkownFFTEngineError:
             return
         engine.create_plan(1)
@@ -734,7 +734,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
             nb_grid_pts = s * np.array(nb_grid_pts)
             try:
                 engine = muFFT.FFT(nb_grid_pts,
-                                   fft="fftw",
+                                   engine="fftw",
                                    communicator=self.communicator)
                 engine.create_plan(np.prod(dims))
             except muFFT.UnknownFFTEngineError:
@@ -775,7 +775,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
         for nb_grid_pts in [(5,), (4,)]:
             nx, = nb_grid_pts
 
-            engine = muFFT.FFT(nb_grid_pts, fft="fftw",
+            engine = muFFT.FFT(nb_grid_pts, engine="fftw",
                                allow_temporary_buffer=False,
                                allow_destroy_input=True)
 
@@ -797,7 +797,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
     def test_rffth2c_3d_roundtrip(self):
 
         for nb_grid_pts in [(5, 4, 5), (4, 5, 4), (4, 4, 5), (5, 5, 5), (4, 4, 4)]:
-            engine = muFFT.FFT(nb_grid_pts, fft="fftw",
+            engine = muFFT.FFT(nb_grid_pts, engine="fftw",
                                allow_temporary_buffer=False,
                                allow_destroy_input=True)
 
@@ -820,7 +820,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
     def test_r2hc_incompatible_engines_raise(self):
         for engine in self.engines:
             try:
-                engine = muFFT.FFT([3, 5], fft=engine,
+                engine = muFFT.FFT([3, 5], engine=engine,
                                    allow_temporary_buffer=False,
                                    allow_destroy_input=True)
             except muFFT.UnknownFFTEngineError:  # One of the engines is not installed, skip it

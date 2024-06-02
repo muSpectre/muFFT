@@ -57,7 +57,7 @@ try:
                     self.communicator = MPI.COMM_WORLD
                 else:
                     self.communicator = None
-                self.fft = muFFT.FFT(self.nb_grid_pts, fft='mpi',
+                self.fft = muFFT.FFT(self.nb_grid_pts, engine='mpi',
                                      communicator=self.communicator)
 
             def test_write_read_domain(self):
