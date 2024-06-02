@@ -19,11 +19,8 @@ mufft_dependencies = []
 
 fftw3 = dependency('fftw3', required: false)
 if fftw3.found()
-    mu_with_fftw3 = true
     add_project_arguments('-DWITH_FFTW', language : ['c', 'cpp'])
     mufft_dependencies += [fftw3]
-else
-    mu_with_fftw3 = false
 endif
 
 # Those are requirements on *some* systems, hence optional
@@ -42,32 +39,28 @@ if mpi.found()
     fftw3mpi = cc.find_library(
         'fftw3_mpi',
         dirs: ['/usr/lib', '/usr/lib/x86_64-linux-gnu'],
+        has_headers: ['fftw3-mpi.h'],
         required: false)
-    if fftw3mpi.found() and cc.has_header('fftw3-mpi.h')
-        mu_with_fftw3mpi = true
+    if fftw3mpi.found()
         add_project_arguments('-DWITH_FFTWMPI', language : ['c', 'cpp'])
         mufft_dependencies += [fftw3mpi]
-    else
-        mu_with_fftw3mpi = false
     endif
-    pfft = cc.find_library('pfft', required: false)
-    if pfft.found() and cc.has_header('pfft.h')
-        mu_with_pfft = true
+    pfft = cc.find_library(
+        'pfft',
+        dirs: ['/usr/lib', '/usr/lib/x86_64-linux-gnu'],
+        has_headers: ['pfft.h'],
+        required: false)
+    if pfft.found()
         add_project_arguments('-DWITH_PFFT', language : ['c', 'cpp'])
         mufft_dependencies += [pfft]
-    else
-        mu_with_pfft = false
     endif
-    if mu_with_fftw3mpi or mu_with_pfft
+    if fftw3mpi.found() or pfft.found()
         mu_with_mpi = true  # We found MPI and a parallel FFT library
         mpi_processes = ['1', '2']  # MPI processes to use for parallel tests
     endif
 
     add_project_arguments('-DWITH_MPI', language : ['c', 'cpp'])
     mufft_dependencies += [mpi]
-else
-    mu_with_fftw3mpi = false
-    mu_with_pfft = false
 endif
 
 eigen3 = dependency('eigen3', required: true)
@@ -78,9 +71,9 @@ message('  -------------------')
 message('  muFFT configuration')
 message('    MPI      : ' + (mpi.found() ? '*** YES ***' : 'no'))
 message('    pocketfft: *** YES ***')
-message('    FFTW3    : ' + (mu_with_fftw3 ? '*** YES ***' : 'no'))
-message('    FFTW3 MPI: ' + (mu_with_fftw3mpi ? '*** YES ***' : 'no'))
-message('    PFFT     : ' + (mu_with_pfft ? '*** YES ***' : 'no'))
+message('    FFTW3    : ' + (fftw3.found() ? '*** YES ***' : 'no'))
+message('    FFTW3 MPI: ' + (fftw3mpi.found() ? '*** YES ***' : 'no'))
+message('    PFFT     : ' + (pfft.found() ? '*** YES ***' : 'no'))
 message('  -------------------')
 
 subdir('src')
