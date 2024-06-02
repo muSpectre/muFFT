@@ -23,7 +23,7 @@ Please read the µGrid
 The FFT class
 *************
 
-Instantiating an FFT class is a simple as
+Instantiating an FFT object is a simple as
 
 .. code-block:: python
 
@@ -60,4 +60,39 @@ The reason for this is that FFT engines typically have strict requirements on th
 layout. The µGrid interface allows to create fields with the right memory layout directly,
 avoiding copies.
 
+Temporary copies can be disabled entirely by setting the `allow_temporary_buffer` option
+to `false`. The above example then still runs for the `pocketfft` engine, but will fail
+with the error::
+
+    RuntimeError: Incompatible memory layout for the real-space field and no temporary
+    copies are allowed.
+
+for `fftw` which requires a padded memory layout.
+
+Normalization
+*************
+
+All µFFT transforms are not normalized. A round-trip forward-inverse transform will pick
+up a global factor, that can be compensated by multiplying with the value of the
+`normlization` property of the FFT object as in the examples above.
+
+The reason for this is that there is a choice of putting the factor into the forward or
+inverse transform, or putting the square-root of the factor into both. µFFT leaves the
+choice of normalization to the user.
+
+More information can be found for example in the
+`section on normalization <https://numpy.org/doc/stable/reference/routines.fft.html#normalization>`_
+of the `numpy` documentation.
+
+Wavevectors
+***********
+
+Wavevectors are obtained via the `fftfreq` property of the FFT object. The result is
+identical to the
+`numpy.fft.fftfreq <https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html>`_
+function. The following example shows how to obtain a gradient field using a Fourier derivative
+that uses the `fftfreq` property:
+
+.. literalinclude:: ../../examples/gradient.py
+    :language: python
 
