@@ -5,14 +5,18 @@
 # Assumes that MPI is present
 
 # Installation prefix
-PREFIX=${HOME}/.local
+if [ -z ${PREFIX} ]; then
+    PREFIX=${HOME}/.local
+fi
 
 # Versions to install
 PNETCDF_VERSION=1.13.0
 FFTW_VERSION=3.3.10
 
 # Download and compile in /tmp
-WORKDIR=/tmp
+if [ -z ${WORKDIR} ]; then
+    WORKDIR=/tmp
+fi
 
 #
 # Install parallel version of the NetCDF library from the sources.
@@ -43,4 +47,3 @@ cd ${WORKDIR}/pfft
 CFLAGS="-O3" ./configure --disable-shared --enable-static --with-pic --disable-fortran --prefix=${PREFIX}
 make -j 4
 make install
-

@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 45
 
+    env:
+      WORKDIR: ${{ github.workspace }}/workdir
+      PREFIX: ${{ github.workspace }}/install
+
     strategy:
       matrix:
         mpi: ['no', 'yes']
@@ -57,7 +61,15 @@ jobs:
               libopenmpi-dev \
               libpnetcdf-dev \
               libfftw3-dev \
-              libfftw3-mpi-dev
+              libfftw3-mpi-dev \
+              autoconf automake libtool
+            # Install pfft
+            git clone https://github.com/mpip/pfft.git ${WORKDIR}/pfft
+            cd ${WORKDIR}/pfft
+            ./bootstrap.sh
+            CFLAGS="-O3" ./configure --disable-shared --enable-static --with-pic --disable-fortran --prefix=${PREFIX}
+            make -j 4
+            make install
             # Install mpi4py
             echo "Installing mpi4py${{ matrix.mpi4py-version }}"
             CC=mpicc python3 -m pip install -v \
@@ -80,6 +92,8 @@ jobs:
             export CXX=clang++
           fi
           source venv/bin/activate
+          LD_LIBRARY_PATH=${PREFIX}/lib:${LD_LIBRARY_PATH}
+          CPATH=${PREFIX}/include:${CPATH}
           meson setup builddir
           cd builddir
           meson compile
