@@ -418,20 +418,20 @@ namespace muFFT {
     //! nb_grid_pts of the full domain of the cell
     const DynCcoord_t nb_domain_grid_pts;
 
-    //!< nb_grid_pts of the process-local (subdomain) portion of the cell
+    //! nb_grid_pts of the process-local (subdomain) portion of the cell
     DynCcoord_t nb_subdomain_grid_pts;
-    //!< location of the process-local (subdomain) portion of the cell
+    //! location of the process-local (subdomain) portion of the cell
     DynCcoord_t subdomain_locations;
-    //!< data layout of the porcess-local portion of the cell
+    //! data layout of the porcess-local portion of the cell
     DynCcoord_t subdomain_strides;
-    //!< nb_grid_pts of the process-local (subdomain) portion of the Fourier
-    //!< transformed data
+    //! nb_grid_pts of the process-local (subdomain) portion of the Fourier
+    //! transformed data
     DynCcoord_t nb_fourier_grid_pts;
-    //!< location of the process-local (subdomain) portion of the Fourier
-    //!< transformed data
+    //! location of the process-local (subdomain) portion of the Fourier
+    //! transformed data
     DynCcoord_t fourier_locations;
-    //!< data layout of the process-local (subdomain) portion of the Fourier
-    //!< transformed data
+    //! data layout of the process-local (subdomain) portion of the Fourier
+    //! transformed data
     DynCcoord_t fourier_strides;
 
     //! allow the FFTEngine to create temporary copies (if it cannot work with
@@ -444,10 +444,10 @@ namespace muFFT {
     //! the underlying FFT engine requires a fixed memory layout
     bool engine_has_rigid_memory_layout;
 
-    //!< normalisation coefficient of fourier transform
+    //! normalisation coefficient of fourier transform
     const Real norm_factor;
 
-    //!< FFT planner flags
+    //! FFT planner flags
     const FFT_PlanFlags plan_flags;
 
     //! number of degrees of freedom per pixel for which this field collection

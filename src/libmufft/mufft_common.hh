@@ -71,41 +71,86 @@ namespace muFFT {
   using muGrid::IterUnit;
 
   /**
-   * Planner flags for FFT (follows FFTW, hopefully this choice will
-   * be compatible with alternative FFT implementations)
-   * @enum muFFT::FFT_PlanFlags
+   * @enum FFT_PlanFlags
+   * @brief Planner flags for FFT.
+   * @details This enumeration follows the FFTW library's convention for
+   * planning flags. The hope is that this choice will be compatible with
+   * alternative FFT implementations.
    */
   enum class FFT_PlanFlags {
-    estimate,  //!< cheapest plan for slowest execution
-    measure,   //!< more expensive plan for fast execution
-    patient    //!< very expensive plan for fastest execution
+    /**
+     * @brief Represents the cheapest plan for the slowest execution.
+     * @details This flag is used when the priority is to minimize the planning
+     * cost, even if it results in slower FFT execution.
+     */
+    estimate,
+
+    /**
+     * @brief Represents a more expensive plan for faster execution.
+     * @details This flag is used when the priority is to balance the planning
+     * cost and FFT execution speed.
+     */
+    measure,
+
+    /**
+     * @brief Represents the most expensive plan for the fastest execution.
+     * @details This flag is used when the priority is to maximize the FFT
+     * execution speed, even if it results in higher planning cost.
+     */
+    patient
   };
 
   /**
-   * used to tag all fields (libµgrid allows for pixel-sub-divisions, which
-   * libµFFt does not use.
+   * @typedef PixelTag
+   * @brief A type alias for tagging all fields.
+   * @details This type alias is used to tag all fields. The library libµgrid
+   * allows for pixel-sub-divisions, which libµFFt does not use.
    */
   using muGrid::PixelTag;
 
   /**
-   * used by the lazy-evaluated FFTExpression class ;
+   * @namespace version
+   * @brief A namespace that contains functions related to version information.
    */
-  enum class FFTDirection { Forward, Inverse };
-
   namespace version {
 
     /**
-     * returns a formatted text that can be printed to stdout or to output
-     * files. It contains the git commit hash and repository url used to compile
-     * µSpectre and whether the current state was dirty or not.
+     * @brief Returns a formatted text that can be printed to stdout or to
+     * output files.
+     * @details This function returns a formatted text that contains the git
+     * commit hash and repository url used to compile µFFT and whether the
+     * current state was dirty or not.
+     * @return A string that contains the formatted text.
      */
     std::string info();
+
+    /**
+     * @brief Returns the git commit hash.
+     * @details This function returns the git commit hash used to compile
+     * µFFT.
+     * @return A constant character pointer that points to the git commit hash.
+     */
     const char * hash();
+
+    /**
+     * @brief Returns the version string.
+     * @details This function returns the formatted string of the version of
+     * µFFT.
+     * @return A constant character pointer that points to the repository
+     * description.
+     */
     const char * description();
+
+    /**
+     * @brief Checks if the current state was dirty or not.
+     * @details This function checks if the current state of the git repository
+     * was dirty or not when compiling µFFT.
+     * @return A boolean value that indicates whether the current state was
+     * dirty or not.
+     */
     bool is_dirty();
 
   }  // namespace version
-
 }  // namespace muFFT
 
 #endif  // SRC_LIBMUFFT_MUFFT_COMMON_HH_
