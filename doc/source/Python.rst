@@ -84,8 +84,8 @@ More information can be found for example in the
 `section on normalization <https://numpy.org/doc/stable/reference/routines.fft.html#normalization>`_
 of the `numpy` documentation.
 
-Wavevectors
-***********
+Coordinates and wavevectors
+***************************
 
 Wavevectors are obtained via the `fftfreq` property of the FFT object. The result is
 identical to the
@@ -95,4 +95,13 @@ that uses the `fftfreq` property:
 
 .. literalinclude:: ../../examples/gradient.py
     :language: python
+
+The result of `fftfreq` can be regarded as a fractional Fourier-space coordinate.
+There is also a convenience property `coords` that yields the fractional coordinates in
+real-space. These properties are useful in particular when running MPI-parallel with
+domain decomposition. Both properties then return just the coordinates of the local domain.
+
+Parallelization
+***************
+
 
