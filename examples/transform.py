@@ -16,4 +16,8 @@ rfield.p = np.random.rand(*nb_grid_pts)
 fft.fft(rfield, ffield)
 
 # Perform an inverse FFT
-fft.ifft(ffield, rfield)
+r2field = fft.real_space_field('second rfield')
+fft.ifft(ffield, r2field)
+
+# Check that the original and the reconstructed field are the same
+np.testing.assert_allclose(rfield.p, r2field.p * fft.normalisation)

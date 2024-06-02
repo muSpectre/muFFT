@@ -9,15 +9,15 @@ mufft_sources = [
     'pocketfft_engine.cc'
 ]
 
-if mu_with_fftw3
+if fftw3.found()
     mufft_sources += ['fftw_engine.cc']
 endif
 
-if mu_with_fftw3mpi
+if fftw3mpi.found()
     mufft_sources += ['fftwmpi_engine.cc']
 endif
 
-if mu_with_pfft
+if pfft.found()
     mufft_sources += ['pfft_engine.cc']
 endif
 

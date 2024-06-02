@@ -17,6 +17,7 @@ envdata.append('TESTS_BUILDDIR', meson.current_build_dir())
 #
 
 examples = [
+    'convenience_interface.py',
     'transform.py'
 ]
 

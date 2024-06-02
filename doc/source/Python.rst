@@ -44,3 +44,20 @@ transform is shown here:
 
 .. literalinclude:: ../../examples/transform.py
     :language: python
+
+Convenience numpy interface
+***************************
+
+The FFT class also provides a convenience interface that allows usage of `numpy` arrays
+directly. Internally, the `numpy` arrays are converted to µGrid fields. The following
+shows an example of the convenience interface:
+
+.. literalinclude:: ../../examples/convenience_interface.py
+    :language: python
+
+The downside of the convenience interface is that temporary copies are typically created.
+The reason for this is that FFT engines typically have strict requirements on the memory
+layout. The µGrid interface allows to create fields with the right memory layout directly,
+avoiding copies.
+
+
