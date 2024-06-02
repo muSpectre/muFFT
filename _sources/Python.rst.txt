@@ -28,7 +28,7 @@ Instantiating an FFT class is a simple as
 .. code-block:: python
 
     from muFFT import FFT
-    fft = FFT((nx, ny, nz), fft='pocketfft')
+    fft = FFT((nx, ny, nz), engine='pocketfft')
 
 where `[nx, ny, nz]` is the shape of the grid and the optional `engine` is the FFT
 engine to use. The FFT class takes another optional `comm` parameter that can be

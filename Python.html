@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Coding Convention" href="CodingConvention.html" /><link rel="prev" title="Getting Started" href="GettingStarted.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Python Bindings - µFFT 0.90.0-23-gdd2013d documentation</title>
+        <title>Python Bindings - µFFT 0.90.0-26-g79652be documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.90.0-23-gdd2013d
+      <a href="index.html"><div class="brand">µFFT 0.90.0-26-g79652be
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.90.0-23-gdd2013d
+  <span class="sidebar-brand-text">µFFT 0.90.0-26-g79652be
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -283,7 +283,7 @@ Please read the µGrid
 <h2>The FFT class<a class="headerlink" href="#the-fft-class" title="Link to this heading">¶</a></h2>
 <p>Instantiating an FFT class is a simple as</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muFFT</span> <span class="kn">import</span> <span class="n">FFT</span>
-<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">fft</span><span class="o">=</span><span class="s1">&#39;pocketfft&#39;</span><span class="p">)</span>
+<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;pocketfft&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where <cite>[nx, ny, nz]</cite> is the shape of the grid and the optional <cite>engine</cite> is the FFT
@@ -301,7 +301,7 @@ transform is shown here:</p>
 
 <span class="c1"># Instantiate a FFT object with the PocketFFT engine</span>
 <span class="n">nb_grid_pts</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
-<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">,</span> <span class="n">fft</span><span class="o">=</span><span class="s1">&#39;pocketfft&#39;</span><span class="p">)</span>
+<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;pocketfft&#39;</span><span class="p">)</span>
 
 <span class="c1"># Obtain a real and a Fourie-space field</span>
 <span class="n">rfield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;rfield&#39;</span><span class="p">)</span>
@@ -390,7 +390,7 @@ transform is shown here:</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=dbfdb83c"></script>
+</div><script src="_static/documentation_options.js?v=e24770bb"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
