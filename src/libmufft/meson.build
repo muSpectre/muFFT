@@ -13,17 +13,19 @@ if fftw3.found()
     mufft_sources += ['fftw_engine.cc']
 endif
 
-if fftw3mpi.found()
-    mufft_sources += ['fftwmpi_engine.cc']
-endif
+if mpi.found()
+    if fftw3mpi.found()
+        mufft_sources += ['fftwmpi_engine.cc']
+    endif
 
-if pfft.found()
-    mufft_sources += ['pfft_engine.cc']
+    if pfft.found()
+        mufft_sources += ['pfft_engine.cc']
+    endif
 endif
 
 libmufft = shared_library(
     'muFFT',
     mufft_sources,
-    dependencies: [mufft_dependencies, pocketfft],
-    install: true  # needed, otherwise it is not copied to wheel
+    dependencies : [mufft_dependencies, pocketfft],
+    install : true  # needed, otherwise it is not copied to wheel
 )
