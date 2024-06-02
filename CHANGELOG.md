@@ -1,8 +1,19 @@
 Change log for µFFT
 ===================
 
-0.90.0 (not yet released)
--------------------------
+0.91.0 (02June2024)
+-------------------
+
+- ENH: Convenience filed accessor function `real_space_field` and
+  `fourier_space_field`, etc. that create fields if they don't exist but
+  return them if they do
+- ENH: Added `coords` convenience property which returns domain local
+  fractional real space coordinates (like `fftfreq` for the Fourier space)G
+- DOC: Documentation of Python bindings
+- DOC: Python examples
+
+0.90.0 (23May2024)
+------------------
 
 - Split code into three repositories: muGrid, muFFT and
 
