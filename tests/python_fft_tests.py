@@ -488,6 +488,13 @@ class FFT_Check(unittest.TestCase):
         nb_dof = 1
         engine = muFFT.FFT(nb_grid_pts, engine='serial')
         engine.create_plan(nb_dof)
+
+        x, y = engine.coords
+        xref, yref = np.mgrid[0:nx, 0:ny]
+
+        np.testing.assert_allclose(x, xref / nx)
+        np.testing.assert_allclose(y, yref / ny)
+
         qx, qy = engine.fftfreq
 
         qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)

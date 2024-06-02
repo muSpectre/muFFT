@@ -313,6 +313,30 @@ void add_engine_helper(py::module & mod, const std::string & name) {
       .def_property_readonly("spatial_dim", &Engine::get_spatial_dim)
       .def("has_plan_for", &Engine::has_plan_for, "nb_dof_per_pixel"_a)
       .def_property_readonly(
+          "coords",
+          [](const Engine & eng) {
+            std::vector<Index_t> shape{}, strides{};
+            Index_t dim{eng.get_spatial_dim()};
+            shape.push_back(dim);
+            strides.push_back(sizeof(Real));
+            for (auto && n : eng.get_nb_subdomain_grid_pts()) {
+              shape.push_back(n);
+            }
+            for (auto && s : eng.get_real_pixels().get_strides()) {
+              strides.push_back(s * dim * sizeof(Real));
+            }
+            py::array_t<Real> coords(shape, strides);
+            Real * ptr{static_cast<Real *>(coords.request().ptr)};
+            auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
+            for (auto && pix : eng.get_real_pixels()) {
+              for (int i = 0; i < dim; ++i) {
+                ptr[i] = static_cast<Real>(pix[i]) / nb_domain_grid_pts[i];
+              }
+              ptr += dim;
+            }
+            return coords;
+          })
+      .def_property_readonly(
           "fftfreq",
           [](const Engine & eng) {
             std::vector<Index_t> shape{}, strides{};
