@@ -20,7 +20,7 @@ classifiers = [
 requires-python = ">=3.8.0"
 dynamic = [ "version" ]
 dependencies = [
-    "muGrid",
+    "muGrid==0.91.1",
     "numpy"
 ]
 

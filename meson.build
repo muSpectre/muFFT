@@ -76,7 +76,7 @@ mufft_dependencies += [eigen3, mugrid]
 
 message('  -------------------')
 message('  muFFT configuration')
-message('    MPI      : ' + (mu_with_mpi ? '*** YES ***' : 'no'))
+message('    MPI      : ' + (mpi.found() ? '*** YES ***' : 'no'))
 message('    pocketfft: *** YES ***')
 message('    FFTW3    : ' + (mu_with_fftw3 ? '*** YES ***' : 'no'))
 message('    FFTW3 MPI: ' + (mu_with_fftw3mpi ? '*** YES ***' : 'no'))
