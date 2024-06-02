@@ -20,7 +20,7 @@ classifiers = [
 requires-python = ">=3.8.0"
 dynamic = [ "version" ]
 dependencies = [
-    "muGrid==0.91.0",
+    "muGrid",
     "numpy"
 ]
 
@@ -31,7 +31,7 @@ test = [
 ]
 
 [project.urls]
-documentation = "https://muspectre.gitlab.io/muspectre/index.html"
+documentation = "https://muspectre.github.io/muFFT/"
 repository = "https://github.com/muSpectre/muFFT"
 changelog = "https://github.com/muSpectre/muFFT/blob/main/CHANGELOG.md"
 
