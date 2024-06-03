@@ -323,16 +323,24 @@ void add_engine_helper(py::module & mod, const std::string & name) {
               shape.push_back(n);
             }
             py::array_t<Real, py::array::f_style> coords(shape);
-            Real * ptr{static_cast<Real *>(coords.request().ptr)};
             const auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
             const auto & subdomain_locations{eng.get_subdomain_locations()};
-            const auto nb_pixels{muGrid::CcoordOps::get_size(nb_subdomain_grid_pts)};
-            for (int k = 0; k < nb_pixels; ++k) {
-              auto coord{muGrid::CcoordOps::get_coord( nb_subdomain_grid_pts, subdomain_locations, k)};
-              for (int i = 0; i < dim; ++i) {
-                ptr[i] = static_cast<Real>(coord[i]) / nb_domain_grid_pts[i];
+            const auto nb_subdomain_pixels{
+                muGrid::CcoordOps::get_size(nb_subdomain_grid_pts)};
+            Real * ptr{static_cast<Real *>(coords.request().ptr)};
+            for (int k = 0; k < nb_subdomain_pixels; ++k) {
+              DynCcoord_t coord(dim);
+              *ptr = static_cast<Real>(k % nb_subdomain_grid_pts[0] +
+                                       subdomain_locations[0]) /
+                     nb_domain_grid_pts[0];
+              ptr++;
+              for (int i = 1; i < dim; ++i) {
+                *ptr = static_cast<Real>((k / nb_subdomain_grid_pts[i - 1]) %
+                                             nb_subdomain_grid_pts[i] +
+                                         subdomain_locations[0]) /
+                       nb_domain_grid_pts[i];
+                ptr++;
               }
-              ptr += dim;
             }
             return coords;
           })
