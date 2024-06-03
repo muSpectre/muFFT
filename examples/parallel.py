@@ -10,11 +10,11 @@ lx, ly, lz = physical_sizes
 fft = FFT(nb_grid_pts, engine='mpi', communicator=MPI.COMM_WORLD)
 
 if MPI.COMM_WORLD.rank == 0:
-    print('  Rank   Size       Domain       Subdomain     Location')
-    print('  ----   ----       ------       ---------     --------')
+    print('  Rank   Size          Domain       Subdomain        Location')
+    print('  ----   ----          ------       ---------        --------')
 MPI.COMM_WORLD.Barrier()  # Barrier so header is printed first
 
-print(f'{MPI.COMM_WORLD.rank:6} {MPI.COMM_WORLD.size:6} {str(fft.nb_domain_grid_pts):15} {str(fft.nb_subdomain_grid_pts):15} {str(fft.subdomain_locations):15}')
+print(f'{MPI.COMM_WORLD.rank:6} {MPI.COMM_WORLD.size:6} {str(fft.nb_domain_grid_pts):>15} {str(fft.nb_subdomain_grid_pts):>15} {str(fft.subdomain_locations):>15}')
 
 # Obtain a real field and fill it
 rfield = fft.real_space_field('scalar field')
