@@ -104,20 +104,19 @@ domain decomposition. Both properties then return just the coordinates of the lo
 Parallelization
 ***************
 
-The previous example can be parallelized by initializing the FFT engine with an MPI communicator.
+The previous example can be parallelized by initializing the FFT engine with an MPI communicator:
 
-.. code-block:: python
-
-    from muFFT import FFT
-    from mpi4py import MPI
-    fft = FFT((nx, ny, nz), engine='mpi', communicator=MPI.COMM_WORLD)
+.. literalinclude:: ../../examples/parallel.py
+    :language: python
 
 The engine that is selected must support MPI parallelization. Currently, only the `fftwmpi` engine
 and `pfft` engine support MPI parallelization. Using `mpi` as in the example autoselects an engine.
 
-The parallelization is done by domain decomposition. The domain is split into stripe-shaped subdomains
+The parallelization employs domain decomposition. The domain is split into stripe-shaped subdomains
 for `fftwmpi` and pencil-shaped subdomains for `pfft`. `pfft` scales better to large numbers of MPI
-processes because of this pencil decomposition.
-
-Note that the above code works because `coords` and `fftfreq` return the domain-local coordinates
+processes because of this pencil decomposition. The number of grid points on the local domain is
+returned by `nb_subdomain_grid_pts` and the location of the domain is given by `subdomain_locations`.
+Note that in a typical code uses `coords` and `fftfreq` as above and does not need to care about
+the actual details of the decomposition, as those properties return the domain-local coordinates
 and wavevectors.
+

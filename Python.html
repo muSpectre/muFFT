@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Coding Convention" href="CodingConvention.html" /><link rel="prev" title="Getting Started" href="GettingStarted.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Python Bindings - µFFT 0.91.0-5-ga9c251c documentation</title>
+        <title>Python Bindings - µFFT 0.91.0-6-g3b1a261 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.91.0-5-ga9c251c
+      <a href="index.html"><div class="brand">µFFT 0.91.0-6-g3b1a261
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.91.0-5-ga9c251c
+  <span class="sidebar-brand-text">µFFT 0.91.0-6-g3b1a261
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -426,18 +426,70 @@ domain decomposition. Both properties then return just the coordinates of the lo
 </section>
 <section id="parallelization">
 <h2>Parallelization<a class="headerlink" href="#parallelization" title="Link to this heading">¶</a></h2>
-<p>The previous example can be parallelized by initializing the FFT engine with an MPI communicator.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muFFT</span> <span class="kn">import</span> <span class="n">FFT</span>
+<p>The previous example can be parallelized by initializing the FFT engine with an MPI communicator:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
-<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;mpi&#39;</span><span class="p">,</span> <span class="n">communicator</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">muGrid</span> <span class="kn">import</span> <span class="n">FileIONetCDF</span><span class="p">,</span> <span class="n">OpenMode</span><span class="p">,</span> <span class="n">Communicator</span>
+<span class="kn">from</span> <span class="nn">muFFT</span> <span class="kn">import</span> <span class="n">FFT</span>
+
+<span class="c1"># Instantiate a FFT object with the PocketFFT engine</span>
+<span class="n">nb_grid_pts</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">physical_sizes</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Sizes of the domain (in arbitrary units)</span>
+<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">nb_grid_pts</span>
+<span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">physical_sizes</span>
+<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;mpi&#39;</span><span class="p">,</span> <span class="n">communicator</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Rank   Size          Domain       Subdomain        Location&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  ----   ----          ------       ---------        --------&#39;</span><span class="p">)</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Barrier</span><span class="p">()</span>  <span class="c1"># Barrier so header is printed first</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span><span class="si">:</span><span class="s1">6</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">size</span><span class="si">:</span><span class="s1">6</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">nb_domain_grid_pts</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;15</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">nb_subdomain_grid_pts</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;15</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">subdomain_locations</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;15</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Obtain a real field and fill it</span>
+<span class="n">rfield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;scalar-field&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">coords</span>
+<span class="n">rfield</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># Just a sine</span>
+
+<span class="c1"># Compute Fourier transform</span>
+<span class="n">ffield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fourier_space_field</span><span class="p">(</span><span class="s1">&#39;scalar-field&#39;</span><span class="p">)</span>
+<span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">rfield</span><span class="p">,</span> <span class="n">ffield</span><span class="p">)</span>
+
+<span class="c1"># Compute Fourier gradient by multiplying with wavevector</span>
+<span class="n">fgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fourier_space_field</span><span class="p">(</span><span class="s1">&#39;gradient-field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+<span class="n">fgrad</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span> <span class="o">*</span> <span class="n">ffield</span><span class="o">.</span><span class="n">p</span>
+
+<span class="c1"># Inverse transform to get gradient in real space</span>
+<span class="n">rgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;gradient-field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+<span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fgrad</span><span class="p">,</span> <span class="n">rgrad</span><span class="p">)</span>
+
+<span class="c1"># Normalize gradient</span>
+<span class="n">gradx</span><span class="p">,</span> <span class="n">grady</span><span class="p">,</span> <span class="n">gradz</span> <span class="o">=</span> <span class="n">rgrad</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">normalisation</span>
+<span class="n">gradx</span> <span class="o">*=</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">lx</span>  <span class="c1"># Need to multiply with inverse grid spacing</span>
+<span class="n">grady</span> <span class="o">*=</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">ly</span>  <span class="c1"># Need to multiply with inverse grid spacing</span>
+<span class="n">gradz</span> <span class="o">*=</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">lz</span>  <span class="c1"># Need to multiply with inverse grid spacing</span>
+
+<span class="c1"># Gradient in x is cosine</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">gradx</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">lx</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="c1"># Gradient in y is also cosine</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">grady</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">ly</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="c1"># Gradient in z is zero</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">gradz</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+
+<span class="c1"># I/O example</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">FileIONetCDF</span><span class="p">(</span><span class="s1">&#39;example.nc&#39;</span><span class="p">,</span> <span class="n">open_mode</span><span class="o">=</span><span class="n">OpenMode</span><span class="o">.</span><span class="n">Overwrite</span><span class="p">,</span> <span class="n">communicator</span><span class="o">=</span><span class="n">Communicator</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">))</span>
+<span class="n">file</span><span class="o">.</span><span class="n">register_field_collection</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">real_field_collection</span><span class="p">)</span>
+<span class="n">file</span><span class="o">.</span><span class="n">append_frame</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The engine that is selected must support MPI parallelization. Currently, only the <cite>fftwmpi</cite> engine
 and <cite>pfft</cite> engine support MPI parallelization. Using <cite>mpi</cite> as in the example autoselects an engine.</p>
-<p>The parallelization is done by domain decomposition. The domain is split into stripe-shaped subdomains
+<p>The parallelization employs domain decomposition. The domain is split into stripe-shaped subdomains
 for <cite>fftwmpi</cite> and pencil-shaped subdomains for <cite>pfft</cite>. <cite>pfft</cite> scales better to large numbers of MPI
-processes because of this pencil decomposition.</p>
-<p>Note that the above code works because <cite>coords</cite> and <cite>fftfreq</cite> return the domain-local coordinates
+processes because of this pencil decomposition. The number of grid points on the local domain is
+returned by <cite>nb_subdomain_grid_pts</cite> and the location of the domain is given by <cite>subdomain_locations</cite>.
+Note that in a typical code uses <cite>coords</cite> and <cite>fftfreq</cite> as above and does not need to care about
+the actual details of the decomposition, as those properties return the domain-local coordinates
 and wavevectors.</p>
 </section>
 </section>
@@ -516,7 +568,7 @@ and wavevectors.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=40297af0"></script>
+</div><script src="_static/documentation_options.js?v=362c86a0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
