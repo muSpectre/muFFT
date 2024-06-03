@@ -24,7 +24,7 @@ if fftw3.found()
 endif
 
 # Those are requirements on *some* systems, hence optional
-cc = meson.get_compiler('c')
+cc = meson.get_compiler('cpp')
 #dl = cc.find_library('dl', required: false)
 #execinfo = cc.find_library('execinfo', required: false)
 
@@ -38,18 +38,13 @@ mu_with_mpi = false
 if mpi.found()
     fftw3mpi = cc.find_library(
         'fftw3_mpi',
-        dirs : ['/usr/lib', '/usr/lib/x86_64-linux-gnu'],
         has_headers : ['fftw3-mpi.h'],
         required : false)
     if fftw3mpi.found()
         add_project_arguments('-DWITH_FFTWMPI', language : ['c', 'cpp'])
         mufft_dependencies += [fftw3mpi]
     endif
-    pfft = cc.find_library(
-        'pfft',
-        dirs : ['/usr/lib', '/usr/lib/x86_64-linux-gnu'],
-        has_headers : ['pfft.h'],
-        required : false)
+    pfft = dependency('pfft', required : false)
     if pfft.found()
         add_project_arguments('-DWITH_PFFT', language : ['c', 'cpp'])
         mufft_dependencies += [pfft]
