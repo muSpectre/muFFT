@@ -48,7 +48,6 @@
 #endif
 
 #include "tests.hh"
-#include "mpi_context.hh"
 
 namespace muFFT {
   BOOST_AUTO_TEST_SUITE(serial_fft_engines);

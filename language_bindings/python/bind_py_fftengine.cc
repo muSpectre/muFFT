@@ -332,7 +332,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             const auto nb_subdomain_pixels{
                 muGrid::CcoordOps::get_size(nb_subdomain_grid_pts)};
             Real * ptr{static_cast<Real *>(coords.request().ptr)};
-            for (int k = 0; k < nb_subdomain_pixels; ++k) {
+            for (size_t k{0}; k < nb_subdomain_pixels; ++k) {
               DynCcoord_t coord(dim);
               *ptr = static_cast<Real>(k % nb_subdomain_grid_pts[0] +
                                        subdomain_locations[0]) /
