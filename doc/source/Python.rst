@@ -120,3 +120,4 @@ Note that in a typical code uses `coords` and `fftfreq` as above and does not ne
 the actual details of the decomposition, as those properties return the domain-local coordinates
 and wavevectors.
 
+The above example also illustrates how to write the global field to a file.
