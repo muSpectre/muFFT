@@ -34,7 +34,7 @@ make install
 #
 curl -L http://www.fftw.org/fftw-${FFTW_VERSION}.tar.gz | tar -xz -C ${WORKDIR}
 cd ${WORKDIR}/fftw-${FFTW_VERSION}
-./configure --disable-shared --enable-static --with-pic --enable-mpi --disable-fortran --enable-sse2 --enable-avx --enable-avx2 --prefix=${PREFIX}
+./configure --disable-shared --enable-static --with-pic --disable-fortran --enable-mpi --prefix=${PREFIX}
 make -j 4
 make install
 
