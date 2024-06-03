@@ -40,6 +40,7 @@
 
 #include "tests.hh"
 #include "mpi_context.hh"
+
 #include <libmufft/pocketfft_engine.hh>
 #ifdef WITH_FFTW
 #include <libmufft/fftw_engine.hh>
@@ -50,8 +51,6 @@
 #ifdef WITH_PFFT
 #include <libmufft/pfft_engine.hh>
 #endif
-
-#include "mpi_context.hh"
 
 #include <libmugrid/ccoord_operations.hh>
 #include <libmugrid/field_collection.hh>

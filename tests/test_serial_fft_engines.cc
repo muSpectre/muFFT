@@ -37,6 +37,9 @@
 
 #include <boost/mpl/list.hpp>
 
+#include "tests.hh"
+#include "mpi_context.hh"
+
 #include <libmugrid/ccoord_operations.hh>
 #include <libmugrid/field_collection.hh>
 #include <libmugrid/field_map_static.hh>
@@ -46,8 +49,6 @@
 #ifdef WITH_FFTW
 #include <libmufft/fftw_engine.hh>
 #endif
-
-#include "tests.hh"
 
 namespace muFFT {
   BOOST_AUTO_TEST_SUITE(serial_fft_engines);
@@ -67,7 +68,8 @@ namespace muFFT {
     constexpr static Ccoord_t<sdim> loc() {
       return muGrid::CcoordOps::get_cube<DimS>(Index_t{0});
     }
-    FFT_fixture() : engine{DynCcoord_t(res())} {}
+    FFT_fixture()
+        : engine{DynCcoord_t(res()), MPIContext::get_context().serial_comm} {}
     Engine engine;
   };
   template <class Engine, Index_t DimS, Index_t DimM, Index_t NbSubPts,
@@ -78,10 +80,10 @@ namespace muFFT {
   constexpr Index_t FFT_fixture<Engine, DimS, DimM, NbSubPts, NbGridPts>::mdim;
   template <class Engine, Index_t DimS, Index_t DimM, Index_t NbSubPts,
             Index_t NbGridPts>
-  constexpr Index_t FFT_fixture<Engine, DimS, DimM, NbSubPts,
-                                NbGridPts>::nb_sub_pts;
+  constexpr Index_t
+      FFT_fixture<Engine, DimS, DimM, NbSubPts, NbGridPts>::nb_sub_pts;
 
-  template<class Engine>
+  template <class Engine>
   struct FFT_fixture_python_segfault {
     constexpr static Index_t dim{twoD};
     constexpr static Index_t sdim{twoD};
@@ -92,11 +94,11 @@ namespace muFFT {
     FFT_fixture_python_segfault() : engine{DynCcoord_t(res())} {}
     Engine engine;
   };
-  template<class Engine>
+  template <class Engine>
   constexpr Index_t FFT_fixture_python_segfault<Engine>::sdim;
-  template<class Engine>
+  template <class Engine>
   constexpr Index_t FFT_fixture_python_segfault<Engine>::mdim;
-  template<class Engine>
+  template <class Engine>
   constexpr Index_t FFT_fixture_python_segfault<Engine>::nb_sub_pts;
 
   using fixlist = boost::mpl::list<
@@ -121,8 +123,7 @@ namespace muFFT {
       FFT_fixture<PocketFFTEngine, threeD, threeD, OneQuadPt, 3>,
       FFT_fixture<PocketFFTEngine, twoD, threeD, OneQuadPt, 4>,
       FFT_fixture<PocketFFTEngine, threeD, threeD, OneQuadPt, 4>,
-      FFT_fixture_python_segfault<PocketFFTEngine>
-      >;
+      FFT_fixture_python_segfault<PocketFFTEngine>>;
 
   /* ---------------------------------------------------------------------- */
   BOOST_FIXTURE_TEST_CASE_TEMPLATE(Constructor_test, Fix, fixlist, Fix) {

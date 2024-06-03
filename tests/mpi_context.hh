@@ -49,14 +49,14 @@ namespace muFFT {
    */
   class MPIContext {
    public:
-    muGrid::Communicator comm;
+    muGrid::Communicator comm, serial_comm;
     static MPIContext & get_context() {
       static MPIContext context;
       return context;
     }
 
    private:
-    MPIContext() : comm(muGrid::Communicator(MPI_COMM_WORLD)) {
+    MPIContext() : comm(muGrid::Communicator(MPI_COMM_WORLD)), serial_comm() {
       MPI_Init(&boost::unit_test::framework::master_test_suite().argc,
                &boost::unit_test::framework::master_test_suite().argv);
     }
