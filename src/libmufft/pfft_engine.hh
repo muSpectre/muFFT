@@ -86,7 +86,7 @@ namespace muFFT {
     PFFTEngine & operator=(const PFFTEngine & other) = delete;
 
     //! Move assignment operator
-    PFFTEngine & operator=(PFFTEngine && other) = default;
+    PFFTEngine & operator=(PFFTEngine && other) = delete;
 
     // compute the plan, etc
     void create_plan(const Index_t & nb_dof_per_pixel) override;

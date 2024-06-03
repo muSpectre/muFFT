@@ -312,6 +312,10 @@ void add_engine_helper(py::module & mod, const std::string & name) {
           py::return_value_policy::reference)
       .def_property_readonly("spatial_dim", &Engine::get_spatial_dim)
       .def("has_plan_for", &Engine::has_plan_for, "nb_dof_per_pixel"_a)
+      .def_property_readonly("real_field_collection",
+                             &Engine::get_real_field_collection)
+      .def_property_readonly("fourier_field_collection",
+                             &Engine::get_fourier_field_collection)
       .def_property_readonly(
           "coords",
           [](const Engine & eng) {
