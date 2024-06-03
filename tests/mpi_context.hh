@@ -56,14 +56,24 @@ namespace muFFT {
     }
 
    private:
-    MPIContext() : comm(muGrid::Communicator(MPI_COMM_WORLD)), serial_comm() {
+    MPIContext()
+#ifdef WITH_MPI
+        : comm(muGrid::Communicator(MPI_COMM_WORLD)),
+#else
+        : comm(),
+#endif
+          serial_comm() {
+#ifdef WITH_MPI
       MPI_Init(&boost::unit_test::framework::master_test_suite().argc,
                &boost::unit_test::framework::master_test_suite().argv);
+#endif
     }
     ~MPIContext() {
+#ifdef WITH_MPI
       // Wait for all processes to finish before calling finalize.
       MPI_Barrier(comm.get_mpi_comm());
       MPI_Finalize();
+#endif
     }
 
    public:
