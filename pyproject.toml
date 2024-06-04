@@ -8,10 +8,10 @@ description = "Unified interface to MPI-parallel FFT libraries"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
+    { name = "Lars Pastewka", email = "lars.pastewka@imtek.uni-freiburg.de" },
     { name = "Ali Falsafi", email = "ali.falsafi@epfl.ch" },
     { name = "Till Junge", email = "till.junge@altermail.ch" },
-    { name = "Richard Leute", email = "richard.leute@imtek.uni-freiburg.de" },
-    { name = "Lars Pastewka", email = "lars.pastewka@imtek.uni-freiburg.de" }
+    { name = "Richard Leute", email = "richard.leute@imtek.uni-freiburg.de" }
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -20,7 +20,7 @@ classifiers = [
 requires-python = ">=3.8.0"
 dynamic = [ "version" ]
 dependencies = [
-    "muGrid==0.91.1",
+    "muGrid==0.92.0",
     "numpy"
 ]
 
