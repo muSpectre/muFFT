@@ -16,7 +16,7 @@ use
 
 .. code-block:: sh
 
-    $ pip install -v --no-binary muFFT muFFT
+    $ pip install -v --force-reinstall --no-cache --no-binary muGrid --no-binary muFFT muFFT
 
 which will compile the code. µFFT will autodetect
 `MPI <https://www.mpi-forum.org/>`_,
@@ -24,6 +24,46 @@ which will compile the code. µFFT will autodetect
 `MPIFFTW <https://www.fftw.org/fftw3_doc/FFTW-MPI-Installation.html>`_
 and
 `PFFT <https://github.com/mpip/pfft>`_.
+Monitor the output to see what was detected. You should see something like::
+
+    Message:   -------------------
+    Message:   muFFT configuration
+    Message:     MPI      : *** YES ***
+    Message:     pocketfft: *** YES ***
+    Message:     FFTW3    : *** YES ***
+    Message:     FFTW3 MPI: *** YES ***
+    Message:     PFFT     : *** YES ***
+    Message:   -------------------
+
+Dependencies quick start
+************************
+
+muFFT needs the above dependencies for full functionality, and addition muGrid
+needs `PnetCDF <https://parallel-netcdf.github.io/>`_. We provide a convenience
+script that will download and compile all dependencies as static libraries,
+that are then linked statically with the muGrid and muFFT libraries upon
+compilation.
+
+To install these dependencies, run
+
+.. code-block:: sh
+
+    curl -sSL https://raw.githubusercontent.com/muSpectre/muFFT/main/install_dependencies.sh | sh
+
+Installation defaults to `$HOME/.local`, but you can specify a different a
+different location by specificing the `PREFIX` environment variable.
+
+When building muFFT, you may need to specify the location of these dependencies:
+
+.. code-block:: sh
+
+    PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig:$PKG_CONFIG_PATH \
+        LIBRARY_PATH=$HOME/.local/lib:$LIBRARY_PATH \
+        CPATH=$HOME/.local/include:$CPATH \
+        pip install -v \
+            --force-reinstall --no-cache \
+            --no-binary muGrid --no-binary muFFT \
+            muGrid muFFT
 
 Obtaining *µ*\FFT's source code
 *******************************
