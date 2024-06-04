@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Python Bindings" href="Python.html" /><link rel="prev" title="Summary" href="Summary.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Getting Started - µFFT 0.91.0-10-g3b45a22 documentation</title>
+        <title>Getting Started - µFFT 0.91.0-11-gef06ba2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.91.0-10-g3b45a22
+      <a href="index.html"><div class="brand">µFFT 0.91.0-11-gef06ba2
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.91.0-10-g3b45a22
+  <span class="sidebar-brand-text">µFFT 0.91.0-11-gef06ba2
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -271,7 +271,7 @@
 <p>Note that on most platforms this will install a binary wheel that was
 compiled with a minimal configuration. To compile for your specific platform
 use</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-v<span class="w"> </span>--no-binary<span class="w"> </span>muFFT<span class="w"> </span>muFFT
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-v<span class="w"> </span>--force-reinstall<span class="w"> </span>--no-cache<span class="w"> </span>--no-binary<span class="w"> </span>muGrid<span class="w"> </span>--no-binary<span class="w"> </span>muFFT<span class="w"> </span>muFFT
 </pre></div>
 </div>
 <p>which will compile the code. µFFT will autodetect
@@ -279,7 +279,42 @@ use</p>
 <a class="reference external" href="https://www.fftw.org/">FFTW</a>,
 <a class="reference external" href="https://www.fftw.org/fftw3_doc/FFTW-MPI-Installation.html">MPIFFTW</a>
 and
-<a class="reference external" href="https://github.com/mpip/pfft">PFFT</a>.</p>
+<a class="reference external" href="https://github.com/mpip/pfft">PFFT</a>.
+Monitor the output to see what was detected. You should see something like:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="nl">Message</span><span class="p">:</span><span class="w">   </span><span class="o">-------------------</span>
+<span class="nl">Message</span><span class="p">:</span><span class="w">   </span><span class="n">muFFT</span><span class="w"> </span><span class="n">configuration</span>
+<span class="nl">Message</span><span class="p">:</span><span class="w">     </span><span class="n">MPI</span><span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="n">YES</span><span class="w"> </span><span class="o">***</span>
+<span class="nl">Message</span><span class="p">:</span><span class="w">     </span><span class="n">pocketfft</span><span class="o">:</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="n">YES</span><span class="w"> </span><span class="o">***</span>
+<span class="nl">Message</span><span class="p">:</span><span class="w">     </span><span class="n">FFTW3</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="n">YES</span><span class="w"> </span><span class="o">***</span>
+<span class="nl">Message</span><span class="p">:</span><span class="w">     </span><span class="n">FFTW3</span><span class="w"> </span><span class="n">MPI</span><span class="o">:</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="n">YES</span><span class="w"> </span><span class="o">***</span>
+<span class="nl">Message</span><span class="p">:</span><span class="w">     </span><span class="n">PFFT</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="n">YES</span><span class="w"> </span><span class="o">***</span>
+<span class="nl">Message</span><span class="p">:</span><span class="w">   </span><span class="o">-------------------</span>
+</pre></div>
+</div>
+</section>
+<section id="dependencies-quick-start">
+<h2>Dependencies quick start<a class="headerlink" href="#dependencies-quick-start" title="Link to this heading">¶</a></h2>
+<p>muFFT needs the above dependencies for full functionality, and addition muGrid
+needs <a class="reference external" href="https://parallel-netcdf.github.io/">PnetCDF</a>. We provide a convenience
+script that will download and compile all dependencies as static libraries,
+that are then linked statically with the muGrid and muFFT libraries upon
+compilation.</p>
+<p>To install these dependencies, run</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/muSpectre/muFFT/main/install_dependencies.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+</pre></div>
+</div>
+<p>Installation defaults to <cite>$HOME/.local</cite>, but you can specify a different a
+different location by specificing the <cite>PREFIX</cite> environment variable.</p>
+<p>When building muFFT, you may need to specify the location of these dependencies:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/lib/pkgconfig:<span class="nv">$PKG_CONFIG_PATH</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">LIBRARY_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/lib:<span class="nv">$LIBRARY_PATH</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">CPATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/include:<span class="nv">$CPATH</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>-v<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--force-reinstall<span class="w"> </span>--no-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--no-binary<span class="w"> </span>muGrid<span class="w"> </span>--no-binary<span class="w"> </span>muFFT<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>muGrid<span class="w"> </span>muFFT
+</pre></div>
+</div>
 </section>
 <section id="obtaining-fft-s-source-code">
 <h2>Obtaining <em>µ</em>FFT’s source code<a class="headerlink" href="#obtaining-fft-s-source-code" title="Link to this heading">¶</a></h2>
@@ -409,6 +444,7 @@ be documented and have unit tests. Please submit merge requests for review.</p>
             <ul>
 <li><a class="reference internal" href="#">Getting Started</a><ul>
 <li><a class="reference internal" href="#python-quick-start">Python quick start</a></li>
+<li><a class="reference internal" href="#dependencies-quick-start">Dependencies quick start</a></li>
 <li><a class="reference internal" href="#obtaining-fft-s-source-code">Obtaining <em>µ</em>FFT’s source code</a></li>
 <li><a class="reference internal" href="#building-fft">Building <em>µ</em>FFT</a></li>
 <li><a class="reference internal" href="#getting-help-and-reporting-bugs">Getting help and reporting bugs</a></li>
@@ -424,7 +460,7 @@ be documented and have unit tests. Please submit merge requests for review.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=6946119d"></script>
+</div><script src="_static/documentation_options.js?v=69dea58b"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
