@@ -1,6 +1,13 @@
 Change log for µFFT
 ===================
 
+0.91.1 (04June2024)
+-------------------
+
+- BUG: Pixel coordinates for non-contiguous buffers
+- BUILD: Fixed detection of MPI FFTW and PFFT
+- MAINT: Bumped muGrid depdendency to 0.92.0
+
 0.91.0 (02June2024)
 -------------------
 
