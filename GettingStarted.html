@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Python Bindings" href="Python.html" /><link rel="prev" title="Summary" href="Summary.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Getting Started - µFFT 0.91.1 documentation</title>
+        <title>Getting Started - µFFT 0.91.1-1-g3dd29ca documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.91.1
+      <a href="index.html"><div class="brand">µFFT 0.91.1-1-g3dd29ca
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.91.1
+  <span class="sidebar-brand-text">µFFT 0.91.1-1-g3dd29ca
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -294,10 +294,10 @@ Monitor the output to see what was detected. You should see something like:</p>
 </section>
 <section id="dependencies-quick-start">
 <h2>Dependencies quick start<a class="headerlink" href="#dependencies-quick-start" title="Link to this heading">¶</a></h2>
-<p>muFFT needs the above dependencies for full functionality, and addition muGrid
+<p>µFFT needs the above dependencies for full functionality, and addition muGrid
 needs <a class="reference external" href="https://parallel-netcdf.github.io/">PnetCDF</a>. We provide a convenience
 script that will download and compile all dependencies as static libraries,
-that are then linked statically with the muGrid and muFFT libraries upon
+that are then linked statically with the muGrid and µFFT libraries upon
 compilation.</p>
 <p>To install these dependencies, run</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/muSpectre/muFFT/main/install_dependencies.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
@@ -305,7 +305,7 @@ compilation.</p>
 </div>
 <p>Installation defaults to <cite>$HOME/.local</cite>, but you can specify a different a
 different location by specificing the <cite>PREFIX</cite> environment variable.</p>
-<p>When building muFFT, you may need to specify the location of these dependencies:</p>
+<p>When building µFFT, you may need to specify the location of these dependencies:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/lib/pkgconfig:<span class="nv">$PKG_CONFIG_PATH</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="nv">LIBRARY_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/lib:<span class="nv">$LIBRARY_PATH</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="nv">CPATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/include:<span class="nv">$CPATH</span><span class="w"> </span><span class="se">\</span>
@@ -317,8 +317,8 @@ different location by specificing the <cite>PREFIX</cite> environment variable.<
 </div>
 </section>
 <section id="obtaining-fft-s-source-code">
-<h2>Obtaining <em>µ</em>FFT’s source code<a class="headerlink" href="#obtaining-fft-s-source-code" title="Link to this heading">¶</a></h2>
-<p><em>µ</em>FFT is hosted on a git repository on <a class="reference external" href="https://github.com/">GitHub</a>. To clone it, run</p>
+<h2>Obtaining µFFT’s source code<a class="headerlink" href="#obtaining-fft-s-source-code" title="Link to this heading">¶</a></h2>
+<p>µFFT is hosted on a git repository on <a class="reference external" href="https://github.com/">GitHub</a>. To clone it, run</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/muSpectre/muFFT.git
 </pre></div>
 </div>
@@ -329,8 +329,8 @@ different location by specificing the <cite>PREFIX</cite> environment variable.<
 <p>The latter option requires you to have a user account on <a class="reference external" href="https://github.com/">GitHub</a>.</p>
 </section>
 <section id="building-fft">
-<h2>Building <em>µ</em>FFT<a class="headerlink" href="#building-fft" title="Link to this heading">¶</a></h2>
-<p><em>µ</em>FFT uses <a class="reference external" href="https://mesonbuild.com/">Meson</a> (0.42.0 or higher) as its build system.</p>
+<h2>Building µFFT<a class="headerlink" href="#building-fft" title="Link to this heading">¶</a></h2>
+<p>µFFT uses <a class="reference external" href="https://mesonbuild.com/">Meson</a> (0.42.0 or higher) as its build system.</p>
 <p>The current (and possibly incomplete list of) dependencies are</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://mesonbuild.com/">Meson</a></p></li>
@@ -356,7 +356,7 @@ different location by specificing the <cite>PREFIX</cite> environment variable.<
 <li><p><a class="reference external" href="http://www.sphinx-doc.org">Sphinx</a> and <a class="reference external" href="https://breathe.readthedocs.io">Breathe</a> (necessary if you want to build the
 documentation (turned off by default)</p></li>
 </ul>
-<p><em>µ</em>FFT requires a relatively modern compiler as it makes heavy use of C++17 features.</p>
+<p>µFFT requires a relatively modern compiler as it makes heavy use of C++17 features.</p>
 <p>To compile for <em>development</em>, i.e. with debug options turned on, first setup
 the build folder:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>meson<span class="w"> </span>setup<span class="w"> </span>meson-build-debug
@@ -375,7 +375,7 @@ Navigate to the build folder and run:</p>
 </section>
 <section id="getting-help-and-reporting-bugs">
 <h2>Getting help and reporting bugs<a class="headerlink" href="#getting-help-and-reporting-bugs" title="Link to this heading">¶</a></h2>
-<p><em>µ</em>FFT is under active development and the documentation
+<p>µFFT is under active development and the documentation
 may be spotty. If you run into trouble,
 please contact us by opening an <a class="reference external" href="https://github.com/muSpectre/muFFT/issues">issue</a> and someone will answer as
 soon as possible. You can also check the API <span class="xref std std-ref">reference</span>.</p>
@@ -445,8 +445,8 @@ be documented and have unit tests. Please submit merge requests for review.</p>
 <li><a class="reference internal" href="#">Getting Started</a><ul>
 <li><a class="reference internal" href="#python-quick-start">Python quick start</a></li>
 <li><a class="reference internal" href="#dependencies-quick-start">Dependencies quick start</a></li>
-<li><a class="reference internal" href="#obtaining-fft-s-source-code">Obtaining <em>µ</em>FFT’s source code</a></li>
-<li><a class="reference internal" href="#building-fft">Building <em>µ</em>FFT</a></li>
+<li><a class="reference internal" href="#obtaining-fft-s-source-code">Obtaining µFFT’s source code</a></li>
+<li><a class="reference internal" href="#building-fft">Building µFFT</a></li>
 <li><a class="reference internal" href="#getting-help-and-reporting-bugs">Getting help and reporting bugs</a></li>
 <li><a class="reference internal" href="#contribute">Contribute</a></li>
 </ul>
@@ -460,7 +460,7 @@ be documented and have unit tests. Please submit merge requests for review.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=c1fa0bd3"></script>
+</div><script src="_static/documentation_options.js?v=15633d52"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
