@@ -38,10 +38,10 @@ Monitor the output to see what was detected. You should see something like::
 Dependencies quick start
 ************************
 
-muFFT needs the above dependencies for full functionality, and addition muGrid
+µFFT needs the above dependencies for full functionality, and addition muGrid
 needs `PnetCDF <https://parallel-netcdf.github.io/>`_. We provide a convenience
 script that will download and compile all dependencies as static libraries,
-that are then linked statically with the muGrid and muFFT libraries upon
+that are then linked statically with the muGrid and µFFT libraries upon
 compilation.
 
 To install these dependencies, run
@@ -53,7 +53,7 @@ To install these dependencies, run
 Installation defaults to `$HOME/.local`, but you can specify a different a
 different location by specificing the `PREFIX` environment variable.
 
-When building muFFT, you may need to specify the location of these dependencies:
+When building µFFT, you may need to specify the location of these dependencies:
 
 .. code-block:: sh
 
@@ -65,10 +65,10 @@ When building muFFT, you may need to specify the location of these dependencies:
             --no-binary muGrid --no-binary muFFT \
             muGrid muFFT
 
-Obtaining *µ*\FFT's source code
+Obtaining µFFT's source code
 *******************************
 
-*µ*\FFT is hosted on a git repository on `GitHub <https://github.com/>`_. To clone it, run
+µFFT is hosted on a git repository on `GitHub <https://github.com/>`_. To clone it, run
 
 .. code-block:: sh
 
@@ -82,10 +82,10 @@ or if you prefer identifying yourself using a public ssh-key, run
 
 The latter option requires you to have a user account on `GitHub`_.
 
-Building *µ*\FFT
+Building µFFT
 ****************
 
-*µ*\FFT uses `Meson <https://mesonbuild.com/>`_ (0.42.0 or higher) as its build system.
+µFFT uses `Meson <https://mesonbuild.com/>`_ (0.42.0 or higher) as its build system.
 
 The current (and possibly incomplete list of) dependencies are
 
@@ -113,7 +113,7 @@ Recommended:
   <https://breathe.readthedocs.io>`_ (necessary if you want to build the
   documentation (turned off by default)
 
-*µ*\FFT requires a relatively modern compiler as it makes heavy use of C++17 features.
+µFFT requires a relatively modern compiler as it makes heavy use of C++17 features.
 
 To compile for *development*, i.e. with debug options turned on, first setup
 the build folder:
@@ -139,7 +139,7 @@ Navigate to the build folder and run:
 Getting help and reporting bugs
 *******************************
 
-*µ*\FFT is under active development and the documentation
+µFFT is under active development and the documentation
 may be spotty. If you run into trouble,
 please contact us by opening an `issue
 <https://github.com/muSpectre/muFFT/issues>`_ and someone will answer as
