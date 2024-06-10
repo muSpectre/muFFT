@@ -338,10 +338,11 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                                        subdomain_locations[0]) /
                      nb_domain_grid_pts[0];
               ptr++;
+              size_t yz{k};
               for (int i = 1; i < dim; ++i) {
-                *ptr = static_cast<Real>((k / nb_subdomain_grid_pts[i - 1]) %
-                                             nb_subdomain_grid_pts[i] +
-                                         subdomain_locations[0]) /
+                yz /= nb_subdomain_grid_pts[i - 1];
+                *ptr = static_cast<Real>(yz % nb_subdomain_grid_pts[i] +
+                                         subdomain_locations[i]) /
                        nb_domain_grid_pts[i];
                 ptr++;
               }

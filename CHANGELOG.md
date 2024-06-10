@@ -1,6 +1,12 @@
 Change log for µFFT
 ===================
 
+0.91.2 (10June2024)
+-------------------
+
+- BUG: Fixed `coords` property
+- TST: Added 3D tests for `coords` and `fftfreq`
+
 0.91.1 (04June2024)
 -------------------
 

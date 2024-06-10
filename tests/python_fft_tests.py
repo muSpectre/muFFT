@@ -481,7 +481,7 @@ class FFT_Check(unittest.TestCase):
                 freq = freq[(..., *engine.fourier_slices)]
                 assert np.allclose(engine.fftfreq, freq)
 
-    def test_fftfreq(self):
+    def test_2d_fftfreq(self):
         # Check that x and y directions are correct
         nb_grid_pts = [7, 4]
         nx, ny = nb_grid_pts
@@ -495,6 +495,7 @@ class FFT_Check(unittest.TestCase):
         np.testing.assert_allclose(x, xref / nx)
         np.testing.assert_allclose(y, yref / ny)
 
+        x, y = engine.coords
         qx, qy = engine.fftfreq
 
         qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)
@@ -503,15 +504,70 @@ class FFT_Check(unittest.TestCase):
 
         rarr = np.zeros(nb_grid_pts, order='f')
         engine.ifft(qarr, rarr)
-        assert np.allclose(rarr, rarr[:, 0].reshape(-1, 1))
-        assert np.allclose(rarr[:, 0], np.cos(np.arange(nx) * 2 * np.pi / nx))
+        np.testing.assert_allclose(rarr - rarr[:, 0].reshape(-1, 1), 0, atol=1e-12)
+        np.testing.assert_allclose(rarr, np.cos(2 * np.pi * x), atol=1e-12)
+        np.testing.assert_allclose(rarr[:, 0], np.cos(np.arange(nx) * 2 * np.pi / nx), atol=1e-12)
 
         qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)
         qarr[np.logical_and(np.abs(np.abs(qx) * nx - 0) < 1e-6,
                             np.abs(np.abs(qy) * ny - 1) < 1e-6)] = 0.5
         engine.ifft(qarr, rarr)
-        assert np.allclose(rarr, rarr[0, :].reshape(1, -1))
-        assert np.allclose(rarr[0, :], np.cos(np.arange(ny) * 2 * np.pi / ny))
+        np.testing.assert_allclose(rarr - rarr[0, :].reshape(1, -1), 0, atol=1e-12)
+        np.testing.assert_allclose(rarr, np.cos(2 * np.pi * y), atol=1e-12)
+        np.testing.assert_allclose(rarr[0, :], np.cos(np.arange(ny) * 2 * np.pi / ny), atol=1e-12)
+
+    def test_3d_fftfreq(self):
+        # Check that x and y directions are correct
+        nb_grid_pts = [7, 4, 5]
+        nx, ny, nz = nb_grid_pts
+        nb_dof = 1
+        engine = muFFT.FFT(nb_grid_pts, engine='serial')
+        engine.create_plan(nb_dof)
+
+        np.testing.assert_array_equal(engine.coords.shape, [3] + nb_grid_pts)
+
+        x, y, z = engine.coords
+        xref, yref, zref = np.mgrid[0:nx, 0:ny, 0:nz]
+
+        np.testing.assert_allclose(x, xref / nx)
+        np.testing.assert_allclose(y, yref / ny)
+        np.testing.assert_allclose(z, zref / nz)
+
+        x, y, z = engine.coords
+        qx, qy, qz = engine.fftfreq
+
+        qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)
+        qarr[np.logical_and(np.logical_and(np.abs(np.abs(qx) * nx - 1) < 1e-6,
+                                           np.abs(np.abs(qy) * ny - 0) < 1e-6),
+                            np.abs(np.abs(qz) * nz - 0) < 1e-6)] = 0.5
+
+        rarr = np.zeros(nb_grid_pts, order='f')
+        engine.ifft(qarr, rarr)
+        np.testing.assert_allclose(rarr - rarr[:, 0, 0].reshape(-1, 1, 1), 0, atol=1e-12)
+        np.testing.assert_allclose(rarr, np.cos(2 * np.pi * x), atol=1e-12)
+        np.testing.assert_allclose(rarr[:, 0, 0], np.cos(np.arange(nx) * 2 * np.pi / nx), atol=1e-12)
+
+        qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)
+        qarr[np.logical_and(np.logical_and(np.abs(np.abs(qx) * nx - 0) < 1e-6,
+                                           np.abs(np.abs(qy) * ny - 1) < 1e-6),
+                            np.abs(np.abs(qz) * nz - 0) < 1e-6)] = 0.5
+
+        rarr = np.zeros(nb_grid_pts, order='f')
+        engine.ifft(qarr, rarr)
+        np.testing.assert_allclose(rarr - rarr[0, :, 0].reshape(1, -1, 1), 0, atol=1e-12)
+        np.testing.assert_allclose(rarr, np.cos(2 * np.pi * y), atol=1e-12)
+        np.testing.assert_allclose(rarr[0, :, 0], np.cos(np.arange(ny) * 2 * np.pi / ny), atol=1e-12)
+
+        qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)
+        qarr[np.logical_and(np.logical_and(np.abs(np.abs(qx) * nx - 0) < 1e-6,
+                                           np.abs(np.abs(qy) * ny - 0) < 1e-6),
+                            np.abs(np.abs(qz) * nz - 1) < 1e-6)] = 0.5
+
+        rarr = np.zeros(nb_grid_pts, order='f')
+        engine.ifft(qarr, rarr)
+        np.testing.assert_allclose(rarr - rarr[0, 0, :].reshape(1, 1, -1), 0, atol=1e-12)
+        np.testing.assert_allclose(rarr, np.cos(2 * np.pi * z), atol=1e-12)
+        np.testing.assert_allclose(rarr[0, 0, :], np.cos(np.arange(nz) * 2 * np.pi / nz), atol=1e-12)
 
     def test_buffer_lifetime(self):
         res = [2, 3]
