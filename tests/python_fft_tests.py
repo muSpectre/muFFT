@@ -49,7 +49,7 @@ else:
     communicator = muFFT.Communicator()
 
 
-class FFT_Check(unittest.TestCase):
+class FFTCheck(unittest.TestCase):
     def setUp(self):
         #               v- grid
         #                      v-components
@@ -210,7 +210,8 @@ class FFT_Check(unittest.TestCase):
                 try:
                     engine = muFFT.FFT(nb_grid_pts,
                                        engine=engine_str,
-                                       communicator=self.communicator)
+                                       communicator=self.communicator,
+                                       allow_destroy_input=False)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
                     # This FFT engine has not been compiled into the code. Skip
@@ -246,10 +247,12 @@ class FFT_Check(unittest.TestCase):
                 out_field = engine.register_fourier_space_field("out_field",
                                                                 dims)
                 self.assertFalse(out_field.array().flags.owndata)
+                indata = in_field.s.copy()
                 engine.fft(in_field, out_field)
                 err = np.linalg.norm(out_ref -
                                      out_field.array(muGrid.Pixel))
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                np.testing.assert_allclose(indata, in_field.s)
 
     def test_reverse_transform_field_interface(self):
         for engine_str in self.engines:

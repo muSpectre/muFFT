@@ -39,7 +39,7 @@ import numpy as np
 
 import muFFT
 
-from python_fft_tests import FFT_Check
+from python_fft_tests import FFTCheck
 #from python_netcdf_tests import NetCDF_Check_2d, NetCDF_Check_3d
 
 if __name__ == '__main__':
