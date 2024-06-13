@@ -675,6 +675,33 @@ class FFTCheck(unittest.TestCase):
         err = np.linalg.norm(out_ref - out_msp)
         self.assertLess(err, tol)
 
+    def test_second_transform(self):
+        nb_grid_pts = (3,)
+
+        for engine in self.engines:
+            if engine not in ['fftw', 'pocketfft']:
+                continue
+            fft = muFFT.FFT(nb_grid_pts, engine=engine)
+            x, = fft.coords
+
+            # Velocity field
+            u_x = fft.real_space_field('real-space')
+            u_x.p = np.sin(2 * np.pi * x)
+
+            # Reference
+            uref_q = np.fft.rfft(u_x.p)
+
+            # Fourier space velocity field
+            u_q = fft.fourier_space_field('fourier-space')
+            fft.fft(u_x, u_q)
+
+            fft2 = muFFT.FFT(nb_grid_pts, engine=engine)
+            tmp = fft2.fft(u_x.p)  # * fft.normalisation
+
+            np.testing.assert_allclose(tmp, u_q.p, atol=1e-14, err_msg=engine)
+            np.testing.assert_allclose(tmp, uref_q, atol=1e-14, err_msg=engine)
+            np.testing.assert_allclose(u_q.p, uref_q, atol=1e-14, err_msg=engine)
+
 
 class FFTCheckSerialOnly(unittest.TestCase):
     def setUp(self):
