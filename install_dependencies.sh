@@ -44,13 +44,13 @@ make install
 git clone https://github.com/mpip/pfft.git ${WORKDIR}/pfft
 cd ${WORKDIR}/pfft
 ./bootstrap.sh
-PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH \
-    LIBRARY_PATH=$PREFIX/lib:$LIBRARY_PATH \
-    CPATH=$PREFIX/include:$CPATH \
+PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH} \
+    LIBRARY_PATH=${PREFIX}/lib:${LIBRARY_PATH} \
+    CPATH=${PREFIX}/include:${CPATH} \
     CFLAGS="-O3" \
     ./configure --disable-shared --enable-static --with-pic --disable-fortran --prefix=${PREFIX}
-PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH \
-    LIBRARY_PATH=$PREFIX/lib:$LIBRARY_PATH \
-    CPATH=$PREFIX/include:$CPATH \
+PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH} \
+    LIBRARY_PATH=${PREFIX}/lib:${LIBRARY_PATH} \
+    CPATH=${PREFIX}/include:${CPATH} \
     make -j 4
 make install
