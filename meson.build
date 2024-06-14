@@ -58,7 +58,7 @@ if mpi.found()
     mufft_dependencies += [mpi]
 endif
 
-eigen3 = dependency('eigen3', required : true)
+eigen3 = dependency('eigen3', version : '>=3.4.0', required : true)
 mugrid = dependency('mugrid', required : true)
 mufft_dependencies += [eigen3, mugrid]
 
