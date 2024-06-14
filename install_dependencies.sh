@@ -23,6 +23,7 @@ fi
 # This is necessary because parallel compiles (if existing) are
 # broken on most distributions.
 #
+rm -rf ${WORKDIR}/pnetcdf-${PNETCDF_VERSION}
 curl https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz | tar -xz -C ${WORKDIR}
 cd ${WORKDIR}/pnetcdf-${PNETCDF_VERSION}
 ./configure --disable-shared --enable-static --with-pic --disable-fortran --disable-cxx --prefix=${PREFIX}
@@ -32,6 +33,7 @@ make install
 #
 # Install FFTW3 with MPI support
 #
+rm -rf ${WORKDIR}/fftw-${FFTW_VERSION}
 curl -L http://www.fftw.org/fftw-${FFTW_VERSION}.tar.gz | tar -xz -C ${WORKDIR}
 cd ${WORKDIR}/fftw-${FFTW_VERSION}
 ./configure --disable-shared --enable-static --with-pic --disable-fortran --enable-mpi --prefix=${PREFIX}
@@ -41,6 +43,7 @@ make install
 #
 # Install current master of PFFT
 #
+rm -rf ${WORKDIR}/pfft
 git clone https://github.com/mpip/pfft.git ${WORKDIR}/pfft
 cd ${WORKDIR}/pfft
 ./bootstrap.sh
