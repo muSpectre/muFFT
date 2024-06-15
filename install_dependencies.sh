@@ -4,6 +4,14 @@
 
 # Assumes that MPI is present
 
+# Set compiler variables if not set
+if [ -z ${CC} ]; then
+    CC=mpicc
+fi
+if [ -z ${CXX} ]; then
+    CXX=mpicxx
+fi
+
 # Installation prefix
 if [ -z ${PREFIX} ]; then
     PREFIX=${HOME}/.local
