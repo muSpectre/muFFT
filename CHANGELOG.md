@@ -6,7 +6,7 @@ Change log for µFFT
 
 - BUILD: Updated dependency to muGrid 0.92.3
 
-- 0.91.3 (14June2024)
+0.91.3 (14June2024)
 -------------------
 
 - BUILD: Updated dependency to muGrid 0.92.2
