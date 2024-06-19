@@ -1,6 +1,12 @@
 Change log for µFFT
 ===================
 
+0.91.5 (19June2024)
+-------------------
+
+- MAINT: Don't reuse buffer in convenience interface as this leads to unpredictable
+  behavior
+
 0.91.4 (15June2024)
 -------------------
 
