@@ -153,6 +153,16 @@ class FFTCheck(unittest.TestCase):
                 err = np.linalg.norm(out_ref - out_msp)
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
+                # Separately test convenience interface
+                out_msp = engine.fft(in_arr)
+                err = np.linalg.norm(out_ref - out_msp)
+                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+
+                # Check that out_msp is not overriden by a second fft call
+                engine.fft(np.zeros_like(in_arr))
+                err = np.linalg.norm(out_ref - out_msp)
+                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+
     def test_reverse_transform_numpy_interface(self):
         for engine_str in self.engines:
             for nb_grid_pts, dims in self.grids:
@@ -200,6 +210,18 @@ class FFTCheck(unittest.TestCase):
                 out_msp *= engine.normalisation
                 err = np.linalg.norm(out_ref - out_msp)
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+
+                # Separately test convenience interface
+                out_msp = engine.ifft(in_arr)
+
+                err = np.linalg.norm(out_ref - out_msp * engine.normalisation)
+                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+
+                # Check that out_msp is not overriden by a second fft call
+                engine.ifft(np.zeros_like(in_arr))
+                err = np.linalg.norm(out_ref - out_msp * engine.normalisation)
+                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+
 
     def test_forward_transform_field_interface(self):
         for engine_str in self.engines:

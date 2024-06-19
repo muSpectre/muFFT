@@ -361,6 +361,9 @@ namespace muFFT {
     //! return the number of spatial dimensions
     const Index_t & get_spatial_dim() const;
 
+    //! return whether temporary buffers are allowed
+    bool get_allow_temporary_buffer() const { return allow_temporary_buffer; }
+
     //! perform a deep copy of the engine (this should never be necessary in
     //! c++)
     virtual std::unique_ptr<FFTEngineBase> clone() const = 0;

@@ -56,7 +56,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/eigen.h>
 
-using muGrid::numpy_wrap;
+using muGrid::numpy_copy;
 using muGrid::operator<<;
 using muGrid::Complex;
 using muGrid::DynCcoord_t;
@@ -428,6 +428,11 @@ void add_engine_helper(py::module & mod, const std::string & name) {
       .def(
           "fft",
           [](Engine & eng, py::array_t<Real> & input_array) {
+            if (!eng.get_allow_temporary_buffer()) {
+              throw muFFT::FFTEngineError(
+                  "Engine does not allow temporary buffers, but the"
+                  "convenience interface requires them.");
+            }
             const py::buffer_info & info = input_array.request();
             auto & dim{eng.get_fourier_pixels().get_dim()};
             if (info.shape.size() < static_cast<size_t>(dim)) {
@@ -445,13 +450,18 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             auto & output_field{eng.fourier_space_field(
                 "fft return buffer", input_proxy.get_components_shape())};
             eng.fft(input_proxy.get_field(), output_field);
-            return numpy_wrap(output_field, IterUnit::Pixel);
+            return numpy_copy(output_field, IterUnit::Pixel);
           },
           "real_input_array"_a,
           "Perform forward FFT of the input array into the output array")
       .def(
           "ifft",
           [](Engine & eng, py::array_t<Complex> & input_array) {
+            if (!eng.get_allow_temporary_buffer()) {
+              throw muFFT::FFTEngineError(
+                  "Engine does not allow temporary buffers, but the"
+                  "convenience interface requires them.");
+            }
             const py::buffer_info & info = input_array.request();
             auto & dim{eng.get_fourier_pixels().get_dim()};
             if (info.shape.size() < static_cast<size_t>(dim)) {
@@ -469,7 +479,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             auto & output_field{eng.real_space_field(
                 "ifft return buffer", input_proxy.get_components_shape())};
             eng.ifft(input_proxy.get_field(), output_field);
-            return numpy_wrap(output_field, IterUnit::Pixel);
+            return numpy_copy(output_field, IterUnit::Pixel);
           },
           "fourier_input_array"_a,
           "Perform inverse FFT of the input array into the output array.")
