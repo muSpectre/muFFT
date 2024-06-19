@@ -56,7 +56,6 @@
 #include <pybind11/stl.h>
 #include <pybind11/eigen.h>
 
-using muGrid::numpy_copy;
 using muGrid::operator<<;
 using muGrid::Complex;
 using muGrid::DynCcoord_t;
@@ -68,12 +67,30 @@ using muGrid::OneQuadPt;
 using muGrid::Real;
 using muGrid::RuntimeError;
 using muGrid::Shape_t;
+using muGrid::TypedFieldBase;
 using muGrid::WrappedField;
+using muGrid::raw_mem_ops::strided_copy;
 using muFFT::Communicator;
 using muFFT::fft_freq;
 using muFFT::FFTEngineBase;
 using pybind11::literals::operator""_a;
 namespace py = pybind11;
+
+/* Copy a column-major field into a numpy array */
+template <typename T>
+py::array_t<T, py::array::f_style>
+numpy_copy(const TypedFieldBase<T> & field,
+           IterUnit iter_type = IterUnit::SubPt) {
+  const Shape_t shape{field.get_shape(iter_type)};
+  py::array_t<T> array(shape);
+  Shape_t array_strides(array.strides(), array.strides() + array.ndim());
+  // numpy arrays have stride in bytes
+  for (auto && s : array_strides)
+    s /= sizeof(T);
+  strided_copy(shape, field.get_strides(iter_type), array_strides, field.data(),
+               array.mutable_data());
+  return std::move(array);
+}
 
 class FFTEngineBaseUnclonable : public FFTEngineBase {
  public:
