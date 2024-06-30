@@ -225,7 +225,9 @@ namespace muFFT {
   /* ---------------------------------------------------------------------- */
   bool FFTWEngine::check_fourier_space_field(const FourierField_t & field,
                                              FFTDirection direction) const {
-    if (direction == FFTDirection::reverse) {
+    if (direction == FFTDirection::reverse && !this->allow_destroy_input) {
+      // Serial FFTW does not support preserving input for multi-dimensional
+      // transforms; we need to make a copy of the buffer
       return false;
     } else {
       return Parent::check_fourier_space_field(field, direction);
