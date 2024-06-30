@@ -6,6 +6,7 @@ Change log for µFFT
 
 - BUG: Serial FFTW engine does not support preserving input buffers for
   multi-dimensional inverse (c2r) transform; muFFT now makes an explicit copy
+- MAINT: Bumped muGrid dependency to 0.92.4
 
 0.91.5 (19June2024)
 -------------------

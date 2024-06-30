@@ -37,8 +37,6 @@
 
 #include <libmugrid/exception.hh>
 #include <libmugrid/field_typed.hh>
-#include <libmugrid/raw_memory_operations.hh>
-using muGrid::raw_mem_ops::strided_copy;  // Working around bug in numpy_tools.hh
 #include <libmugrid/numpy_tools.hh>
 
 #include <libmufft/fft_utils.hh>
@@ -70,7 +68,6 @@ using muGrid::RuntimeError;
 using muGrid::Shape_t;
 using muGrid::TypedFieldBase;
 using muGrid::WrappedField;
-using muGrid::raw_mem_ops::strided_copy;
 using muFFT::Communicator;
 using muFFT::fft_freq;
 using muFFT::FFTEngineBase;
