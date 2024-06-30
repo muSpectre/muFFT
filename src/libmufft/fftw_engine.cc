@@ -141,9 +141,9 @@ namespace muFFT {
     fftw_complex * i_in{out};
     Real * i_out{r_work_space};
 
-    this->ifft_plans[nb_dof_per_pixel] =
-        fftw_plan_many_dft_c2r(rank, n, howmany, i_in, inembed, istride, idist,
-                               i_out, onembed, ostride, odist, flags);
+    this->ifft_plans[nb_dof_per_pixel] = fftw_plan_many_dft_c2r(
+        rank, n, howmany, i_in, inembed, istride, idist, i_out, onembed,
+        ostride, odist, flags);
 
     if (this->ifft_plans.at(nb_dof_per_pixel) == nullptr) {
       throw FFTEngineError("Plan failed");
@@ -178,7 +178,9 @@ namespace muFFT {
     Real * ir2hc_in{r_work_space_2};
     this->ihcfft_plans[nb_dof_per_pixel] = fftw_plan_many_r2r(
         rank, n, howmany, ir2hc_in, inembed, istride, idist, i_out, onembed,
-        ostride, odist, ifft_kinds.data(), flags);
+        ostride, odist, ifft_kinds.data(),
+        (this->allow_destroy_input ? FFTW_DESTROY_INPUT : FFTW_PRESERVE_INPUT) |
+            flags);
 
     if (this->ihcfft_plans.at(nb_dof_per_pixel) == nullptr) {
       throw FFTEngineError("Plan failed");
@@ -215,8 +217,18 @@ namespace muFFT {
       // TODO(Pastewka): Check with Lars why this crashes the sequential(!) MPI
       // tests
 #ifndef WITH_MPI
-       fftw_cleanup();
+      fftw_cleanup();
 #endif
+    }
+  }
+
+  /* ---------------------------------------------------------------------- */
+  bool FFTWEngine::check_fourier_space_field(const FourierField_t & field,
+                                             FFTDirection direction) const {
+    if (direction == FFTDirection::reverse) {
+      return false;
+    } else {
+      return Parent::check_fourier_space_field(field, direction);
     }
   }
 

@@ -392,13 +392,16 @@ namespace muFFT {
                                 RealField_t & output_field);
 
     //! check whether real-space buffer has the correct memory layout
-    virtual bool check_real_space_field(const RealField_t & field) const;
+    virtual bool check_real_space_field(const RealField_t & field,
+                                        FFTDirection direction) const;
 
     //! check whether Fourier-space buffer has the correct memory layout
-    virtual bool check_fourier_space_field(const FourierField_t & field) const;
+    virtual bool check_fourier_space_field(const FourierField_t & field,
+                                           FFTDirection direction) const;
 
     //! check whether the half-complex buffer has the correct memory layout
-    virtual bool check_halfcomplex_field(const RealField_t & field) const;
+    virtual bool check_halfcomplex_field(const RealField_t & field,
+                                         FFTDirection direction) const;
 
     //! spatial dimension of the grid
     Index_t spatial_dimension;

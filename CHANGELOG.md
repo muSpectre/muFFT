@@ -1,11 +1,17 @@
 Change log for µFFT
 ===================
 
+0.91.6 (30June2024)
+-------------------
+
+- BUG: Serial FFTW engine does not support preserving input buffers for
+  multi-dimensional inverse (c2r) transform; muFFT now makes an explicit copy
+
 0.91.5 (19June2024)
 -------------------
 
-- MAINT: Don't reuse buffer in convenience interface as this leads to unpredictable
-  behavior
+- MAINT: Don't reuse buffer in convenience interface as this leads to
+  unpredictable behavior
 
 0.91.4 (15June2024)
 -------------------

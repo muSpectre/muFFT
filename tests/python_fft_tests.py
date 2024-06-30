@@ -230,9 +230,7 @@ class FFTCheck(unittest.TestCase):
                 nb_grid_pts = s * np.array(nb_grid_pts)
 
                 try:
-                    engine = muFFT.FFT(nb_grid_pts,
-                                       engine=engine_str,
-                                       communicator=self.communicator,
+                    engine = muFFT.FFT(nb_grid_pts, engine=engine_str, communicator=self.communicator,
                                        allow_destroy_input=False)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
@@ -245,8 +243,7 @@ class FFTCheck(unittest.TestCase):
                 elif len(nb_grid_pts) == 3:
                     axes = (0, 1, 2)
                 else:
-                    raise RuntimeError('Cannot handle {}-dim transforms'
-                                       .format(len(nb_grid_pts)))
+                    raise RuntimeError('Cannot handle {}-dim transforms'.format(len(nb_grid_pts)))
 
                 # We need to transpose the input to np.fft because muFFT
                 # uses column-major while np.fft uses row-major storage
@@ -256,25 +253,21 @@ class FFTCheck(unittest.TestCase):
                 out_ref = global_out_ref[(..., *engine.fourier_slices)]
 
                 fc = muGrid.GlobalFieldCollection(len(nb_grid_pts))
-                fc.initialise(tuple(engine.nb_domain_grid_pts),
-                              tuple(engine.nb_subdomain_grid_pts))
+                fc.initialise(tuple(engine.nb_domain_grid_pts), tuple(engine.nb_subdomain_grid_pts))
                 in_field = fc.register_real_field('in_field', dims)
                 self.assertFalse(in_field.array().flags.owndata)
-                in_field.array(muGrid.Pixel)[...] = global_in_arr[
-                    (..., *engine.subdomain_slices)]
+                in_field.array(muGrid.Pixel)[...] = global_in_arr[(..., *engine.subdomain_slices)]
 
                 tol = 1e-14 * np.prod(nb_grid_pts)
 
                 # Separately test convenience interface
-                out_field = engine.register_fourier_space_field("out_field",
-                                                                dims)
+                out_field = engine.register_fourier_space_field("out_field", dims)
                 self.assertFalse(out_field.array().flags.owndata)
                 indata = in_field.s.copy()
                 engine.fft(in_field, out_field)
-                err = np.linalg.norm(out_ref -
-                                     out_field.array(muGrid.Pixel))
+                err = np.linalg.norm(out_ref - out_field.array(muGrid.Pixel))
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
-                np.testing.assert_allclose(indata, in_field.s)
+                np.testing.assert_allclose(indata, in_field.s)  # Check that input is not destroyed
 
     def test_reverse_transform_field_interface(self):
         for engine_str in self.engines:
@@ -283,9 +276,8 @@ class FFTCheck(unittest.TestCase):
                 nb_grid_pts = list(s * np.array(nb_grid_pts))
 
                 try:
-                    engine = muFFT.FFT(nb_grid_pts,
-                                       engine=engine_str,
-                                       communicator=self.communicator)
+                    engine = muFFT.FFT(nb_grid_pts, engine=engine_str, communicator=self.communicator,
+                                       allow_destroy_input=False)
                     engine.create_plan(np.prod(dims))
                 except muFFT.UnknownFFTEngineError:
                     # This FFT engine has not been compiled into the code. Skip
@@ -297,8 +289,7 @@ class FFTCheck(unittest.TestCase):
                 elif len(nb_grid_pts) == 3:
                     axes = (0, 1, 2)
                 else:
-                    raise RuntimeError('Cannot handle {}-dim transforms'
-                                       .format(len(nb_grid_pts)))
+                    raise RuntimeError('Cannot handle {}-dim transforms'.format(len(nb_grid_pts)))
 
                 # We need to transpose the input to np.fft because muFFT
                 # uses column-major while np.fft uses row-major storage
@@ -313,21 +304,19 @@ class FFTCheck(unittest.TestCase):
 
                 tol = 1e-14 * np.prod(nb_grid_pts)
 
-                fourier_field = engine.register_fourier_space_field(
-                    "fourier_field", dims)
+                fourier_field = engine.register_fourier_space_field("fourier_field", dims)
                 self.assertFalse(fourier_field.array().flags.owndata)
-                fourier_field.array(muGrid.Pixel)[...] = \
-                    global_in_arr[(..., *engine.fourier_slices)]
+                fourier_field.array(muGrid.Pixel)[...] = global_in_arr[(..., *engine.fourier_slices)]
 
                 out_field = engine.register_real_space_field('out_field', dims)
                 self.assertFalse(out_field.array().flags.owndata)
 
                 # Separately test convenience interface
+                fourierdata = fourier_field.s.copy()
                 engine.ifft(fourier_field, out_field)
-                err = np.linalg.norm(
-                    out_ref -
-                    out_field.array(muGrid.Pixel) * engine.normalisation)
+                err = np.linalg.norm(out_ref - out_field.array(muGrid.Pixel) * engine.normalisation)
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                np.testing.assert_allclose(fourierdata, fourier_field.s)  # Check that input is not destroyed
 
     def test_nb_components1_forward_transform(self):
         for engine_str in self.engines:

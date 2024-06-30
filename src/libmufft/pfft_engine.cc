@@ -341,25 +341,27 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  bool PFFTEngine::check_real_space_field(const RealField_t & field) const {
+  bool PFFTEngine::check_real_space_field(const RealField_t & field,
+                                          FFTDirection direction) const {
     auto nb_dof_per_pixel{field.get_nb_dof_per_pixel()};
     auto && required_workspace_size{
         2 * this->required_workspace_sizes.at(nb_dof_per_pixel)};
     auto required_pad_size{required_workspace_size -
                            nb_dof_per_pixel * field.get_nb_buffer_pixels()};
-    return Parent::check_real_space_field(field) and
+    return Parent::check_real_space_field(field, direction) and
            static_cast<Index_t>(field.get_pad_size()) >= required_pad_size;
   }
 
   /* ---------------------------------------------------------------------- */
   bool
-  PFFTEngine::check_fourier_space_field(const FourierField_t & field) const {
+  PFFTEngine::check_fourier_space_field(const FourierField_t & field,
+                                        FFTDirection direction) const {
     auto nb_dof_per_pixel{field.get_nb_dof_per_pixel()};
     auto && required_workspace_size{
         this->required_workspace_sizes.at(nb_dof_per_pixel)};
     auto required_pad_size{required_workspace_size -
                            nb_dof_per_pixel * field.get_nb_buffer_pixels()};
-    return Parent::check_fourier_space_field(field) and
+    return Parent::check_fourier_space_field(field, direction) and
            static_cast<Index_t>(field.get_pad_size()) >= required_pad_size;
   }
 

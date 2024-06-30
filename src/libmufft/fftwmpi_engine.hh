@@ -147,10 +147,12 @@ namespace muFFT {
                       RealField_t & output_field) override;
 
     //! check whether real-space buffer has the correct memory layout
-    bool check_real_space_field(const RealField_t & field) const final;
+    bool check_real_space_field(const RealField_t & field,
+                                FFTDirection direction) const final;
 
     //! check whether Fourier-space buffer has the correct memory layout
-    bool check_fourier_space_field(const FourierField_t & field) const final;
+    bool check_fourier_space_field(const FourierField_t & field,
+                                   FFTDirection direction) const final;
 
     static int nb_engines;  //!< number of times this engine has
                             //!< been instantiated

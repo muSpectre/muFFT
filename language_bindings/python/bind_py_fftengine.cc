@@ -36,9 +36,10 @@
 #include "bind_py_declarations.hh"
 
 #include <libmugrid/exception.hh>
-#include <libmugrid/numpy_tools.hh>
 #include <libmugrid/field_typed.hh>
 #include <libmugrid/raw_memory_operations.hh>
+using muGrid::raw_mem_ops::strided_copy;  // Working around bug in numpy_tools.hh
+#include <libmugrid/numpy_tools.hh>
 
 #include <libmufft/fft_utils.hh>
 #include <libmufft/pocketfft_engine.hh>
@@ -75,22 +76,6 @@ using muFFT::fft_freq;
 using muFFT::FFTEngineBase;
 using pybind11::literals::operator""_a;
 namespace py = pybind11;
-
-/* Copy a column-major field into a numpy array */
-template <typename T>
-py::array_t<T, py::array::f_style>
-numpy_copy(const TypedFieldBase<T> & field,
-           IterUnit iter_type = IterUnit::SubPt) {
-  const Shape_t shape{field.get_shape(iter_type)};
-  py::array_t<T> array(shape);
-  Shape_t array_strides(array.strides(), array.strides() + array.ndim());
-  // numpy arrays have stride in bytes
-  for (auto && s : array_strides)
-    s /= sizeof(T);
-  strided_copy(shape, field.get_strides(iter_type), array_strides, field.data(),
-               array.mutable_data());
-  return std::move(array);
-}
 
 class FFTEngineBaseUnclonable : public FFTEngineBase {
  public:

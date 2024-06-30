@@ -144,6 +144,10 @@ namespace muFFT {
     void compute_ihcfft(const RealField_t & input_field,
                         RealField_t & output_field) override;
 
+    //! check whether Fourier-space buffer has the correct memory layout
+    bool check_fourier_space_field(const FourierField_t & field,
+                                   FFTDirection direction) const final;
+
     //! holds the plans for forward fourier transforms
     std::map<Index_t, fftw_plan> fft_plans{};
     //! holds the plans for inversefourier transforms

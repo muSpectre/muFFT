@@ -101,6 +101,29 @@ namespace muFFT {
   };
 
   /**
+   * @enum FFTDirection
+   * @brief Represents the direction of FFT transformation.
+   * @details This enum class is used to define the direction of the Fast
+   * Fourier Transform (FFT) operation. It defines two possible directions:
+   * Forward and Reverse.
+   */
+  enum class FFTDirection {
+    /**
+     * @brief Represents the forward direction of FFT transformation.
+     * @details This value is used when the FFT operation is to be performed in
+     * the forward direction.
+     */
+    forward,
+
+    /**
+     * @brief Represents the reverse direction of FFT transformation.
+     * @details This value is used when the FFT operation is to be performed in
+     * the reverse direction.
+     */
+    reverse
+  };
+
+  /**
    * @typedef PixelTag
    * @brief A type alias for tagging all fields.
    * @details This type alias is used to tag all fields. The library libµgrid

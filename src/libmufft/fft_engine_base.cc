@@ -124,8 +124,8 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{!this->check_real_space_field(input_field)};
-    bool output_copy_necessary{!this->check_fourier_space_field(output_field)};
+    bool input_copy_necessary{!this->check_real_space_field(input_field, FFTDirection::forward)};
+    bool output_copy_necessary{!this->check_fourier_space_field(output_field, FFTDirection::forward)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -236,8 +236,8 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{not this->check_fourier_space_field(input_field)};
-    bool output_copy_necessary{not this->check_real_space_field(output_field)};
+    bool input_copy_necessary{not this->check_fourier_space_field(input_field, FFTDirection::reverse)};
+    bool output_copy_necessary{not this->check_real_space_field(output_field, FFTDirection::reverse)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -348,8 +348,8 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{!this->check_halfcomplex_field(input_field)};
-    bool output_copy_necessary{!this->check_halfcomplex_field(output_field)};
+    bool input_copy_necessary{!this->check_halfcomplex_field(input_field, FFTDirection::forward)};
+    bool output_copy_necessary{!this->check_halfcomplex_field(output_field, FFTDirection::forward)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -460,8 +460,8 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{not this->check_halfcomplex_field(input_field)};
-    bool output_copy_necessary{not this->check_real_space_field(output_field)};
+    bool input_copy_necessary{not this->check_halfcomplex_field(input_field, FFTDirection::reverse)};
+    bool output_copy_necessary{not this->check_real_space_field(output_field, FFTDirection::reverse)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -740,7 +740,8 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  bool FFTEngineBase::check_real_space_field(const RealField_t & field) const {
+  bool FFTEngineBase::check_real_space_field(const RealField_t & field,
+                                             FFTDirection direction) const {
     if (!this->engine_has_rigid_memory_layout) {
       // If there is no requirements on the memory layout, this field is always
       // acceptable.
@@ -752,7 +753,8 @@ namespace muFFT {
 
   /* ---------------------------------------------------------------------- */
   bool
-  FFTEngineBase::check_fourier_space_field(const FourierField_t & field) const {
+  FFTEngineBase::check_fourier_space_field(const FourierField_t & field,
+                                           FFTDirection direction) const {
     if (!this->engine_has_rigid_memory_layout) {
       // If there is no requirements on the memory layout, this field is always
       // acceptable.
@@ -762,7 +764,8 @@ namespace muFFT {
         this->fourier_field_collection);
   }
 
-  bool FFTEngineBase::check_halfcomplex_field(const RealField_t & field) const {
+  bool FFTEngineBase::check_halfcomplex_field(const RealField_t & field,
+                                              FFTDirection direction) const {
     if (!this->engine_has_rigid_memory_layout) {
       // If there is no requirements on the memory layout, this field is always
       // acceptable.
