@@ -60,6 +60,7 @@ using muGrid::Complex;
 using muGrid::DynCcoord_t;
 using muGrid::GlobalFieldCollection;
 using muGrid::Index_t;
+using muGrid::Int;
 using muGrid::IterUnit;
 using muGrid::NumpyProxy;
 using muGrid::OneQuadPt;
@@ -129,6 +130,74 @@ void add_fft_engine_base(py::module & mod) {
              >(mod, "FFTEngineBase")
       .def(py::init<DynCcoord_t, Communicator, const muFFT::FFT_PlanFlags &,
                     bool, bool>());
+}
+
+template <typename T>
+T normalize_coord(Int coord, Real length) {
+  return static_cast<T>(coord / length);
+}
+
+template <>
+Int normalize_coord<Int>(Int coord, Real length) {
+  return coord;
+}
+
+template <typename T>
+auto py_fftfreq(const FFTEngineBase & eng) {
+  std::vector<Index_t> shape{}, strides{};
+  Index_t dim{eng.get_spatial_dim()};
+  shape.push_back(dim);
+  strides.push_back(sizeof(T));
+  for (auto && n : eng.get_nb_fourier_grid_pts()) {
+    shape.push_back(n);
+  }
+  for (auto && s : eng.get_fourier_pixels().get_strides()) {
+    strides.push_back(s * dim * sizeof(T));
+  }
+  py::array_t<T> fftfreqs(shape, strides);
+  T * ptr{static_cast<T *>(fftfreqs.request().ptr)};
+  auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
+  for (auto && pix : eng.get_fourier_pixels()) {
+    for (int i = 0; i < dim; ++i) {
+      ptr[i] = normalize_coord<T>(fft_freq(pix[i], nb_domain_grid_pts[i]),
+                                  nb_domain_grid_pts[i]);
+    }
+    ptr += dim;
+  }
+  return fftfreqs;
+}
+
+template <typename T>
+auto py_coords(const FFTEngineBase & eng) {
+  std::vector<Index_t> shape{};
+  const Index_t dim{eng.get_spatial_dim()};
+  shape.push_back(dim);
+  const auto & nb_subdomain_grid_pts{eng.get_nb_subdomain_grid_pts()};
+  for (auto && n : nb_subdomain_grid_pts) {
+    shape.push_back(n);
+  }
+  py::array_t<T, py::array::f_style> coords(shape);
+  const auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
+  const auto & subdomain_locations{eng.get_subdomain_locations()};
+  const auto nb_subdomain_pixels{
+      muGrid::CcoordOps::get_size(nb_subdomain_grid_pts)};
+  T * ptr{static_cast<T *>(coords.request().ptr)};
+  for (size_t k{0}; k < nb_subdomain_pixels; ++k) {
+    DynCcoord_t coord(dim);
+    *ptr = normalize_coord<T>(k % nb_subdomain_grid_pts[0] +
+                                  subdomain_locations[0],
+                              nb_domain_grid_pts[0]);
+    ptr++;
+    size_t yz{k};
+    for (int i = 1; i < dim; ++i) {
+      yz /= nb_subdomain_grid_pts[i - 1];
+      *ptr = normalize_coord<T>(yz % nb_subdomain_grid_pts[i] +
+                                    subdomain_locations[i],
+                                nb_domain_grid_pts[i]);
+      ptr++;
+    }
+  }
+  return coords;
 }
 
 template <class Engine>
@@ -316,64 +385,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
       .def_property_readonly("fourier_field_collection",
                              &Engine::get_fourier_field_collection)
       .def_property_readonly(
-          "coords",
-          [](const Engine & eng) {
-            std::vector<Index_t> shape{};
-            const Index_t dim{eng.get_spatial_dim()};
-            shape.push_back(dim);
-            const auto & nb_subdomain_grid_pts{eng.get_nb_subdomain_grid_pts()};
-            for (auto && n : nb_subdomain_grid_pts) {
-              shape.push_back(n);
-            }
-            py::array_t<Real, py::array::f_style> coords(shape);
-            const auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
-            const auto & subdomain_locations{eng.get_subdomain_locations()};
-            const auto nb_subdomain_pixels{
-                muGrid::CcoordOps::get_size(nb_subdomain_grid_pts)};
-            Real * ptr{static_cast<Real *>(coords.request().ptr)};
-            for (size_t k{0}; k < nb_subdomain_pixels; ++k) {
-              DynCcoord_t coord(dim);
-              *ptr = static_cast<Real>(k % nb_subdomain_grid_pts[0] +
-                                       subdomain_locations[0]) /
-                     nb_domain_grid_pts[0];
-              ptr++;
-              size_t yz{k};
-              for (int i = 1; i < dim; ++i) {
-                yz /= nb_subdomain_grid_pts[i - 1];
-                *ptr = static_cast<Real>(yz % nb_subdomain_grid_pts[i] +
-                                         subdomain_locations[i]) /
-                       nb_domain_grid_pts[i];
-                ptr++;
-              }
-            }
-            return coords;
-          })
+          "coords", [](const Engine & eng) { return py_coords<Real>(eng); })
       .def_property_readonly(
-          "fftfreq",
-          [](const Engine & eng) {
-            std::vector<Index_t> shape{}, strides{};
-            Index_t dim{eng.get_spatial_dim()};
-            shape.push_back(dim);
-            strides.push_back(sizeof(Real));
-            for (auto && n : eng.get_nb_fourier_grid_pts()) {
-              shape.push_back(n);
-            }
-            for (auto && s : eng.get_fourier_pixels().get_strides()) {
-              strides.push_back(s * dim * sizeof(Real));
-            }
-            py::array_t<Real> fftfreqs(shape, strides);
-            Real * ptr{static_cast<Real *>(fftfreqs.request().ptr)};
-            auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
-            for (auto && pix : eng.get_fourier_pixels()) {
-              for (int i = 0; i < dim; ++i) {
-                ptr[i] =
-                    static_cast<Real>(fft_freq(pix[i], nb_domain_grid_pts[i])) /
-                    nb_domain_grid_pts[i];
-              }
-              ptr += dim;
-            }
-            return fftfreqs;
-          })
+          "icoords", [](const Engine & eng) { return py_coords<Int>(eng); })
+      .def_property_readonly(
+          "fftfreq", [](const Engine & eng) { return py_fftfreq<Real>(eng); })
+      .def_property_readonly(
+          "ifftfreq", [](const Engine & eng) { return py_fftfreq<Int>(eng); })
       .def(
           "fft",
           [](Engine & eng, py::array_t<Real> & input_array,

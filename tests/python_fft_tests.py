@@ -495,6 +495,13 @@ class FFTCheck(unittest.TestCase):
                 freq = freq[(..., *engine.fourier_slices)]
                 assert np.allclose(engine.fftfreq, freq)
 
+                freq = np.array(
+                    np.meshgrid(*(np.fft.fftfreq(n, 1/n) for n in nb_grid_pts),
+                                indexing='ij'))
+
+                freq = freq[(..., *engine.fourier_slices)]
+                assert np.allclose(engine.ifftfreq, freq)
+
     def test_2d_fftfreq(self):
         # Check that x and y directions are correct
         nb_grid_pts = [7, 4]
@@ -511,6 +518,17 @@ class FFTCheck(unittest.TestCase):
 
         x, y = engine.coords
         qx, qy = engine.fftfreq
+
+        ix, iy = engine.icoords
+        iqx, iqy = engine.ifftfreq
+        assert ix.dtype == np.int32
+        assert iy.dtype == np.int32
+        assert iqx.dtype == np.int32
+        assert iqy.dtype == np.int32
+        np.testing.assert_allclose(ix, x * nx)
+        np.testing.assert_allclose(iy, y * ny)
+        np.testing.assert_allclose(iqx, qx * nx)
+        np.testing.assert_allclose(iqy, qy * ny)
 
         qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)
         qarr[np.logical_and(np.abs(np.abs(qx) * nx - 1) < 1e-6,
@@ -549,6 +567,21 @@ class FFTCheck(unittest.TestCase):
 
         x, y, z = engine.coords
         qx, qy, qz = engine.fftfreq
+
+        ix, iy, iz = engine.icoords
+        iqx, iqy, iqz = engine.ifftfreq
+        assert ix.dtype == np.int32
+        assert iy.dtype == np.int32
+        assert iz.dtype == np.int32
+        assert iqx.dtype == np.int32
+        assert iqy.dtype == np.int32
+        assert iqz.dtype == np.int32
+        np.testing.assert_allclose(ix, x * nx)
+        np.testing.assert_allclose(iy, y * ny)
+        np.testing.assert_allclose(iz, z * nz)
+        np.testing.assert_allclose(iqx, qx * nx)
+        np.testing.assert_allclose(iqy, qy * ny)
+        np.testing.assert_allclose(iqz, qz * nz)
 
         qarr = np.zeros(engine.nb_fourier_grid_pts, dtype=complex)
         qarr[np.logical_and(np.logical_and(np.abs(np.abs(qx) * nx - 1) < 1e-6,

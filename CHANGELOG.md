@@ -1,6 +1,13 @@
 Change log for µFFT
 ===================
 
+0.92.0 (08July2024)
+-------------------
+
+- ENH: Added `icoords` and `ifftfreq` convenience properties that return
+  domain local integer real space coordinates (like `coords` and `fftfreq`
+  but integer/index values)
+
 0.91.6 (30June2024)
 -------------------
 
