@@ -47,11 +47,11 @@ Change log for µFFT
 0.91.0 (02June2024)
 -------------------
 
-- ENH: Convenience filed accessor function `real_space_field` and
+- ENH: Convenience field accessor function `real_space_field` and
   `fourier_space_field`, etc. that create fields if they don't exist but
   return them if they do
 - ENH: Added `coords` convenience property which returns domain local
-  fractional real space coordinates (like `fftfreq` for the Fourier space)G
+  fractional real space coordinates (like `fftfreq` for the Fourier space)
 - DOC: Documentation of Python bindings
 - DOC: Python examples
 
