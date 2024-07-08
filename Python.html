@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Coding Convention" href="CodingConvention.html" /><link rel="prev" title="Getting Started" href="GettingStarted.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Python Bindings - µFFT 0.91.6-1-g567bf3d documentation</title>
+        <title>Python Bindings - µFFT 0.91.6-2-ge4f2ff6 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.91.6-1-g567bf3d
+      <a href="index.html"><div class="brand">µFFT 0.91.6-2-ge4f2ff6
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.91.6-1-g567bf3d
+  <span class="sidebar-brand-text">µFFT 0.91.6-2-ge4f2ff6
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -391,6 +391,9 @@ that uses the <cite>fftfreq</cite> property:</p>
 <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">physical_sizes</span>
 <span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">)</span>
 
+<span class="c1"># Compute wavevectors (2 * pi * k / L for all k and in all directions)</span>
+<span class="n">wavevectors</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftfreq</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">physical_sizes</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
 <span class="c1"># Obtain a real field and fill it</span>
 <span class="n">rfield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;scalar field&#39;</span><span class="p">)</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">coords</span>
@@ -402,16 +405,14 @@ that uses the <cite>fftfreq</cite> property:</p>
 
 <span class="c1"># Compute Fourier gradient by multiplying with wavevector</span>
 <span class="n">fgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fourier_space_field</span><span class="p">(</span><span class="s1">&#39;gradient field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">fgrad</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span> <span class="o">*</span> <span class="n">ffield</span><span class="o">.</span><span class="n">p</span>
+<span class="n">fgrad</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">wavevectors</span> <span class="o">*</span> <span class="n">ffield</span><span class="o">.</span><span class="n">p</span>
 
 <span class="c1"># Inverse transform to get gradient in real space</span>
 <span class="n">rgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;gradient field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 <span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fgrad</span><span class="p">,</span> <span class="n">rgrad</span><span class="p">)</span>
 
-<span class="c1"># Normalize gradient</span>
+<span class="c1"># Normalize gradient (µFFT does not normalize the transform)</span>
 <span class="n">gradx</span><span class="p">,</span> <span class="n">grady</span> <span class="o">=</span> <span class="n">rgrad</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">normalisation</span>
-<span class="n">gradx</span> <span class="o">*=</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">lx</span>  <span class="c1"># Need to multiply with inverse grid spacing</span>
-<span class="n">grady</span> <span class="o">*=</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">ly</span>  <span class="c1"># Need to multiply with inverse grid spacing</span>
 
 <span class="c1"># Gradient in x is cosine</span>
 <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">gradx</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">lx</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
@@ -569,7 +570,7 @@ and wavevectors.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=1abe377a"></script>
+</div><script src="_static/documentation_options.js?v=6b255857"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
