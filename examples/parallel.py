@@ -13,7 +13,8 @@ if MPI.COMM_WORLD.rank == 0:
     print('  ----   ----          ------       ---------        --------')
 MPI.COMM_WORLD.Barrier()  # Barrier so header is printed first
 
-print(f'{MPI.COMM_WORLD.rank:6} {MPI.COMM_WORLD.size:6} {str(fft.nb_domain_grid_pts):>15} {str(fft.nb_subdomain_grid_pts):>15} {str(fft.subdomain_locations):>15}')
+print(f'{MPI.COMM_WORLD.rank:6} {MPI.COMM_WORLD.size:6} {str(fft.nb_domain_grid_pts):>15} '
+      f'{str(fft.nb_subdomain_grid_pts):>15} {str(fft.subdomain_locations):>15}')
 
 # Compute wavevectors (2 * pi * k / L for all k and in all directions)
 wavevectors = (2 * np.pi * fft.ifftfreq.T / np.array(physical_sizes)).T
@@ -40,13 +41,16 @@ gradx, grady, gradz = rgrad.p * fft.normalisation
 
 # Gradient in x is cosine
 lx, ly, lz = physical_sizes
-np.testing.assert_allclose(gradx, 2 * np.pi * np.cos(2 * np.pi * x + 4 * np.pi * y) / lx, atol=1e-12)
+np.testing.assert_allclose(
+    gradx, 2 * np.pi * np.cos(2 * np.pi * x + 4 * np.pi * y) / lx, atol=1e-12)
 # Gradient in y is also cosine
-np.testing.assert_allclose(grady, 4 * np.pi * np.cos(2 * np.pi * x + 4 * np.pi * y) / ly, atol=1e-12)
+np.testing.assert_allclose(
+    grady, 4 * np.pi * np.cos(2 * np.pi * x + 4 * np.pi * y) / ly, atol=1e-12)
 # Gradient in z is zero
 np.testing.assert_allclose(gradz, 0, atol=1e-12)
 
 # I/O example
-file = FileIONetCDF('example.nc', open_mode=OpenMode.Overwrite, communicator=Communicator(MPI.COMM_WORLD))
+file = FileIONetCDF('example.nc', open_mode=OpenMode.Overwrite,
+                    communicator=Communicator(MPI.COMM_WORLD))
 file.register_field_collection(fft.real_field_collection)
 file.append_frame().write()
