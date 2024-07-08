@@ -8,6 +8,9 @@ nx, ny = nb_grid_pts
 lx, ly = physical_sizes
 fft = FFT(nb_grid_pts)
 
+# Compute wavevectors (2 * pi * k / L for all k and in all directions)
+wavevectors = (2 * np.pi * fft.ifftfreq.T / np.array(physical_sizes)).T
+
 # Obtain a real field and fill it
 rfield = fft.real_space_field('scalar field')
 x, y = fft.coords
@@ -19,16 +22,14 @@ fft.fft(rfield, ffield)
 
 # Compute Fourier gradient by multiplying with wavevector
 fgrad = fft.fourier_space_field('gradient field', (2,))
-fgrad.p = 2 * np.pi * 1j * fft.fftfreq * ffield.p
+fgrad.p = 1j * wavevectors * ffield.p
 
 # Inverse transform to get gradient in real space
 rgrad = fft.real_space_field('gradient field', (2,))
 fft.ifft(fgrad, rgrad)
 
-# Normalize gradient
+# Normalize gradient (µFFT does not normalize the transform)
 gradx, grady = rgrad.p * fft.normalisation
-gradx *= nx / lx  # Need to multiply with inverse grid spacing
-grady *= ny / ly  # Need to multiply with inverse grid spacing
 
 # Gradient in x is cosine
 np.testing.assert_allclose(gradx, 2 * np.pi * np.cos(2 * np.pi * x) / lx, atol=1e-12)
