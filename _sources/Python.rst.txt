@@ -56,7 +56,7 @@ shows an example of the convenience interface:
     :language: python
 
 The downside of the convenience interface is that temporary copies are typically created.
-The reason for this is that FFT engines typically have strict requirements on the memory
+The reason for this is that most FFT engines have strict requirements on the memory
 layout. The µGrid interface allows to create fields with the right memory layout directly,
 avoiding copies.
 
@@ -90,16 +90,21 @@ Coordinates and wavevectors
 Wavevectors are obtained via the `fftfreq` property of the FFT object. The result is
 identical to the
 `numpy.fft.fftfreq <https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html>`_
-function. The following example shows how to obtain a gradient field using a Fourier derivative
-that uses the `fftfreq` property:
+function. µFFT adds a second convenience method `ifftfreq`, which returns an array of integers
+that indicate the index of the wavevector in the Fourier-space field. This is the same as the output
+of `numpy.fft.fftfreq <https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html>`_
+with `d=1/n`. The following example shows how to obtain a gradient field using a Fourier derivative
+that uses the `ifftfreq` property:
 
 .. literalinclude:: ../../examples/gradient.py
     :language: python
 
-The result of `fftfreq` can be regarded as a fractional Fourier-space coordinate.
-There is also a convenience property `coords` that yields the fractional coordinates in
-real-space. These properties are useful in particular when running MPI-parallel with
-domain decomposition. Both properties then return just the coordinates of the local domain.
+The result of `fftfreq` can be regarded as a fractional Fourier-space coordinate,
+the result of `ifftfreq` and an integer Fourier-space coordinate.
+There are also convenience properties `coords` and `icoords` that yield the fractional
+and integer coordinates in real-space. These properties are useful in particular when
+running MPI-parallel with domain decomposition. All properties then return just the coordinates of
+the local domain.
 
 Parallelization
 ***************
@@ -116,8 +121,8 @@ The parallelization employs domain decomposition. The domain is split into strip
 for `fftwmpi` and pencil-shaped subdomains for `pfft`. `pfft` scales better to large numbers of MPI
 processes because of this pencil decomposition. The number of grid points on the local domain is
 returned by `nb_subdomain_grid_pts` and the location of the domain is given by `subdomain_locations`.
-Note that in a typical code uses `coords` and `fftfreq` as above and does not need to care about
-the actual details of the decomposition, as those properties return the domain-local coordinates
-and wavevectors.
+Note that in a typical code uses `coords`, `icoord`, `fftfreq` and `ifftfreq` as above and does not
+need to care about the actual details of the decomposition, as those properties return the domain-local
+coordinates and wavevectors.
 
 The above example also illustrates how to write the global field to a file.

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Coding Convention" href="CodingConvention.html" /><link rel="prev" title="Getting Started" href="GettingStarted.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Python Bindings - µFFT 0.91.6-3-g618dc68 documentation</title>
+        <title>Python Bindings - µFFT 0.91.6-4-gce981b0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.91.6-3-g618dc68
+      <a href="index.html"><div class="brand">µFFT 0.91.6-4-gce981b0
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.91.6-3-g618dc68
+  <span class="sidebar-brand-text">µFFT 0.91.6-4-gce981b0
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -350,7 +350,7 @@ shows an example of the convenience interface:</p>
 </pre></div>
 </div>
 <p>The downside of the convenience interface is that temporary copies are typically created.
-The reason for this is that FFT engines typically have strict requirements on the memory
+The reason for this is that most FFT engines have strict requirements on the memory
 layout. The µGrid interface allows to create fields with the right memory layout directly,
 avoiding copies.</p>
 <p>Temporary copies can be disabled entirely by setting the <cite>allow_temporary_buffer</cite> option
@@ -379,8 +379,11 @@ of the <cite>numpy</cite> documentation.</p>
 <p>Wavevectors are obtained via the <cite>fftfreq</cite> property of the FFT object. The result is
 identical to the
 <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html">numpy.fft.fftfreq</a>
-function. The following example shows how to obtain a gradient field using a Fourier derivative
-that uses the <cite>fftfreq</cite> property:</p>
+function. µFFT adds a second convenience method <cite>ifftfreq</cite>, which returns an array of integers
+that indicate the index of the wavevector in the Fourier-space field. This is the same as the output
+of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html">numpy.fft.fftfreq</a>
+with <cite>d=1/n</cite>. The following example shows how to obtain a gradient field using a Fourier derivative
+that uses the <cite>ifftfreq</cite> property:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">muFFT</span> <span class="kn">import</span> <span class="n">FFT</span>
 
@@ -419,10 +422,12 @@ that uses the <cite>fftfreq</cite> property:</p>
 <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">grady</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The result of <cite>fftfreq</cite> can be regarded as a fractional Fourier-space coordinate.
-There is also a convenience property <cite>coords</cite> that yields the fractional coordinates in
-real-space. These properties are useful in particular when running MPI-parallel with
-domain decomposition. Both properties then return just the coordinates of the local domain.</p>
+<p>The result of <cite>fftfreq</cite> can be regarded as a fractional Fourier-space coordinate,
+the result of <cite>ifftfreq</cite> and an integer Fourier-space coordinate.
+There are also convenience properties <cite>coords</cite> and <cite>icoords</cite> that yield the fractional
+and integer coordinates in real-space. These properties are useful in particular when
+running MPI-parallel with domain decomposition. All properties then return just the coordinates of
+the local domain.</p>
 </section>
 <section id="parallelization">
 <h2>Parallelization<a class="headerlink" href="#parallelization" title="Link to this heading">¶</a></h2>
@@ -487,9 +492,9 @@ and <cite>pfft</cite> engine support MPI parallelization. Using <cite>mpi</cite>
 for <cite>fftwmpi</cite> and pencil-shaped subdomains for <cite>pfft</cite>. <cite>pfft</cite> scales better to large numbers of MPI
 processes because of this pencil decomposition. The number of grid points on the local domain is
 returned by <cite>nb_subdomain_grid_pts</cite> and the location of the domain is given by <cite>subdomain_locations</cite>.
-Note that in a typical code uses <cite>coords</cite> and <cite>fftfreq</cite> as above and does not need to care about
-the actual details of the decomposition, as those properties return the domain-local coordinates
-and wavevectors.</p>
+Note that in a typical code uses <cite>coords</cite>, <cite>icoord</cite>, <cite>fftfreq</cite> and <cite>ifftfreq</cite> as above and does not
+need to care about the actual details of the decomposition, as those properties return the domain-local
+coordinates and wavevectors.</p>
 <p>The above example also illustrates how to write the global field to a file.</p>
 </section>
 </section>
@@ -568,7 +573,7 @@ and wavevectors.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=e65000ce"></script>
+</div><script src="_static/documentation_options.js?v=db46f832"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
