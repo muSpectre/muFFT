@@ -120,7 +120,7 @@ In a similar fashion, µFFT provides utility classes for discrete derivatives. T
 class accepts a stencil and computes the derivative in Fourier space. The following example shows how to
 compute the gradient of a field using the `DiscreteDerivative` class:
 
-.. literalinclude:: ../../examples/fourier_derivative.py
+.. literalinclude:: ../../examples/discrete_derivative.py
     :language: python
 
 The modules `muFFT.Stencils1D`, `muFFT.Stencils2D` and `muFFT.Stencils3D` provide a number of predefined
