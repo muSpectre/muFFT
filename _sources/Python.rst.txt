@@ -106,6 +106,26 @@ and integer coordinates in real-space. These properties are useful in particular
 running MPI-parallel with domain decomposition. All properties then return just the coordinates of
 the local domain.
 
+Derivatives
+***********
+
+While it is possible to manually compute the derivative as in the above example, µFFT provides
+utility classes that compute the derivative in Fourier space. The following example shows how to
+compute the gradient of a field using the `FourierDerivative` class:
+
+.. literalinclude:: ../../examples/fourier_derivative.py
+    :language: python
+
+In a similar fashion, µFFT provides utility classes for discrete derivatives. The `DiscreteDerivative`
+class accepts a stencil and computes the derivative in Fourier space. The following example shows how to
+compute the gradient of a field using the `DiscreteDerivative` class:
+
+.. literalinclude:: ../../examples/fourier_derivative.py
+    :language: python
+
+The modules `muFFT.Stencils1D`, `muFFT.Stencils2D` and `muFFT.Stencils3D` provide a number of predefined
+stencils that are implemented via the `DiscreteDerivative` class.
+
 Parallelization
 ***************
 

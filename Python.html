@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Coding Convention" href="CodingConvention.html" /><link rel="prev" title="Getting Started" href="GettingStarted.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Python Bindings - µFFT 0.92.0-5-g489ee46 documentation</title>
+        <title>Python Bindings - µFFT 0.92.0-6-g4fdafeb documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -179,7 +179,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">µFFT 0.92.0-5-g489ee46
+      <a href="index.html"><div class="brand">µFFT 0.92.0-6-g4fdafeb
  documentation</div></a>
     </div>
     <div class="header-right">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">µFFT 0.92.0-5-g489ee46
+  <span class="sidebar-brand-text">µFFT 0.92.0-6-g4fdafeb
  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -429,6 +429,99 @@ and integer coordinates in real-space. These properties are useful in particular
 running MPI-parallel with domain decomposition. All properties then return just the coordinates of
 the local domain.</p>
 </section>
+<section id="derivatives">
+<h2>Derivatives<a class="headerlink" href="#derivatives" title="Link to this heading">¶</a></h2>
+<p>While it is possible to manually compute the derivative as in the above example, µFFT provides
+utility classes that compute the derivative in Fourier space. The following example shows how to
+compute the gradient of a field using the <cite>FourierDerivative</cite> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">muFFT</span> <span class="kn">import</span> <span class="n">FFT</span><span class="p">,</span> <span class="n">FourierDerivative</span>
+
+<span class="c1"># Instantiate a FFT object with the PocketFFT engine</span>
+<span class="n">nb_grid_pts</span> <span class="o">=</span> <span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+<span class="n">physical_sizes</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">)</span>  <span class="c1"># Sizes of the domain (in arbitrary units)</span>
+<span class="n">grid_spacing_x</span><span class="p">,</span> <span class="n">grid_spacing_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">physical_sizes</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">)</span>
+<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">)</span>
+
+<span class="c1"># Construct Fourier derivative</span>
+<span class="n">fourier_x</span> <span class="o">=</span> <span class="n">FourierDerivative</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Derivative in x direction</span>
+<span class="n">fourier_y</span> <span class="o">=</span> <span class="n">FourierDerivative</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Derivative in y direction</span>
+
+<span class="c1"># Obtain a real field and fill it</span>
+<span class="n">rfield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;scalar field&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">coords</span>
+<span class="n">rfield</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># Just a sine</span>
+
+<span class="c1"># Compute Fourier transform</span>
+<span class="n">ffield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fourier_space_field</span><span class="p">(</span><span class="s1">&#39;scalar field&#39;</span><span class="p">)</span>
+<span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">rfield</span><span class="p">,</span> <span class="n">ffield</span><span class="p">)</span>
+
+<span class="c1"># Compute Fourier gradient by multiplying with wavevector</span>
+<span class="n">fgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fourier_space_field</span><span class="p">(</span><span class="s1">&#39;gradient field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">fgrad</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fourier_x</span><span class="o">.</span><span class="n">fourier</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">)</span> <span class="o">*</span> <span class="n">ffield</span><span class="o">.</span><span class="n">p</span> <span class="o">/</span> <span class="n">grid_spacing_x</span>
+<span class="n">fgrad</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fourier_y</span><span class="o">.</span><span class="n">fourier</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">)</span> <span class="o">*</span> <span class="n">ffield</span><span class="o">.</span><span class="n">p</span> <span class="o">/</span> <span class="n">grid_spacing_y</span>
+
+<span class="c1"># Inverse transform to get gradient in real space</span>
+<span class="n">rgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;gradient field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fgrad</span><span class="p">,</span> <span class="n">rgrad</span><span class="p">)</span>
+
+<span class="c1"># Normalize gradient (µFFT does not normalize the transform)</span>
+<span class="n">gradx</span><span class="p">,</span> <span class="n">grady</span> <span class="o">=</span> <span class="n">rgrad</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">normalisation</span>
+
+<span class="c1"># Gradient in x is cosine</span>
+<span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">physical_sizes</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">gradx</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">lx</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="c1"># Gradient in y is zero</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">grady</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In a similar fashion, µFFT provides utility classes for discrete derivatives. The <cite>DiscreteDerivative</cite>
+class accepts a stencil and computes the derivative in Fourier space. The following example shows how to
+compute the gradient of a field using the <cite>DiscreteDerivative</cite> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">muFFT</span> <span class="kn">import</span> <span class="n">FFT</span><span class="p">,</span> <span class="n">FourierDerivative</span>
+
+<span class="c1"># Instantiate a FFT object with the PocketFFT engine</span>
+<span class="n">nb_grid_pts</span> <span class="o">=</span> <span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+<span class="n">physical_sizes</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">)</span>  <span class="c1"># Sizes of the domain (in arbitrary units)</span>
+<span class="n">grid_spacing_x</span><span class="p">,</span> <span class="n">grid_spacing_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">physical_sizes</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">)</span>
+<span class="n">fft</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">(</span><span class="n">nb_grid_pts</span><span class="p">)</span>
+
+<span class="c1"># Construct Fourier derivative</span>
+<span class="n">fourier_x</span> <span class="o">=</span> <span class="n">FourierDerivative</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Derivative in x direction</span>
+<span class="n">fourier_y</span> <span class="o">=</span> <span class="n">FourierDerivative</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Derivative in y direction</span>
+
+<span class="c1"># Obtain a real field and fill it</span>
+<span class="n">rfield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;scalar field&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">coords</span>
+<span class="n">rfield</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># Just a sine</span>
+
+<span class="c1"># Compute Fourier transform</span>
+<span class="n">ffield</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fourier_space_field</span><span class="p">(</span><span class="s1">&#39;scalar field&#39;</span><span class="p">)</span>
+<span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">rfield</span><span class="p">,</span> <span class="n">ffield</span><span class="p">)</span>
+
+<span class="c1"># Compute Fourier gradient by multiplying with wavevector</span>
+<span class="n">fgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fourier_space_field</span><span class="p">(</span><span class="s1">&#39;gradient field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">fgrad</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fourier_x</span><span class="o">.</span><span class="n">fourier</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">)</span> <span class="o">*</span> <span class="n">ffield</span><span class="o">.</span><span class="n">p</span> <span class="o">/</span> <span class="n">grid_spacing_x</span>
+<span class="n">fgrad</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fourier_y</span><span class="o">.</span><span class="n">fourier</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">)</span> <span class="o">*</span> <span class="n">ffield</span><span class="o">.</span><span class="n">p</span> <span class="o">/</span> <span class="n">grid_spacing_y</span>
+
+<span class="c1"># Inverse transform to get gradient in real space</span>
+<span class="n">rgrad</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">real_space_field</span><span class="p">(</span><span class="s1">&#39;gradient field&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fgrad</span><span class="p">,</span> <span class="n">rgrad</span><span class="p">)</span>
+
+<span class="c1"># Normalize gradient (µFFT does not normalize the transform)</span>
+<span class="n">gradx</span><span class="p">,</span> <span class="n">grady</span> <span class="o">=</span> <span class="n">rgrad</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">normalisation</span>
+
+<span class="c1"># Gradient in x is cosine</span>
+<span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">physical_sizes</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">gradx</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">lx</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="c1"># Gradient in y is zero</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">grady</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The modules <cite>muFFT.Stencils1D</cite>, <cite>muFFT.Stencils2D</cite> and <cite>muFFT.Stencils3D</cite> provide a number of predefined
+stencils that are implemented via the <cite>DiscreteDerivative</cite> class.</p>
+</section>
 <section id="parallelization">
 <h2>Parallelization<a class="headerlink" href="#parallelization" title="Link to this heading">¶</a></h2>
 <p>The previous example can be parallelized by initializing the FFT engine with an MPI communicator:</p>
@@ -565,6 +658,7 @@ coordinates and wavevectors.</p>
 <li><a class="reference internal" href="#convenience-numpy-interface">Convenience numpy interface</a></li>
 <li><a class="reference internal" href="#normalization">Normalization</a></li>
 <li><a class="reference internal" href="#coordinates-and-wavevectors">Coordinates and wavevectors</a></li>
+<li><a class="reference internal" href="#derivatives">Derivatives</a></li>
 <li><a class="reference internal" href="#parallelization">Parallelization</a></li>
 </ul>
 </li>
@@ -577,7 +671,7 @@ coordinates and wavevectors.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=792833f4"></script>
+</div><script src="_static/documentation_options.js?v=1ad74c91"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=4e2eecee"></script>
