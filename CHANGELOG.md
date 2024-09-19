@@ -1,6 +1,11 @@
 Change log for µFFT
 ===================
 
+0.92.1 (19Sep2024)
+------------------
+
+- BUILD: Allow a wider range of muGrid versions
+
 0.92.0 (08July2024)
 -------------------
 
