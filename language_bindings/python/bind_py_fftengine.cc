@@ -464,8 +464,10 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             NumpyProxy<Real> input_proxy(
                 eng.get_nb_domain_grid_pts(), eng.get_nb_subdomain_grid_pts(),
                 eng.get_subdomain_locations(), nb_dof_per_pixel, input_array);
+            std::stringstream name;
+            name << "fft return buffer " << input_proxy.get_components_shape();
             auto & output_field{eng.fourier_space_field(
-                "fft return buffer", input_proxy.get_components_shape())};
+                name.str(), input_proxy.get_components_shape())};
             eng.fft(input_proxy.get_field(), output_field);
             return numpy_copy(output_field, IterUnit::Pixel);
           },
@@ -493,8 +495,10 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             NumpyProxy<Complex> input_proxy(
                 eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
                 eng.get_fourier_locations(), nb_dof_per_pixel, input_array);
+            std::stringstream name;
+            name << "ifft return buffer " << input_proxy.get_components_shape();
             auto & output_field{eng.real_space_field(
-                "ifft return buffer", input_proxy.get_components_shape())};
+                name.str(), input_proxy.get_components_shape())};
             eng.ifft(input_proxy.get_field(), output_field);
             return numpy_copy(output_field, IterUnit::Pixel);
           },
