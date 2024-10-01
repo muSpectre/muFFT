@@ -225,7 +225,7 @@ class FFTCheck(unittest.TestCase):
 
     def test_varying_nb_components_numpy_interface(self):
         for engine_str in self.engines:
-            for nb_grid_pts in self.grids:
+            for nb_grid_pts, dims in self.grids:
                 s = self.communicator.size
                 nb_grid_pts = s * np.array(nb_grid_pts)
                 try:
