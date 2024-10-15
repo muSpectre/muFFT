@@ -258,6 +258,11 @@ class FFTCheck(unittest.TestCase):
                 out_ref3x3 = global_out_ref3x3[(..., *engine.fourier_slices)]
                 in_arr3x3 = global_in_arr3x3[(..., *engine.subdomain_slices)]
 
+                global_in_arr1x1 = np.random.random([1, 1, *nb_grid_pts])
+                global_out_ref1x1 = np.fft.fftn(global_in_arr1x1.T, axes=axes).T
+                out_ref1x1 = global_out_ref1x1[(..., *engine.fourier_slices)]
+                in_arr1x1 = global_in_arr1x1[(..., *engine.subdomain_slices)]
+
                 tol = 1e-14 * np.prod(nb_grid_pts)
 
                 # Separately test convenience interface
@@ -273,6 +278,12 @@ class FFTCheck(unittest.TestCase):
                 # Check that we can also run on 3x3 components
                 out_msp3x3 = engine.fft(in_arr3x3)
                 err = np.linalg.norm(out_ref3x3 - out_msp3x3)
+                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+
+                # Check that we can also run on 1x1 components
+                out_msp1x1 = engine.fft(in_arr1x1)
+                self.assertEqual(out_msp1x1.shape, engine.nb_fourier_grid_pts)
+                err = np.linalg.norm(out_ref1x1 - out_msp1x1)
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
 
