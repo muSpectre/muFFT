@@ -131,15 +131,7 @@ void add_fourier_derivative(py::module & mod, std::string name) {
              >(mod, name.c_str())
       .def(py::init<Index_t, Index_t>(), "spatial_dimension"_a, "direction"_a)
       .def(py::init([](Index_t spatial_dimension, Index_t direction,
-                       const Eigen::ArrayXd & shift) {
-             // Default: shift = vector (of correct dimension) filled with
-             // zeros
-             if ((shift.size() == 1) and (shift(0, 0) == 0)) {
-               Eigen::VectorXd default_shift{
-                   Eigen::ArrayXd::Zero(spatial_dimension)};
-               return new FourierDerivative(spatial_dimension, direction,
-                                            default_shift);
-             }
+                       const Eigen::Ref<Eigen::ArrayXd> shift) {
              // is the shift vector correctly given?
              if (shift.size() != spatial_dimension) {
                std::stringstream s;
@@ -148,9 +140,10 @@ void add_fourier_derivative(py::module & mod, std::string name) {
                  << "D.";
                throw muGrid::RuntimeError(s.str());
              }
+             std::cout << "CC" << std::endl;
              return new FourierDerivative(spatial_dimension, direction, shift);
            }),
-           "spatial_dimension"_a, "direction"_a, "shift"_a = 0);
+           "spatial_dimension"_a, "direction"_a, "shift"_a);
 }
 
 void add_discrete_derivative(py::module & mod, std::string name) {
