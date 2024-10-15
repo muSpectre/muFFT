@@ -214,7 +214,7 @@ class DerivativeCheck2d(unittest.TestCase):
         # shift the fourier derivative by one grid point in x- and y-direction
         # shift=[1, 1]. (Here the grid spacing is 1 in each direction, other-
         # wise one should consider it to give the real space shift correct.)
-        shift = np.array([1, 1])
+        shift = np.array([1., 1.])
         diffop = muFFT.FourierDerivative(2, 0, shift)
         q = self.fft.fftfreq
         d = diffop.fourier(q)

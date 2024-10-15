@@ -10,3 +10,7 @@
 .vscode
 .idea
 .ccls-cache
+
+/subprojects/packagecache/*
+/subprojects/eigen-*/*
+/subprojects/pybind11-*/*

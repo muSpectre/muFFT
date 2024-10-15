@@ -6,6 +6,7 @@ Change log for µFFT
 
 - BUG: Returning fields with different component shape from single muFFT
   object using the numpy convenience interface
+- BUG: Fixed segfault in Fourier derivative with shift vector
 
 0.92.2 (25Sep2024)
 ------------------
