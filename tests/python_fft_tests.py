@@ -282,7 +282,7 @@ class FFTCheck(unittest.TestCase):
 
                 # Check that we can also run on 1x1 components
                 out_msp1x1 = engine.fft(in_arr1x1)
-                self.assertEqual(out_msp1x1.shape, engine.nb_fourier_grid_pts)
+                self.assertEqual(out_msp1x1.shape, out_ref1x1.shape)
                 err = np.linalg.norm(out_ref1x1 - out_msp1x1)
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
