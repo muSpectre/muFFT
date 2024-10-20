@@ -5,11 +5,22 @@
 /build*
 /cmake-build-*
 
+/doc/build
+/doc/html
+/doc/xml
+/doc/doxygenxml
+/doc/source/doxygenxml
+/doc/source/html
+
+/venv
+
 *.pyc
 
+.fleet
 .vscode
 .idea
 .ccls-cache
+.cache
 
 /subprojects/packagecache/*
 /subprojects/eigen-*/*
