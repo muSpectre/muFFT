@@ -143,7 +143,7 @@ namespace muFFT {
      * prepare a plan for a transform with shape entries per pixel.
      * Needs to be called for every different sized transform
      */
-    void create_plan(const Shape_t & shape);
+    void create_plan(const Shape_t & shape = Shape_t{});
 
     //! forward transform, performs copy of buffer if required
     void fft(const RealField_t & input_field, FourierField_t & output_field);
@@ -177,7 +177,7 @@ namespace muFFT {
      */
     virtual muGrid::ComplexField &
     register_fourier_space_field(const std::string & unique_name,
-                                 const Shape_t & shape);
+                                 const Shape_t & shape = Shape_t{});
 
     /**
      * Fetches a Fourier-space field with the ideal strides and dimensions for
@@ -193,7 +193,7 @@ namespace muFFT {
      * `register_fourier_space_field`.
      */
     FourierField_t & fourier_space_field(const std::string & unique_name,
-                                         const Shape_t & shape);
+                                         const Shape_t & shape = Shape_t{});
 
     /**
      * Create a Fourier-space field with the ideal strides and dimensions for
@@ -213,7 +213,7 @@ namespace muFFT {
      */
     virtual RealField_t &
     register_halfcomplex_field(const std::string & unique_name,
-                               const Shape_t & shape);
+                               const Shape_t & shape = Shape_t{});
 
     /**
      * Fetches a Fourier-space field with the ideal strides and dimensions for
@@ -229,7 +229,7 @@ namespace muFFT {
      * `register_fourier_space_field`.
      */
     RealField_t & halfcomplex_field(const std::string & unique_name,
-                                    const Shape_t & shape);
+                                    const Shape_t & shape = Shape_t{});
 
     /**
      * Create a real-space field with the ideal strides and dimensions for this
@@ -249,7 +249,7 @@ namespace muFFT {
      */
     virtual RealField_t &
     register_real_space_field(const std::string & unique_name,
-                              const Shape_t & shape);
+                              const Shape_t & shape = Shape_t{});
 
     /**
      * Fetches a real-space field with the ideal strides and dimensions for this
@@ -265,7 +265,7 @@ namespace muFFT {
      * `register_real_space_field`.
      */
     RealField_t & real_space_field(const std::string & unique_name,
-                                   const Shape_t & shape);
+                                   const Shape_t & shape = Shape_t{});
 
     //! return whether this engine is active
     virtual bool has_grid_pts() const { return true; }

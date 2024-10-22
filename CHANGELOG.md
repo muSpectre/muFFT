@@ -1,11 +1,13 @@
 Change log for µFFT
 ===================
 
-0.92.3 (not yet released)
--------------------------
+0.93.0 (22Oct2024)
+------------------
 
 - BUG: Returning fields with different component shape from single muFFT
   object using the numpy convenience interface
+- BUG: Fixed segfault in Fourier derivative with shift vector
+- MAINT: Bumped muGrid dependency to 0.93.2
 
 0.92.2 (25Sep2024)
 ------------------

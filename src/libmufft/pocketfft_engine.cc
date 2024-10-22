@@ -172,7 +172,7 @@ namespace muFFT {
     } else {
       // For n-dimensional transforms we need to carry out n-transforms in the
       // respective directions
-      FourierField_t & tmp_field{this->fourier_space_field("pocketfft_tmp", 1)};
+      FourierField_t & tmp_field{this->fourier_space_field("pocketfft_tmp")};
       pocketfft::stride_t tmp_strides{
           tmp_field.get_strides(muGrid::IterUnit::Pixel, sizeof(Complex))};
 
@@ -264,7 +264,7 @@ namespace muFFT {
     } else {
       // For n-dimensional transforms we need to carry out n-transforms in the
       // respective directions
-      FourierField_t & tmp_field{this->fourier_space_field("pocketfft_tmp", 1)};
+      FourierField_t & tmp_field{this->fourier_space_field("pocketfft_tmp")};
       pocketfft::stride_t tmp_strides{
           tmp_field.get_strides(muGrid::IterUnit::Pixel, sizeof(Complex))};
 

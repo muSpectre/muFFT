@@ -258,6 +258,11 @@ class FFTCheck(unittest.TestCase):
                 out_ref3x3 = global_out_ref3x3[(..., *engine.fourier_slices)]
                 in_arr3x3 = global_in_arr3x3[(..., *engine.subdomain_slices)]
 
+                global_in_arr1x1 = np.random.random([1, 1, *nb_grid_pts])
+                global_out_ref1x1 = np.fft.fftn(global_in_arr1x1.T, axes=axes).T
+                out_ref1x1 = global_out_ref1x1[(..., *engine.fourier_slices)]
+                in_arr1x1 = global_in_arr1x1[(..., *engine.subdomain_slices)]
+
                 tol = 1e-14 * np.prod(nb_grid_pts)
 
                 # Separately test convenience interface
@@ -273,6 +278,12 @@ class FFTCheck(unittest.TestCase):
                 # Check that we can also run on 3x3 components
                 out_msp3x3 = engine.fft(in_arr3x3)
                 err = np.linalg.norm(out_ref3x3 - out_msp3x3)
+                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+
+                # Check that we can also run on 1x1 components
+                out_msp1x1 = engine.fft(in_arr1x1)
+                self.assertEqual(out_msp1x1.shape, out_ref1x1.shape)
+                err = np.linalg.norm(out_ref1x1 - out_msp1x1)
                 self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
 
@@ -433,14 +444,7 @@ class FFTCheck(unittest.TestCase):
                 engine.fft(in_arr, out_msp)
 
                 # Check that the output array does not have a unit first dimension
-                self.assertEqual(tuple(out_msp.shape), engine.nb_fourier_grid_pts),  # \
-                #                "{} not equal to {}".format(out_msp.shape,
-                #                                            engine.nb_fourier_grid_pts)
-                # TODO(pastewka): I think this test is out of date. the numpy
-                # rfftn shortens a different dimension, and therefore gets a
-                # different shape. can we ditch this?
-                # self.assertEqual(out_msp.shape, global_out_ref.shape)
-                # self.assertEqual(len(out_msp.shape), len(global_out_ref.shape))
+                self.assertEqual(tuple(out_msp.shape), (1, 1) + engine.nb_fourier_grid_pts)
 
                 # Convenience interface that returns an array
                 out_msp = engine.fft(in_arr)
@@ -514,7 +518,7 @@ class FFTCheck(unittest.TestCase):
             fft_arr = engine.register_fourier_space_field("fourier work space",
                                                           nb_dof)
             self.assertFalse(fft_arr.array().flags.owndata)
-            self.assertEqual(fft_arr.shape, [nb_grid_pts[0] // 2 + 1])
+            self.assertEqual(fft_arr.shape, [1, 1, nb_grid_pts[0] // 2 + 1])
             engine.fft(arr, fft_arr)
             self.assertTrue(np.allclose(fft_arr_ref, fft_arr))
 
