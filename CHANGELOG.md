@@ -1,8 +1,8 @@
 Change log for µFFT
 ===================
 
-0.93.0 (20Oct2024)
--------------------------
+0.93.0 (22Oct2024)
+------------------
 
 - BUG: Returning fields with different component shape from single muFFT
   object using the numpy convenience interface
