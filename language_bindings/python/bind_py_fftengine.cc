@@ -61,13 +61,10 @@ using muGrid::DynCcoord_t;
 using muGrid::GlobalFieldCollection;
 using muGrid::Index_t;
 using muGrid::Int;
-using muGrid::IterUnit;
 using muGrid::NumpyProxy;
 using muGrid::Real;
 using muGrid::RuntimeError;
 using muGrid::Shape_t;
-using muGrid::TypedFieldBase;
-using muGrid::WrappedField;
 using muFFT::Communicator;
 using muFFT::fft_freq;
 using muFFT::FFTEngineBase;
@@ -468,7 +465,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             auto & output_field{eng.fourier_space_field(
                 name.str(), input_proxy.get_components_shape())};
             eng.fft(input_proxy.get_field(), output_field);
-            return numpy_copy(output_field, IterUnit::Pixel);
+            return numpy_copy(output_field, input_proxy.get_iter_type());
           },
           "real_input_array"_a,
           "Perform forward FFT of the input array into the output array")
@@ -499,7 +496,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             auto & output_field{eng.real_space_field(
                 name.str(), input_proxy.get_components_shape())};
             eng.ifft(input_proxy.get_field(), output_field);
-            return numpy_copy(output_field, IterUnit::Pixel);
+            return numpy_copy(output_field, input_proxy.get_iter_type());
           },
           "fourier_input_array"_a,
           "Perform inverse FFT of the input array into the output array.")
