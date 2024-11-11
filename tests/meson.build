@@ -67,7 +67,7 @@ if mu_with_mpi
 
             test('mpi_mufft_python_binding_tests',
                  mpiexec,
-                 args: ['-n', n, '--oversubscribe', python.path(),
+                 args: ['-n', n, '--oversubscribe', python.full_path(),
                         files('python_mpi_binding_tests.py'), '-v', '-f'],
                    depends: [mufft_python],
                    env: envdata,
