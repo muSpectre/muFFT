@@ -51,7 +51,7 @@ if mpi.found()
     endif
     if fftw3mpi.found() or pfft.found()
         mu_with_mpi = true  # We found MPI and a parallel FFT library
-        mpi_processes = ['1', '2']  # MPI processes to use for parallel tests
+        mpi_processes = ['1', '2', '4', '8']  # MPI processes to use for parallel tests
     endif
 
     add_project_arguments('-DWITH_MPI', language : ['c', 'cpp'])
