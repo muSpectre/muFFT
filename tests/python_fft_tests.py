@@ -116,271 +116,271 @@ class FFTCheck(unittest.TestCase):
     def test_forward_transform_numpy_interface(self):
         for engine_str in self.engines:
             for nb_grid_pts, dims in self.grids:
-                s = self.communicator.size
-                nb_grid_pts = s * np.array(nb_grid_pts)
-                try:
-                    engine = muFFT.FFT(nb_grid_pts,
-                                       engine=engine_str,
-                                       communicator=self.communicator)
-                    engine.create_plan(np.prod(dims))
-                except muFFT.UnknownFFTEngineError:
-                    # This FFT engine has not been compiled into the code. Skip
-                    # test.
-                    continue
+                for s in [1, self.communicator.size]:
+                    nb_grid_pts = s * np.array(nb_grid_pts)
+                    try:
+                        engine = muFFT.FFT(nb_grid_pts,
+                                           engine=engine_str,
+                                           communicator=self.communicator)
+                        engine.create_plan(np.prod(dims))
+                    except muFFT.UnknownFFTEngineError:
+                        # This FFT engine has not been compiled into the code. Skip
+                        # test.
+                        continue
 
-                if len(nb_grid_pts) == 2:
-                    axes = (0, 1)
-                elif len(nb_grid_pts) == 3:
-                    axes = (0, 1, 2)
-                else:
-                    raise RuntimeError('Cannot handle {}-dim transforms'
-                                       .format(len(nb_grid_pts)))
+                    if len(nb_grid_pts) == 2:
+                        axes = (0, 1)
+                    elif len(nb_grid_pts) == 3:
+                        axes = (0, 1, 2)
+                    else:
+                        raise RuntimeError('Cannot handle {}-dim transforms'
+                                           .format(len(nb_grid_pts)))
 
-                # We need to transpose the input to np.fft because muFFT
-                # uses column-major while np.fft uses row-major storage
-                np.random.seed(1)
-                global_in_arr = np.random.random([*dims, *nb_grid_pts])
-                global_out_ref = np.fft.fftn(global_in_arr.T, axes=axes).T
-                out_ref = global_out_ref[(..., *engine.fourier_slices)]
-                in_arr = global_in_arr[(..., *engine.subdomain_slices)]
+                    # We need to transpose the input to np.fft because muFFT
+                    # uses column-major while np.fft uses row-major storage
+                    np.random.seed(1)
+                    global_in_arr = np.random.random([*dims, *nb_grid_pts])
+                    global_out_ref = np.fft.fftn(global_in_arr.T, axes=axes).T
+                    out_ref = global_out_ref[(..., *engine.fourier_slices)]
+                    in_arr = global_in_arr[(..., *engine.subdomain_slices)]
 
-                tol = 1e-14 * np.prod(nb_grid_pts)
+                    tol = 1e-14 * np.prod(nb_grid_pts)
 
-                # Separately test convenience interface
-                out_msp = np.empty([*dims, *engine.nb_fourier_grid_pts],
-                                   dtype=complex, order='f')
-                engine.fft(in_arr, out_msp)
-                err = np.linalg.norm(out_ref - out_msp)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Separately test convenience interface
+                    out_msp = np.empty([*dims, *engine.nb_fourier_grid_pts],
+                                       dtype=complex, order='f')
+                    engine.fft(in_arr, out_msp)
+                    err = np.linalg.norm(out_ref - out_msp)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
-                # Separately test convenience interface
-                out_msp = engine.fft(in_arr)
-                err = np.linalg.norm(out_ref - out_msp)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Separately test convenience interface
+                    out_msp = engine.fft(in_arr)
+                    err = np.linalg.norm(out_ref - out_msp)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
-                # Check that out_msp is not overriden by a second fft call
-                engine.fft(np.zeros_like(in_arr))
-                err = np.linalg.norm(out_ref - out_msp)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Check that out_msp is not overriden by a second fft call
+                    engine.fft(np.zeros_like(in_arr))
+                    err = np.linalg.norm(out_ref - out_msp)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
     def test_reverse_transform_numpy_interface(self):
         for engine_str in self.engines:
             for nb_grid_pts, dims in self.grids:
-                s = self.communicator.size
-                nb_grid_pts = list(s * np.array(nb_grid_pts))
+                for s in [1, self.communicator.size]:
+                    nb_grid_pts = list(s * np.array(nb_grid_pts))
 
-                try:
-                    engine = muFFT.FFT(nb_grid_pts,
-                                       engine=engine_str,
-                                       communicator=self.communicator)
-                    engine.create_plan(np.prod(dims))
-                except muFFT.UnknownFFTEngineError:
-                    # This FFT engine has not been compiled into the code. Skip
-                    # test.
-                    continue
+                    try:
+                        engine = muFFT.FFT(nb_grid_pts,
+                                           engine=engine_str,
+                                           communicator=self.communicator)
+                        engine.create_plan(np.prod(dims))
+                    except muFFT.UnknownFFTEngineError:
+                        # This FFT engine has not been compiled into the code. Skip
+                        # test.
+                        continue
 
-                if len(nb_grid_pts) == 2:
-                    axes = (0, 1)
-                elif len(nb_grid_pts) == 3:
-                    axes = (0, 1, 2)
-                else:
-                    raise RuntimeError('Cannot handle {}-dim transforms'
-                                       .format(len(nb_grid_pts)))
+                    if len(nb_grid_pts) == 2:
+                        axes = (0, 1)
+                    elif len(nb_grid_pts) == 3:
+                        axes = (0, 1, 2)
+                    else:
+                        raise RuntimeError('Cannot handle {}-dim transforms'
+                                           .format(len(nb_grid_pts)))
 
-                # We need to transpose the input to np.fft because muFFT
-                # uses column-major while np.fft uses row-major storage
-                np.random.seed(1)
-                complex_res = list(engine.nb_domain_grid_pts)
-                complex_res[0] = complex_res[0] // 2 + 1
-                global_in_arr = np.zeros([*dims, *complex_res], dtype=complex)
-                global_in_arr.real = np.random.random(global_in_arr.shape)
-                global_in_arr.imag = np.random.random(global_in_arr.shape)
-                in_arr = global_in_arr[(..., *engine.fourier_slices)]
-                in_arr.shape = (*dims, *engine.nb_fourier_grid_pts)
-                global_out_ref = np.fft.irfftn(global_in_arr.T, axes=axes).T
-                out_ref = global_out_ref[(..., *engine.subdomain_slices)]
+                    # We need to transpose the input to np.fft because muFFT
+                    # uses column-major while np.fft uses row-major storage
+                    np.random.seed(1)
+                    complex_res = list(engine.nb_domain_grid_pts)
+                    complex_res[0] = complex_res[0] // 2 + 1
+                    global_in_arr = np.zeros([*dims, *complex_res], dtype=complex)
+                    global_in_arr.real = np.random.random(global_in_arr.shape)
+                    global_in_arr.imag = np.random.random(global_in_arr.shape)
+                    in_arr = global_in_arr[(..., *engine.fourier_slices)]
+                    in_arr.shape = (*dims, *engine.nb_fourier_grid_pts)
+                    global_out_ref = np.fft.irfftn(global_in_arr.T, axes=axes).T
+                    out_ref = global_out_ref[(..., *engine.subdomain_slices)]
 
-                tol = 1e-14 * np.prod(nb_grid_pts)
+                    tol = 1e-14 * np.prod(nb_grid_pts)
 
-                # Separately test convenience interface
-                out_msp = np.empty([*dims, *engine.nb_subdomain_grid_pts],
-                                   dtype=float)
-                engine.ifft(in_arr, out_msp)
+                    # Separately test convenience interface
+                    out_msp = np.empty([*dims, *engine.nb_subdomain_grid_pts],
+                                       dtype=float)
+                    engine.ifft(in_arr, out_msp)
 
-                out_msp *= engine.normalisation
-                err = np.linalg.norm(out_ref - out_msp)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    out_msp *= engine.normalisation
+                    err = np.linalg.norm(out_ref - out_msp)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
-                # Separately test convenience interface
-                out_msp = engine.ifft(in_arr)
+                    # Separately test convenience interface
+                    out_msp = engine.ifft(in_arr)
 
-                err = np.linalg.norm(out_ref - out_msp * engine.normalisation)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    err = np.linalg.norm(out_ref - out_msp * engine.normalisation)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
-                # Check that out_msp is not overriden by a second fft call
-                engine.ifft(np.zeros_like(in_arr))
-                err = np.linalg.norm(out_ref - out_msp * engine.normalisation)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Check that out_msp is not overriden by a second fft call
+                    engine.ifft(np.zeros_like(in_arr))
+                    err = np.linalg.norm(out_ref - out_msp * engine.normalisation)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
 
     def test_varying_nb_components_numpy_interface(self):
         for engine_str in self.engines:
             for nb_grid_pts, dims in self.grids:
-                s = self.communicator.size
-                nb_grid_pts = s * np.array(nb_grid_pts)
-                try:
-                    engine = muFFT.FFT(nb_grid_pts,
-                                       engine=engine_str,
-                                       communicator=self.communicator)
-                except muFFT.UnknownFFTEngineError:
-                    # This FFT engine has not been compiled into the code. Skip
-                    # test.
-                    continue
+                for s in [1, self.communicator.size]:
+                    nb_grid_pts = s * np.array(nb_grid_pts)
+                    try:
+                        engine = muFFT.FFT(nb_grid_pts,
+                                           engine=engine_str,
+                                           communicator=self.communicator)
+                    except muFFT.UnknownFFTEngineError:
+                        # This FFT engine has not been compiled into the code. Skip
+                        # test.
+                        continue
 
-                if len(nb_grid_pts) == 2:
-                    axes = (0, 1)
-                elif len(nb_grid_pts) == 3:
-                    axes = (0, 1, 2)
-                else:
-                    raise RuntimeError('Cannot handle {}-dim transforms'
-                                       .format(len(nb_grid_pts)))
+                    if len(nb_grid_pts) == 2:
+                        axes = (0, 1)
+                    elif len(nb_grid_pts) == 3:
+                        axes = (0, 1, 2)
+                    else:
+                        raise RuntimeError('Cannot handle {}-dim transforms'
+                                           .format(len(nb_grid_pts)))
 
-                # We need to transpose the input to np.fft because muFFT
-                # uses column-major while np.fft uses row-major storage
-                np.random.seed(1)
-                global_in_arr2 = np.random.random([2, *nb_grid_pts])
-                global_out_ref2 = np.fft.fftn(global_in_arr2.T, axes=axes).T
-                out_ref2 = global_out_ref2[(..., *engine.fourier_slices)]
-                in_arr2 = global_in_arr2[(..., *engine.subdomain_slices)]
+                    # We need to transpose the input to np.fft because muFFT
+                    # uses column-major while np.fft uses row-major storage
+                    np.random.seed(1)
+                    global_in_arr2 = np.random.random([2, *nb_grid_pts])
+                    global_out_ref2 = np.fft.fftn(global_in_arr2.T, axes=axes).T
+                    out_ref2 = global_out_ref2[(..., *engine.fourier_slices)]
+                    in_arr2 = global_in_arr2[(..., *engine.subdomain_slices)]
 
-                global_in_arr3x3 = np.random.random([3, 3, *nb_grid_pts])
-                global_out_ref3x3 = np.fft.fftn(global_in_arr3x3.T, axes=axes).T
-                out_ref3x3 = global_out_ref3x3[(..., *engine.fourier_slices)]
-                in_arr3x3 = global_in_arr3x3[(..., *engine.subdomain_slices)]
+                    global_in_arr3x3 = np.random.random([3, 3, *nb_grid_pts])
+                    global_out_ref3x3 = np.fft.fftn(global_in_arr3x3.T, axes=axes).T
+                    out_ref3x3 = global_out_ref3x3[(..., *engine.fourier_slices)]
+                    in_arr3x3 = global_in_arr3x3[(..., *engine.subdomain_slices)]
 
-                global_in_arr1x1 = np.random.random([1, 1, *nb_grid_pts])
-                global_out_ref1x1 = np.fft.fftn(global_in_arr1x1.T, axes=axes).T
-                out_ref1x1 = global_out_ref1x1[(..., *engine.fourier_slices)]
-                in_arr1x1 = global_in_arr1x1[(..., *engine.subdomain_slices)]
+                    global_in_arr1x1 = np.random.random([1, 1, *nb_grid_pts])
+                    global_out_ref1x1 = np.fft.fftn(global_in_arr1x1.T, axes=axes).T
+                    out_ref1x1 = global_out_ref1x1[(..., *engine.fourier_slices)]
+                    in_arr1x1 = global_in_arr1x1[(..., *engine.subdomain_slices)]
 
-                tol = 1e-14 * np.prod(nb_grid_pts)
+                    tol = 1e-14 * np.prod(nb_grid_pts)
 
-                # Separately test convenience interface
-                out_msp2 = engine.fft(in_arr2)
-                err = np.linalg.norm(out_ref2 - out_msp2)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Separately test convenience interface
+                    out_msp2 = engine.fft(in_arr2)
+                    err = np.linalg.norm(out_ref2 - out_msp2)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
-                # Check that out_msp is not overriden by a second fft call
-                engine.fft(np.zeros_like(in_arr2))
-                err = np.linalg.norm(out_ref2 - out_msp2)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Check that out_msp is not overriden by a second fft call
+                    engine.fft(np.zeros_like(in_arr2))
+                    err = np.linalg.norm(out_ref2 - out_msp2)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
-                # Check that we can also run on 3x3 components
-                out_msp3x3 = engine.fft(in_arr3x3)
-                err = np.linalg.norm(out_ref3x3 - out_msp3x3)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Check that we can also run on 3x3 components
+                    out_msp3x3 = engine.fft(in_arr3x3)
+                    err = np.linalg.norm(out_ref3x3 - out_msp3x3)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
-                # Check that we can also run on 1x1 components
-                out_msp1x1 = engine.fft(in_arr1x1)
-                self.assertEqual(out_msp1x1.shape, out_ref1x1.shape)
-                err = np.linalg.norm(out_ref1x1 - out_msp1x1)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    # Check that we can also run on 1x1 components
+                    out_msp1x1 = engine.fft(in_arr1x1)
+                    self.assertEqual(out_msp1x1.shape, out_ref1x1.shape)
+                    err = np.linalg.norm(out_ref1x1 - out_msp1x1)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
 
 
     def test_forward_transform_field_interface(self):
         for engine_str in self.engines:
             for nb_grid_pts, dims in self.grids:
-                s = self.communicator.size
-                nb_grid_pts = s * np.array(nb_grid_pts)
+                for s in [1, self.communicator.size]:
+                    nb_grid_pts = s * np.array(nb_grid_pts)
 
-                try:
-                    engine = muFFT.FFT(nb_grid_pts, engine=engine_str, communicator=self.communicator,
-                                       allow_destroy_input=False)
-                    engine.create_plan(np.prod(dims))
-                except muFFT.UnknownFFTEngineError:
-                    # This FFT engine has not been compiled into the code. Skip
-                    # test.
-                    continue
+                    try:
+                        engine = muFFT.FFT(nb_grid_pts, engine=engine_str, communicator=self.communicator,
+                                           allow_destroy_input=False)
+                        engine.create_plan(np.prod(dims))
+                    except muFFT.UnknownFFTEngineError:
+                        # This FFT engine has not been compiled into the code. Skip
+                        # test.
+                        continue
 
-                if len(nb_grid_pts) == 2:
-                    axes = (0, 1)
-                elif len(nb_grid_pts) == 3:
-                    axes = (0, 1, 2)
-                else:
-                    raise RuntimeError('Cannot handle {}-dim transforms'.format(len(nb_grid_pts)))
+                    if len(nb_grid_pts) == 2:
+                        axes = (0, 1)
+                    elif len(nb_grid_pts) == 3:
+                        axes = (0, 1, 2)
+                    else:
+                        raise RuntimeError('Cannot handle {}-dim transforms'.format(len(nb_grid_pts)))
 
-                # We need to transpose the input to np.fft because muFFT
-                # uses column-major while np.fft uses row-major storage
-                np.random.seed(1)
-                global_in_arr = np.random.random([*dims, *nb_grid_pts])
-                global_out_ref = np.fft.fftn(global_in_arr.T, axes=axes).T
-                out_ref = global_out_ref[(..., *engine.fourier_slices)]
+                    # We need to transpose the input to np.fft because muFFT
+                    # uses column-major while np.fft uses row-major storage
+                    np.random.seed(1)
+                    global_in_arr = np.random.random([*dims, *nb_grid_pts])
+                    global_out_ref = np.fft.fftn(global_in_arr.T, axes=axes).T
+                    out_ref = global_out_ref[(..., *engine.fourier_slices)]
 
-                fc = muGrid.GlobalFieldCollection(len(nb_grid_pts))
-                fc.initialise(tuple(engine.nb_domain_grid_pts), tuple(engine.nb_subdomain_grid_pts))
-                in_field = fc.register_real_field('in_field', dims)
-                self.assertFalse(in_field.array().flags.owndata)
-                in_field.array(muGrid.Pixel)[...] = global_in_arr[(..., *engine.subdomain_slices)]
+                    fc = muGrid.GlobalFieldCollection(len(nb_grid_pts))
+                    fc.initialise(tuple(engine.nb_domain_grid_pts), tuple(engine.nb_subdomain_grid_pts))
+                    in_field = fc.register_real_field('in_field', dims)
+                    self.assertFalse(in_field.array().flags.owndata)
+                    in_field.array(muGrid.Pixel)[...] = global_in_arr[(..., *engine.subdomain_slices)]
 
-                tol = 1e-14 * np.prod(nb_grid_pts)
+                    tol = 1e-14 * np.prod(nb_grid_pts)
 
-                # Separately test convenience interface
-                out_field = engine.register_fourier_space_field("out_field", dims)
-                self.assertFalse(out_field.array().flags.owndata)
-                indata = in_field.s.copy()
-                engine.fft(in_field, out_field)
-                err = np.linalg.norm(out_ref - out_field.array(muGrid.Pixel))
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
-                np.testing.assert_allclose(indata, in_field.s)  # Check that input is not destroyed
+                    # Separately test convenience interface
+                    out_field = engine.register_fourier_space_field("out_field", dims)
+                    self.assertFalse(out_field.array().flags.owndata)
+                    indata = in_field.s.copy()
+                    engine.fft(in_field, out_field)
+                    err = np.linalg.norm(out_ref - out_field.array(muGrid.Pixel))
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    np.testing.assert_allclose(indata, in_field.s)  # Check that input is not destroyed
 
     def test_reverse_transform_field_interface(self):
         for engine_str in self.engines:
             for nb_grid_pts, dims in self.grids:
-                s = self.communicator.size
-                nb_grid_pts = list(s * np.array(nb_grid_pts))
+                for s in [1, self.communicator.size]:
+                    nb_grid_pts = list(s * np.array(nb_grid_pts))
 
-                try:
-                    engine = muFFT.FFT(nb_grid_pts, engine=engine_str, communicator=self.communicator,
-                                       allow_destroy_input=False)
-                    engine.create_plan(np.prod(dims))
-                except muFFT.UnknownFFTEngineError:
-                    # This FFT engine has not been compiled into the code. Skip
-                    # test.
-                    continue
+                    try:
+                        engine = muFFT.FFT(nb_grid_pts, engine=engine_str, communicator=self.communicator,
+                                           allow_destroy_input=False)
+                        engine.create_plan(np.prod(dims))
+                    except muFFT.UnknownFFTEngineError:
+                        # This FFT engine has not been compiled into the code. Skip
+                        # test.
+                        continue
 
-                if len(nb_grid_pts) == 2:
-                    axes = (0, 1)
-                elif len(nb_grid_pts) == 3:
-                    axes = (0, 1, 2)
-                else:
-                    raise RuntimeError('Cannot handle {}-dim transforms'.format(len(nb_grid_pts)))
+                    if len(nb_grid_pts) == 2:
+                        axes = (0, 1)
+                    elif len(nb_grid_pts) == 3:
+                        axes = (0, 1, 2)
+                    else:
+                        raise RuntimeError('Cannot handle {}-dim transforms'.format(len(nb_grid_pts)))
 
-                # We need to transpose the input to np.fft because muFFT
-                # uses column-major while np.fft uses row-major storage
-                np.random.seed(1)
-                complex_res = list(engine.nb_domain_grid_pts)
-                complex_res[0] = complex_res[0] // 2 + 1
-                global_in_arr = np.zeros([*dims, *complex_res], dtype=complex)
-                global_in_arr.real = np.random.random(global_in_arr.shape)
-                global_in_arr.imag = np.random.random(global_in_arr.shape)
-                global_out_ref = np.fft.irfftn(global_in_arr.T, axes=axes).T
-                out_ref = global_out_ref[(..., *engine.subdomain_slices)]
+                    # We need to transpose the input to np.fft because muFFT
+                    # uses column-major while np.fft uses row-major storage
+                    np.random.seed(1)
+                    complex_res = list(engine.nb_domain_grid_pts)
+                    complex_res[0] = complex_res[0] // 2 + 1
+                    global_in_arr = np.zeros([*dims, *complex_res], dtype=complex)
+                    global_in_arr.real = np.random.random(global_in_arr.shape)
+                    global_in_arr.imag = np.random.random(global_in_arr.shape)
+                    global_out_ref = np.fft.irfftn(global_in_arr.T, axes=axes).T
+                    out_ref = global_out_ref[(..., *engine.subdomain_slices)]
 
-                tol = 1e-14 * np.prod(nb_grid_pts)
+                    tol = 1e-14 * np.prod(nb_grid_pts)
 
-                fourier_field = engine.register_fourier_space_field("fourier_field", dims)
-                self.assertFalse(fourier_field.array().flags.owndata)
-                fourier_field.array(muGrid.Pixel)[...] = global_in_arr[(..., *engine.fourier_slices)]
+                    fourier_field = engine.register_fourier_space_field("fourier_field", dims)
+                    self.assertFalse(fourier_field.array().flags.owndata)
+                    fourier_field.array(muGrid.Pixel)[...] = global_in_arr[(..., *engine.fourier_slices)]
 
-                out_field = engine.register_real_space_field('out_field', dims)
-                self.assertFalse(out_field.array().flags.owndata)
+                    out_field = engine.register_real_space_field('out_field', dims)
+                    self.assertFalse(out_field.array().flags.owndata)
 
-                # Separately test convenience interface
-                fourierdata = fourier_field.s.copy()
-                engine.ifft(fourier_field, out_field)
-                err = np.linalg.norm(out_ref - out_field.array(muGrid.Pixel) * engine.normalisation)
-                self.assertLess(err, tol, msg='{} engine'.format(engine_str))
-                np.testing.assert_allclose(fourierdata, fourier_field.s)  # Check that input is not destroyed
+                    # Separately test convenience interface
+                    fourierdata = fourier_field.s.copy()
+                    engine.ifft(fourier_field, out_field)
+                    err = np.linalg.norm(out_ref - out_field.array(muGrid.Pixel) * engine.normalisation)
+                    self.assertLess(err, tol, msg='{} engine'.format(engine_str))
+                    np.testing.assert_allclose(fourierdata, fourier_field.s)  # Check that input is not destroyed
 
     def test_nb_components1_forward_transform(self):
         for engine_str in self.engines:
@@ -533,31 +533,31 @@ class FFTCheck(unittest.TestCase):
                 if np.prod(dims) == 1:
                     continue
 
-                s = self.communicator.size
-                nb_grid_pts = list(s * np.array(nb_grid_pts))
+                for s in [1, self.communicator.size]:
+                    nb_grid_pts = list(s * np.array(nb_grid_pts))
 
-                try:
-                    engine = muFFT.FFT(nb_grid_pts,
-                                       engine=engine_str,
-                                       communicator=self.communicator)
-                except muFFT.UnknownFFTEngineError:
-                    # This FFT engine has not been compiled into the code. Skip
-                    # test.
-                    continue
+                    try:
+                        engine = muFFT.FFT(nb_grid_pts,
+                                           engine=engine_str,
+                                           communicator=self.communicator)
+                    except muFFT.UnknownFFTEngineError:
+                        # This FFT engine has not been compiled into the code. Skip
+                        # test.
+                        continue
 
-                freq = np.array(
-                    np.meshgrid(*(np.fft.fftfreq(n) for n in nb_grid_pts),
-                                indexing='ij'))
+                    freq = np.array(
+                        np.meshgrid(*(np.fft.fftfreq(n) for n in nb_grid_pts),
+                                    indexing='ij'))
 
-                freq = freq[(..., *engine.fourier_slices)]
-                assert np.allclose(engine.fftfreq, freq)
+                    freq = freq[(..., *engine.fourier_slices)]
+                    assert np.allclose(engine.fftfreq, freq)
 
-                freq = np.array(
-                    np.meshgrid(*(np.fft.fftfreq(n, 1/n) for n in nb_grid_pts),
-                                indexing='ij'))
+                    freq = np.array(
+                        np.meshgrid(*(np.fft.fftfreq(n, 1/n) for n in nb_grid_pts),
+                                    indexing='ij'))
 
-                freq = freq[(..., *engine.fourier_slices)]
-                assert np.allclose(engine.ifftfreq, freq)
+                    freq = freq[(..., *engine.fourier_slices)]
+                    assert np.allclose(engine.ifftfreq, freq)
 
     def test_2d_fftfreq(self):
         # Check that x and y directions are correct
