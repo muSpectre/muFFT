@@ -1,6 +1,12 @@
 Change log for µFFT
 ===================
 
+0.93.1 (12Nov2024)
+------------------
+
+- MAINT: Bumped muGrid dependency to 0.93.3 (which fixes a bug with empty)
+  processes in MPI
+
 0.93.0 (22Oct2024)
 ------------------
 
