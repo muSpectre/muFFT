@@ -38,11 +38,11 @@ Monitor the output to see what was detected. You should see something like::
 Dependencies quick start
 ************************
 
-µFFT needs the above dependencies for full functionality, and addition muGrid
+µFFT needs the above dependencies for full functionality, and addition µGrid
 needs `PnetCDF <https://parallel-netcdf.github.io/>`_. We provide a convenience
-script that will download and compile all dependencies as static libraries,
-that are then linked statically with the muGrid and µFFT libraries upon
-compilation.
+script that will download and compile all dependencies as static libraries.
+We use static libraries to avoid any run-time dependencies with in µGrid and
+µFFT.
 
 To install these dependencies, run
 
@@ -51,7 +51,7 @@ To install these dependencies, run
     curl -sSL https://raw.githubusercontent.com/muSpectre/muFFT/main/install_dependencies.sh | sh
 
 Installation defaults to `$HOME/.local`, but you can specify a different a
-different location by specificing the `PREFIX` environment variable.
+different location by through the `PREFIX` environment variable.
 
 When building µFFT, you may need to specify the location of these dependencies:
 
@@ -66,7 +66,7 @@ When building µFFT, you may need to specify the location of these dependencies:
             muGrid muFFT
 
 Obtaining µFFT's source code
-*******************************
+****************************
 
 µFFT is hosted on a git repository on `GitHub <https://github.com/>`_. To clone it, run
 
@@ -80,12 +80,12 @@ or if you prefer identifying yourself using a public ssh-key, run
 
    $ git clone git@github.com:muSpectre/muFFT.git
 
-The latter option requires you to have a user account on `GitHub`_.
+The latter option requires a user account on `GitHub`_.
 
 Building µFFT
-****************
+*************
 
-µFFT uses `Meson <https://mesonbuild.com/>`_ (0.42.0 or higher) as its build system.
+µFFT uses `Meson <https://mesonbuild.com/>`_ as its build system.
 
 The current (and possibly incomplete list of) dependencies are
 
@@ -107,11 +107,10 @@ The following dependencies are optional:
 - `MPIFFTW <https://www.fftw.org/fftw3_doc/FFTW-MPI-Installation.html>`_
 - `PFFT <https://github.com/mpip/pfft>`_
 
-Recommended:
+The following dependencies are necessary if you want to build the documentation:
 
-- `Sphinx <http://www.sphinx-doc.org>`_ and `Breathe
-  <https://breathe.readthedocs.io>`_ (necessary if you want to build the
-  documentation (turned off by default)
+- `Sphinx <http://www.sphinx-doc.org>`_
+- `Breathe <https://breathe.readthedocs.io>`_
 
 µFFT requires a relatively modern compiler as it makes heavy use of C++17 features.
 
@@ -129,7 +128,7 @@ build folder while specifying the `release` build type.
 
    $ meson setup --buildtype release meson-build-release
 
-The compilation is typically handled with `ninja <https://ninja-build.org/>`_.
+The compilation is typically handled by `ninja <https://ninja-build.org/>`_.
 Navigate to the build folder and run:
 
 .. code-block:: sh
@@ -139,14 +138,13 @@ Navigate to the build folder and run:
 Getting help and reporting bugs
 *******************************
 
-µFFT is under active development and the documentation
-may be spotty. If you run into trouble,
-please contact us by opening an `issue
-<https://github.com/muSpectre/muFFT/issues>`_ and someone will answer as
-soon as possible. You can also check the API :ref:`reference`.
+µFFT is under active development and the documentation may be spotty. If you
+run into trouble, please contact us by opening an
+`issue <https://github.com/muSpectre/muFFT/issues>`_ and someone will answer
+as soon as possible. You can also check the API :ref:`reference`.
 
 Contribute
 **********
 
 We welcome contributions both for new features and bug fixes. New features must
-be documented and have unit tests. Please submit merge requests for review.
+be documented and have unit tests. Please submit pull requests for review.
