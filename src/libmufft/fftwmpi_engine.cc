@@ -291,9 +291,9 @@ namespace muFFT {
 
   /* ---------------------------------------------------------------------- */
   auto FFTWMPIEngine::register_real_space_field(const std::string & unique_name,
-                                                const Shape_t & shape)
+                                                const Shape_t & shape, const std::string & sub_division)
       -> RealField_t & {
-    auto & field{Parent::register_real_space_field(unique_name, shape)};
+    auto & field{Parent::register_real_space_field(unique_name, shape, sub_division)};
     /*
      * We need to check whether the fourier field provided is large
      * enough. MPI parallel FFTW may request a workspace size larger than the

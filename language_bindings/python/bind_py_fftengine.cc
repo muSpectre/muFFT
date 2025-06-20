@@ -242,9 +242,9 @@ void add_engine_helper(py::module & mod, const std::string & name) {
            py::return_value_policy::reference_internal)
       .def("register_real_space_field",
            (FFTEngineBase::RealField_t &
-            (Engine::*)(const std::string &, const Shape_t &)) &
+            (Engine::*)(const std::string &, const Shape_t &, const std::string &)) &
                Engine::register_real_space_field,
-           "unique_name"_a, "shape"_a = Shape_t{},
+           "unique_name"_a, "shape"_a = Shape_t{}, "sub_division"_a = muGrid::PixelTag,
            py::return_value_policy::reference_internal)
       .def("real_space_field",
            (FFTEngineBase::RealField_t &
@@ -254,10 +254,14 @@ void add_engine_helper(py::module & mod, const std::string & name) {
            py::return_value_policy::reference_internal)
       .def("real_space_field",
            (FFTEngineBase::RealField_t &
-            (Engine::*)(const std::string &, const Shape_t &)) &
+            (Engine::*)(const std::string &, const Shape_t &, const std::string &)) &
                Engine::real_space_field,
            "unique_name"_a, "shape"_a = Shape_t{},
+           "sub_division"_a = muGrid::PixelTag,
            py::return_value_policy::reference_internal)
+
+
+
       .def("register_halfcomplex_field",
            (FFTEngineBase::RealField_t &
             (Engine::*)(const std::string &, const Index_t &)) &
