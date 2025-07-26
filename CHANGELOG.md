@@ -6,6 +6,7 @@ Change log for µFFT
 
 - ENH: Subpoints for FFT fields
 - MAINT: Bumped muGrid dependency to 0.95.0
+  MAINT: Dropped Python 3.8 support
 
 0.93.0 (22Oct2024)
 ------------------
