@@ -1,6 +1,11 @@
 Change log for µFFT
 ===================
 
+0.93.1 (26Jul2025)
+------------------
+
+- MAINT: Bumped muGrid dependency to 0.95.0
+
 0.93.0 (22Oct2024)
 ------------------
 
