@@ -82,7 +82,7 @@ jobs:
               libnetcdf-dev \
               libfftw3-dev
           fi
-          python3 -m pip install build meson NuMPI
+          python3 -m pip install build meson pytest NuMPI
           python3 -m pip list
 
       - name: Compile with Meson
