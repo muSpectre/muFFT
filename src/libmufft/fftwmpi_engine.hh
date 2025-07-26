@@ -121,7 +121,7 @@ namespace muFFT {
      * need to override this method here, since FFTWMPI requires field padding
      */
     RealField_t & register_real_space_field(const std::string & unique_name,
-                                            const Shape_t & shape) final;
+                                            const Shape_t & shape, const std::string & sub_division) final;
 
     /**
      * need to override this method here, since FFTWMPI requires field padding

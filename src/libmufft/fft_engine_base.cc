@@ -124,8 +124,10 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{!this->check_real_space_field(input_field, FFTDirection::forward)};
-    bool output_copy_necessary{!this->check_fourier_space_field(output_field, FFTDirection::forward)};
+    bool input_copy_necessary{
+        !this->check_real_space_field(input_field, FFTDirection::forward)};
+    bool output_copy_necessary{
+        !this->check_fourier_space_field(output_field, FFTDirection::forward)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -236,8 +238,10 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{not this->check_fourier_space_field(input_field, FFTDirection::reverse)};
-    bool output_copy_necessary{not this->check_real_space_field(output_field, FFTDirection::reverse)};
+    bool input_copy_necessary{not this->check_fourier_space_field(
+        input_field, FFTDirection::reverse)};
+    bool output_copy_necessary{
+        not this->check_real_space_field(output_field, FFTDirection::reverse)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -348,8 +352,10 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{!this->check_halfcomplex_field(input_field, FFTDirection::forward)};
-    bool output_copy_necessary{!this->check_halfcomplex_field(output_field, FFTDirection::forward)};
+    bool input_copy_necessary{
+        !this->check_halfcomplex_field(input_field, FFTDirection::forward)};
+    bool output_copy_necessary{
+        !this->check_halfcomplex_field(output_field, FFTDirection::forward)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -460,8 +466,10 @@ namespace muFFT {
       throw FFTEngineError(error.str());
     }
 
-    bool input_copy_necessary{not this->check_halfcomplex_field(input_field, FFTDirection::reverse)};
-    bool output_copy_necessary{not this->check_real_space_field(output_field, FFTDirection::reverse)};
+    bool input_copy_necessary{
+        not this->check_halfcomplex_field(input_field, FFTDirection::reverse)};
+    bool output_copy_necessary{
+        not this->check_real_space_field(output_field, FFTDirection::reverse)};
     if (this->allow_temporary_buffer and
         (input_copy_necessary or output_copy_necessary)) {
       if (input_copy_necessary and output_copy_necessary) {
@@ -522,18 +530,20 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::register_fourier_space_field(
-      const std::string & unique_name,
-      const Index_t & nb_dof_per_pixel) -> muGrid::ComplexField & {
+  auto
+  FFTEngineBase::register_fourier_space_field(const std::string & unique_name,
+                                              const Index_t & nb_dof_per_pixel)
+      -> muGrid::ComplexField & {
     this->create_plan(nb_dof_per_pixel);
     return this->fourier_field_collection.register_complex_field(
         unique_name, nb_dof_per_pixel, PixelTag);
   }
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::register_fourier_space_field(
-      const std::string & unique_name,
-      const Shape_t & shape) -> muGrid::ComplexField & {
+  auto
+  FFTEngineBase::register_fourier_space_field(const std::string & unique_name,
+                                              const Shape_t & shape)
+      -> muGrid::ComplexField & {
     this->create_plan(shape);
     return this->fourier_field_collection.register_complex_field(
         unique_name, shape, PixelTag);
@@ -580,9 +590,10 @@ namespace muFFT {
     return this->register_fourier_space_field(unique_name, shape);
   }
 
-  auto FFTEngineBase::register_halfcomplex_field(
-      const std::string & unique_name,
-      const Index_t & nb_dof_per_pixel) -> RealField_t & {
+  auto
+  FFTEngineBase::register_halfcomplex_field(const std::string & unique_name,
+                                            const Index_t & nb_dof_per_pixel)
+      -> RealField_t & {
     this->create_plan(nb_dof_per_pixel);
     return this->halfcomplex_field_collection.register_real_field(
         unique_name, nb_dof_per_pixel, PixelTag);
@@ -618,9 +629,9 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  auto
-  FFTEngineBase::halfcomplex_field(const std::string & unique_name,
-                                   const Shape_t & shape) -> RealField_t & {
+  auto FFTEngineBase::halfcomplex_field(const std::string & unique_name,
+                                        const Shape_t & shape)
+      -> RealField_t & {
     this->create_plan(shape);
     if (this->halfcomplex_field_collection.field_exists(unique_name)) {
       auto & field{dynamic_cast<RealField_t &>(
@@ -640,9 +651,10 @@ namespace muFFT {
   /* ---------------------------------------------------------------------- */
 
   /* ---------------------------------------------------------------------- */
-  auto FFTEngineBase::register_real_space_field(
-      const std::string & unique_name,
-      const Index_t & nb_dof_per_pixel) -> RealField_t & {
+  auto
+  FFTEngineBase::register_real_space_field(const std::string & unique_name,
+                                           const Index_t & nb_dof_per_pixel)
+      -> RealField_t & {
     this->create_plan(nb_dof_per_pixel);
     return this->real_field_collection.register_real_field(
         unique_name, nb_dof_per_pixel, PixelTag);
@@ -650,10 +662,11 @@ namespace muFFT {
 
   /* ---------------------------------------------------------------------- */
   auto FFTEngineBase::register_real_space_field(
-      const std::string & unique_name, const Shape_t & shape) -> RealField_t & {
+      const std::string & unique_name, const Shape_t & shape,
+      const std::string & sub_division) -> RealField_t & {
     this->create_plan(shape);
     return this->real_field_collection.register_real_field(unique_name, shape,
-                                                           PixelTag);
+                                                           sub_division);
   }
 
   /* ---------------------------------------------------------------------- */
@@ -679,7 +692,9 @@ namespace muFFT {
 
   /* ---------------------------------------------------------------------- */
   auto FFTEngineBase::real_space_field(const std::string & unique_name,
-                                       const Shape_t & shape) -> RealField_t & {
+                                       const Shape_t & shape,
+                                       const std::string & sub_divison)
+      -> RealField_t & {
     this->create_plan(shape);
     if (this->real_field_collection.field_exists(unique_name)) {
       auto & field{dynamic_cast<RealField_t &>(
@@ -693,7 +708,7 @@ namespace muFFT {
       }
       return field;
     }
-    return this->register_real_space_field(unique_name, shape);
+    return this->register_real_space_field(unique_name, shape, sub_divison);
   }
 
   /* ---------------------------------------------------------------------- */
@@ -752,9 +767,8 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  bool
-  FFTEngineBase::check_fourier_space_field(const FourierField_t & field,
-                                           FFTDirection direction) const {
+  bool FFTEngineBase::check_fourier_space_field(const FourierField_t & field,
+                                                FFTDirection direction) const {
     if (!this->engine_has_rigid_memory_layout) {
       // If there is no requirements on the memory layout, this field is always
       // acceptable.

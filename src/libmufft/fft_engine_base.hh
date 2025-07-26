@@ -85,6 +85,12 @@ namespace muFFT {
      */
     using iterator = typename GFieldCollection_t::DynamicPixels::iterator;
 
+    /**
+     * Sub point map type -- for multiple nodal or quad points
+     * - map to hold nb_sub_pts by tag
+     */
+    using SubPtMap_t = std::map<std::string, Index_t>;
+
     //! Default constructor
     FFTEngineBase() = delete;
 
@@ -249,7 +255,8 @@ namespace muFFT {
      */
     virtual RealField_t &
     register_real_space_field(const std::string & unique_name,
-                              const Shape_t & shape = Shape_t{});
+                              const Shape_t & shape = Shape_t{},
+                              const std::string & sub_division = PixelTag);
 
     /**
      * Fetches a real-space field with the ideal strides and dimensions for this
@@ -265,7 +272,8 @@ namespace muFFT {
      * `register_real_space_field`.
      */
     RealField_t & real_space_field(const std::string & unique_name,
-                                   const Shape_t & shape = Shape_t{});
+                                   const Shape_t & shape = Shape_t{},
+                                   const std::string & sub_division = PixelTag);
 
     //! return whether this engine is active
     virtual bool has_grid_pts() const { return true; }
