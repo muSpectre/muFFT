@@ -1,9 +1,10 @@
 Change log for µFFT
 ===================
 
-0.93.1 (26Jul2025)
+0.94.0 (26Jul2025)
 ------------------
 
+- ENH: Subpoints for FFT fields
 - MAINT: Bumped muGrid dependency to 0.95.0
 
 0.93.0 (22Oct2024)
