@@ -50,10 +50,7 @@ namespace muFFT {
                                  bool allow_destroy_input,
                                  const DynCcoord_t &nb_ghosts_left,
                                  const DynCcoord_t &nb_ghosts_right)
-        : Parent{
-            nb_grid_pts, comm, plan_flags, allow_temporary_buffer,
-            allow_destroy_input, nb_ghosts_left, nb_ghosts_right,
-        } {
+        : Parent{nb_grid_pts, comm, plan_flags, allow_temporary_buffer, allow_destroy_input} {
         if (!this->nb_engines) {
             fftw_mpi_init();
         }
@@ -119,7 +116,7 @@ namespace muFFT {
                 this->active = false;
             }
         }
-        this->real_field_collection.initialise(
+        this->collection.initialise(
             this->nb_domain_grid_pts, this->nb_subdomain_grid_pts,
             this->subdomain_locations, this->subdomain_strides);
         this->fourier_field_collection.initialise(
