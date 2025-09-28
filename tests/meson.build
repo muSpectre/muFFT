@@ -2,18 +2,18 @@
 # C++ unit tests (through Boost's framework)
 #
 
-boost_test = dependency('boost', modules: ['unit_test_framework'],
-                        required: false)
+boost_test = dependency('boost', modules : ['unit_test_framework'],
+                        required : false)
 
 if boost_test.found()
     main_test_suite = executable('mufft_main_test_suite',
-        'main_test_suite.cc',
-        'test_fft_utils.cc',
-        'test_serial_fft_engines.cc',
-        dependencies: [mufft, mugrid, boost_test])
+                                 'main_test_suite.cc',
+                                 'test_fft_utils.cc',
+                                 'test_serial_fft_engines.cc',
+                                 dependencies : [mufft, mugrid, boost_test])
 
     test('mufft_main_test_suite',
-        main_test_suite)
+         main_test_suite)
 endif
 
 #
@@ -35,11 +35,11 @@ envdata.append('TESTS_BUILDDIR', meson.current_build_dir())
 #
 
 test('mufft_python_binding_tests',
-    python,
-    args: [files('python_binding_tests.py'), '-v', '-f'],
-    env: envdata,
-    depends: [mufft_python],
-    timeout: test_timeout)
+     python,
+     args : [python.full_path(), '-m', 'pytest', '-v', '-s', join_paths(meson.project_source_root(), 'tests')],
+     env : envdata,
+     depends : [mufft_python],
+     timeout : test_timeout)
 
 #
 # If we have MPI, we also want to run the MPI tests
@@ -48,31 +48,31 @@ test('mufft_python_binding_tests',
 if mu_with_mpi
     if boost_test.found()
         mpi_main_test_suite = executable('mpi_mufft_main_test_suite',
-            'mpi_main_test_suite.cc',
-            'mpi_test_fft_engine.cc',
-            dependencies: [mufft, mugrid, boost_test])
+                                         'mpi_main_test_suite.cc',
+                                         'mpi_test_fft_engine.cc',
+                                         dependencies : [mufft, mugrid, boost_test])
     endif
 
-    mpiexec = find_program('mpiexec', required: false)
+    mpiexec = find_program('mpiexec', required : false)
 
     if mpiexec.found()
         foreach n : mpi_processes
             if boost_test.found()
                 test('mpi_mufft_main_test_suite-np_' + n,
                      mpiexec,
-                     args: ['-n', n, '--oversubscribe', mpi_main_test_suite],
-                     env: envdata,
-                     is_parallel: false)  # Don't run any other test in parallel
+                     args : ['-n', n, '--oversubscribe', mpi_main_test_suite],
+                     env : envdata,
+                     is_parallel : false)  # Don't run any other test in parallel
             endif
 
             test('mpi_mufft_python_binding_tests',
                  mpiexec,
-                 args: ['-n', n, '--oversubscribe', python.full_path(),
-                        files('python_mpi_binding_tests.py'), '-v', '-f'],
-                   depends: [mufft_python],
-                   env: envdata,
-                   timeout: test_timeout,  # Test can take a long time
-                   is_parallel: false)  # Don't run any other test in parallel
+                 args : ['-n', n, '--oversubscribe', python.full_path(),
+                         '-m', 'pytest', '-v', '-s', join_paths(meson.project_source_root(), 'tests')],
+                 depends : [mufft_python],
+                 env : envdata,
+                 timeout : test_timeout, # Test can take a long time
+                 is_parallel : false)  # Don't run any other test in parallel
         endforeach
     endif
 endif
