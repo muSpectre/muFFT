@@ -147,9 +147,7 @@ namespace muFFT {
     map_t inmap{input};
     auto refmap{map_t{ref}};
     auto resultmap{map_t{result}};
-    size_t cntr{0};
     for (auto tup : akantu::zip(inmap, refmap)) {
-      cntr++;
       auto & in_{std::get<0>(tup)};
       auto & ref_{std::get<1>(tup)};
       in_.setRandom();
