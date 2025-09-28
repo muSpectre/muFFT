@@ -140,7 +140,6 @@ void add_fourier_derivative(py::module & mod, std::string name) {
                  << "D.";
                throw muGrid::RuntimeError(s.str());
              }
-             std::cout << "CC" << std::endl;
              return new FourierDerivative(spatial_dimension, direction, shift);
            }),
            "spatial_dimension"_a, "direction"_a, "shift"_a);

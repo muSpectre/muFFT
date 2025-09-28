@@ -131,7 +131,6 @@ namespace muFFT {
         left_ranks[0] = muGrid::CcoordOps::modulo(comm_rank - 1, comm_size);
         right_ranks[0] = muGrid::CcoordOps::modulo(comm_rank + 1, comm_size);
 
-        std::cout << "Before make_unique: " << nb_subdivisions << std::endl;
         this->cart_comm = std::make_unique<muGrid::CartesianCommunicator>(
             this->comm, nb_subdivisions, coordinates, left_ranks, right_ranks);
         // Initialise this Cartesian decomposition instances; this initialises
