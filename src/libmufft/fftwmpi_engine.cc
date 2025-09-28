@@ -120,9 +120,29 @@ namespace muFFT {
                 this->active = false;
             }
         }
-        this->collection.initialise(
-            this->nb_domain_grid_pts, this->nb_subdomain_grid_pts,
-            this->subdomain_locations, this->subdomain_strides);
+        // We initialise our own Cartesian communicator because the domain
+        // decomposition is fixed by the FFTW library.
+        auto comm_size{this->comm.size()};
+        auto comm_rank{this->comm.rank()};
+        DynCcoord_t nb_subdivisions(dim, 1), coordinates(dim, 1);
+        std::vector<int> left_ranks(dim, -1), right_ranks(dim, -1);
+        nb_subdivisions[0] = comm_size;
+        coordinates[0] = comm_rank;
+        left_ranks[0] = muGrid::CcoordOps::modulo(comm_rank - 1, comm_size);
+        right_ranks[0] = muGrid::CcoordOps::modulo(comm_rank + 1, comm_size);
+
+        std::cout << "Before make_unique: " << nb_subdivisions << std::endl;
+        this->cart_comm = std::make_unique<muGrid::CartesianCommunicator>(
+            this->comm, nb_subdivisions, coordinates, left_ranks, right_ranks);
+        // Initialise this Cartesian decomposition instances; this initialises
+        // the field collection for the real fields, `this->collection`.
+        this->initialise(
+            this->nb_domain_grid_pts, nb_subdivisions,
+            this->nb_subdomain_grid_pts, this->subdomain_locations,
+            nb_ghosts_left.get_dim() == 0 ? DynCcoord_t(dim) : nb_ghosts_left,
+            nb_ghosts_right.get_dim() == 0 ? DynCcoord_t(dim) : nb_ghosts_right,
+            this->subdomain_strides);
+        // Initialise the field collection for the Fourier fields
         this->fourier_field_collection.initialise(
             this->nb_domain_grid_pts, this->nb_fourier_grid_pts,
             this->fourier_locations, this->fourier_strides);
