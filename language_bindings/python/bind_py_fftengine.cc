@@ -199,78 +199,49 @@ auto py_coords(const FFTEngineBase & eng) {
     return coords;
 }
 
-template <class Engine, bool with_ghosts>
-class AddEngineConstructor {
-   public:
-    static void add(py::class_<Engine, std::shared_ptr<Engine>, FFTEngineBase> &
-                        fft_engine) {
-        fft_engine.def(
-            py::init([](std::vector<Index_t> nb_grid_pts,
-                        muFFT::Communicator & comm,
-                        const muFFT::FFT_PlanFlags & plan_flags,
-                        bool allow_temporary_buffer, bool allow_destroy_input) {
-                // Initialise with muFFT Communicator object
-                return new Engine(DynCcoord_t(nb_grid_pts), comm, plan_flags,
-                                  allow_temporary_buffer, allow_destroy_input);
-            }),
-            "nb_grid_pts"_a, "communicator"_a = muFFT::Communicator(),
-            "flags"_a = muFFT::FFT_PlanFlags::estimate,
-            "allow_temporary_buffer"_a = true, "allow_destroy_input"_a = false);
-#ifdef WITH_MPI
-        fft_engine.def(
-            py::init([](std::vector<Index_t> nb_grid_pts,
-                        const muFFT::FFT_PlanFlags & plan_flags,
-                        bool allow_temporary_buffer, bool allow_destroy_input,
-                        size_t comm) {
-                // Initialise with bare MPI handle
-                return new Engine(DynCcoord_t(nb_grid_pts),
-                                  muFFT::Communicator(MPI_Comm(comm)),
-                                  plan_flags, allow_temporary_buffer,
-                                  allow_destroy_input);
-            }),
-            "nb_grid_pts"_a, "communicator"_a = size_t(MPI_COMM_SELF),
-            "flags"_a = muFFT::FFT_PlanFlags::estimate,
-            "allow_temporary_buffer"_a = true, "allow_destroy_input"_a = false);
-#endif
-    }
-};
-
-#ifdef WITH_FFTWMPI
 template <class Engine>
-class AddEngineConstructor<Engine, true> {
-   public:
-    static void add(py::class_<Engine, std::shared_ptr<Engine>, FFTEngineBase> &
-                        fft_engine) {
-        fft_engine.def(
-            py::init([](std::vector<Index_t> nb_grid_pts,
-                        muFFT::Communicator & comm,
-                        const muFFT::FFT_PlanFlags & plan_flags,
-                        bool allow_temporary_buffer, bool allow_destroy_input,
-                        const DynCcoord_t & nb_ghosts_left,
-                        const DynCcoord_t & nb_ghosts_right) {
-                // Initialise with muFFT Communicator object
-                return new Engine(DynCcoord_t(nb_grid_pts), comm, plan_flags,
-                                  allow_temporary_buffer, allow_destroy_input,
-                                  nb_ghosts_left, nb_ghosts_right);
-            }),
-            "nb_grid_pts"_a, "communicator"_a = muFFT::Communicator(),
-            "flags"_a = muFFT::FFT_PlanFlags::estimate,
-            "allow_temporary_buffer"_a = true, "allow_destroy_input"_a = false,
-            "nb_ghosts_left"_a = DynCcoord_t{},
-            "nb_ghosts_right"_a = DynCcoord_t{});
-    }
-};
-#endif  // WITH_FFTWMPI
-
-template <class Engine, bool with_ghosts = false>
 void add_engine_helper(py::module & mod, const std::string & name) {
     py::class_<Engine,                   // class
                std::shared_ptr<Engine>,  // holder
                FFTEngineBase             // trampoline base
                >
         fft_engine(mod, name.c_str());
-    AddEngineConstructor<Engine, with_ghosts>::add(fft_engine);
-    fft_engine.def("fft", &Engine::fft)
+    fft_engine
+        .def(py::init([](std::vector<Index_t> nb_grid_pts,
+                         muFFT::Communicator & comm,
+                         const muFFT::FFT_PlanFlags & plan_flags,
+                         bool allow_temporary_buffer, bool allow_destroy_input,
+                         const DynCcoord_t & nb_ghosts_left,
+                         const DynCcoord_t & nb_ghosts_right) {
+                 // Initialise with muFFT Communicator object
+                 return new Engine(DynCcoord_t(nb_grid_pts), comm, plan_flags,
+                                   allow_temporary_buffer, allow_destroy_input,
+                                   nb_ghosts_left, nb_ghosts_right);
+             }),
+             "nb_grid_pts"_a, "communicator"_a = muFFT::Communicator(),
+             "flags"_a = muFFT::FFT_PlanFlags::estimate,
+             "allow_temporary_buffer"_a = true, "allow_destroy_input"_a = false,
+             "nb_ghosts_left"_a = DynCcoord_t{},
+             "nb_ghosts_right"_a = DynCcoord_t{})
+#ifdef WITH_MPI
+        .def(py::init([](std::vector<Index_t> nb_grid_pts, size_t communicator,
+                         const muFFT::FFT_PlanFlags & plan_flags,
+                         bool allow_temporary_buffer, bool allow_destroy_input,
+                         const DynCcoord_t & nb_ghosts_left,
+                         const DynCcoord_t & nb_ghosts_right) {
+                 // Initialise with bare MPI handle
+                 return new Engine(DynCcoord_t(nb_grid_pts),
+                                   muFFT::Communicator(MPI_Comm(communicator)),
+                                   plan_flags, allow_temporary_buffer,
+                                   allow_destroy_input);
+             }),
+             "nb_grid_pts"_a, "communicator"_a = size_t(MPI_COMM_SELF),
+             "flags"_a = muFFT::FFT_PlanFlags::estimate,
+             "allow_temporary_buffer"_a = true, "allow_destroy_input"_a = false,
+             "nb_ghosts_left"_a = DynCcoord_t{},
+             "nb_ghosts_right"_a = DynCcoord_t{})
+#endif
+        .def("fft", &Engine::fft)
         .def("ifft", &Engine::ifft)
         .def("hcfft", &Engine::hcfft)
         .def("ihcfft", &Engine::ihcfft)

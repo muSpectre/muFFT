@@ -81,7 +81,9 @@ namespace muFFT {
                Communicator comm = Communicator(),
                const FFT_PlanFlags & plan_flags = FFT_PlanFlags::estimate,
                bool allow_temporary_buffer = true,
-               bool allow_destroy_input = false);
+               bool allow_destroy_input = false,
+               const DynCcoord_t & nb_ghosts_left = DynCcoord_t{},
+               const DynCcoord_t & nb_ghosts_right = DynCcoord_t{});
 
     /**
      * @brief Constructs a FFTWEngine object with the specified parameters.
