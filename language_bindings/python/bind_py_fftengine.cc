@@ -328,13 +328,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
         .def_property_readonly(
             "nb_subdomain_grid_pts",
             [](const Engine & eng) {
-                return to_tuple(eng.get_nb_subdomain_grid_pts());
+                return to_tuple(eng.get_nb_subdomain_grid_pts_with_ghosts());
             },
             py::return_value_policy::reference)
         .def_property_readonly(
             "subdomain_locations",
             [](const Engine & eng) {
-                return to_tuple(eng.get_subdomain_locations());
+                return to_tuple(eng.get_subdomain_locations_with_ghosts());
             },
             py::return_value_policy::reference)
         .def_property_readonly(
@@ -370,8 +370,8 @@ void add_engine_helper(py::module & mod, const std::string & name) {
         .def_property_readonly(
             "subdomain_slices",
             [](const Engine & eng) {
-                auto & nb_pts = eng.get_nb_subdomain_grid_pts();
-                auto & locs = eng.get_subdomain_locations();
+                auto & nb_pts = eng.get_nb_subdomain_grid_pts_with_ghosts();
+                auto & locs = eng.get_subdomain_locations_with_ghosts();
                 py::tuple t(eng.get_spatial_dim());
                 for (Index_t dim = 0; dim < eng.get_spatial_dim(); ++dim) {
                     t[dim] = py::slice(locs[dim], locs[dim] + nb_pts[dim], 1);
@@ -423,8 +423,8 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                     std::accumulate(info.shape.begin(), info.shape.end() - dim,
                                     1, std::multiplies<Index_t>())};
                 NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts(),
-                                             eng.get_subdomain_locations(),
+                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                                             eng.get_subdomain_locations_with_ghosts(),
                                              nb_dof_per_pixel, input_array);
                 NumpyProxy<Complex> output_proxy(
                     eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
@@ -455,8 +455,8 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                     eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
                     eng.get_fourier_locations(), nb_dof_per_pixel, input_array);
                 NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                              eng.get_nb_subdomain_grid_pts(),
-                                              eng.get_subdomain_locations(),
+                                              eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                                              eng.get_subdomain_locations_with_ghosts(),
                                               nb_dof_per_pixel, output_array);
                 eng.ifft(input_proxy.get_field(), output_proxy.get_field());
             },
@@ -484,8 +484,8 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                     std::accumulate(info.shape.begin(), info.shape.end() - dim,
                                     1, std::multiplies<Index_t>())};
                 NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts(),
-                                             eng.get_subdomain_locations(),
+                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                                             eng.get_subdomain_locations_with_ghosts(),
                                              nb_dof_per_pixel, input_array);
                 std::stringstream name;
                 name << "fft return buffer "
@@ -537,12 +537,12 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                py::array_t<Real> & output_array) {
                 auto nb_dof_per_pixel{input_array.size() / eng.size()};
                 NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts(),
-                                             eng.get_subdomain_locations(),
+                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                                             eng.get_subdomain_locations_with_ghosts(),
                                              nb_dof_per_pixel, input_array);
                 NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                              eng.get_nb_subdomain_grid_pts(),
-                                              eng.get_subdomain_locations(),
+                                              eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                                              eng.get_subdomain_locations_with_ghosts(),
                                               nb_dof_per_pixel, output_array);
                 auto && input_proxy_field{input_proxy.get_field()};
                 eng.hcfft(input_proxy_field, output_proxy.get_field());
@@ -555,12 +555,12 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                py::array_t<Real> & output_array) {
                 auto nb_dof_per_pixel{output_array.size() / eng.size()};
                 NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts(),
-                                             eng.get_subdomain_locations(),
+                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                                             eng.get_subdomain_locations_with_ghosts(),
                                              nb_dof_per_pixel, input_array);
                 NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                              eng.get_nb_subdomain_grid_pts(),
-                                              eng.get_subdomain_locations(),
+                                              eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                                              eng.get_subdomain_locations_with_ghosts(),
                                               nb_dof_per_pixel, output_array);
                 eng.ihcfft(input_proxy.get_field(), output_proxy.get_field());
             },

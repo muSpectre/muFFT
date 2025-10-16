@@ -39,6 +39,7 @@
 #include "fftwmpi_engine.hh"
 
 #include "fft_utils.hh"
+#include "libmugrid/raw_memory_operations.hh"
 
 namespace muFFT {
     int FFTWMPIEngine::nb_engines{0};
@@ -133,14 +134,22 @@ namespace muFFT {
 
         this->cart_comm = std::make_unique<muGrid::CartesianCommunicator>(
             this->comm, nb_subdivisions, coordinates, left_ranks, right_ranks);
+
+        // Fix ghost buffers
+        auto nb_gleft{nb_ghosts_left.get_dim() == 0 ? DynCcoord_t(dim)
+                                                    : nb_ghosts_left};
+        auto nb_gright{nb_ghosts_right.get_dim() == 0 ? DynCcoord_t(dim)
+                                                      : nb_ghosts_right};
+
+        // No ghosts in x-direction since we have a slab decomposition
+        nb_gleft[0] = 0;
+        nb_gright[0] = 0;
+
         // Initialise this Cartesian decomposition instances; this initialises
         // the field collection for the real fields, `this->collection`.
-        this->initialise(
-            this->nb_domain_grid_pts, nb_subdivisions,
-            this->nb_subdomain_grid_pts, this->subdomain_locations,
-            nb_ghosts_left.get_dim() == 0 ? DynCcoord_t(dim) : nb_ghosts_left,
-            nb_ghosts_right.get_dim() == 0 ? DynCcoord_t(dim) : nb_ghosts_right,
-            this->subdomain_strides);
+        this->initialise(this->nb_domain_grid_pts, nb_subdivisions,
+                         this->nb_subdomain_grid_pts, this->subdomain_locations,
+                         nb_gleft, nb_gright, this->subdomain_strides);
         // Initialise the field collection for the Fourier fields
         this->fourier_field_collection.initialise(
             this->nb_domain_grid_pts, this->nb_fourier_grid_pts,
@@ -272,20 +281,30 @@ namespace muFFT {
     /* ---------------------------------------------------------------------- */
     void FFTWMPIEngine::compute_fft(const RealField_t & input_field,
                                     FourierField_t & output_field) {
+        // Compute offset
+        Shape_t nb_ghosts_left{this->collection.get_nb_ghosts_left()};
+        auto offset{muGrid::raw_mem_ops::linear_index(
+            nb_ghosts_left, this->collection.get_pixels_strides())};
+
         // Compute FFT
         fftw_mpi_execute_dft_r2c(
             this->fft_plans.at(input_field.get_nb_dof_per_pixel()),
-            input_field.data(),
+            input_field.data() + offset,
             reinterpret_cast<fftw_complex *>(output_field.data()));
     }
 
     /* ---------------------------------------------------------------------- */
     void FFTWMPIEngine::compute_ifft(const FourierField_t & input_field,
                                      RealField_t & output_field) {
+        // Compute offset
+        Shape_t nb_ghosts_left{this->collection.get_nb_ghosts_left()};
+        auto offset{muGrid::raw_mem_ops::linear_index(
+            nb_ghosts_left, this->collection.get_pixels_strides())};
+
         fftw_mpi_execute_dft_c2r(
             this->ifft_plans.at(input_field.get_nb_dof_per_pixel()),
             reinterpret_cast<fftw_complex *>(input_field.data()),
-            output_field.data());
+            output_field.data() + offset);
     }
 
     /* ---------------------------------------------------------------------- */

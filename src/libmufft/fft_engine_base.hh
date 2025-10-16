@@ -328,7 +328,7 @@ namespace muFFT {
          * returns the global number of grid points in each direction of the
          * cell
          */
-        const DynCcoord_t & get_nb_domain_grid_pts() const {
+        const DynCcoord_t & get_nb_domain_grid_pts() const override {
             return this->nb_domain_grid_pts;
         }
 
@@ -385,10 +385,10 @@ namespace muFFT {
         //! . Rather than scaling the inverse transform (which would cost one
         //! more loop), FFT engines provide this value so it can be used in the
         //! projection operator (where no additional loop is required)
-        inline Real normalisation() const { return norm_factor; }
+        Real normalisation() const { return norm_factor; }
 
         //! return the number of spatial dimensions
-        const Index_t & get_spatial_dim() const;
+        Index_t get_spatial_dim() const override;
 
         //! return whether temporary buffers are allowed
         bool get_allow_temporary_buffer() const {

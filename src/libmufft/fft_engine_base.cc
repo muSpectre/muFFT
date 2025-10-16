@@ -89,13 +89,13 @@ namespace muFFT {
         // Sanity check 2: Does the input field have the correct number of
         // pixels?
         if (static_cast<size_t>(input_field.get_nb_pixels()) !=
-            muGrid::CcoordOps::get_size(this->nb_subdomain_grid_pts)) {
+            muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())) {
             std::stringstream error{};
             error << "The number of pixels of the field '"
                   << input_field.get_name() << "' passed to the forward FFT is "
                   << input_field.get_nb_pixels()
                   << " and does not match the size "
-                  << muGrid::CcoordOps::get_size(this->nb_subdomain_grid_pts)
+                  << muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())
                   << " of the (sub)domain handled by this FFT engine.";
             throw FFTEngineError(error.str());
         }
@@ -237,14 +237,14 @@ namespace muFFT {
         // Sanity check 3: Does the output field have the correct number of
         // pixels?
         if (static_cast<size_t>(output_field.get_nb_pixels()) !=
-            muGrid::CcoordOps::get_size(this->nb_subdomain_grid_pts)) {
+            muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())) {
             std::stringstream error;
             error << "The number of pixels of the field '"
                   << output_field.get_name()
                   << "' passed to the inverse FFT is "
                   << output_field.get_nb_pixels()
                   << " and does not match the size "
-                  << muGrid::CcoordOps::get_size(this->nb_subdomain_grid_pts)
+                  << muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())
                   << " of the (sub)domain handled by this FFT engine.";
             throw FFTEngineError(error.str());
         }
@@ -831,7 +831,7 @@ namespace muFFT {
     }
 
     /* ---------------------------------------------------------------------- */
-    const Index_t & FFTEngineBase::get_spatial_dim() const {
+    Index_t FFTEngineBase::get_spatial_dim() const {
         return this->spatial_dimension;
     }
 

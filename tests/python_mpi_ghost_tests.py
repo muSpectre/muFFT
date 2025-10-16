@@ -50,12 +50,8 @@ engines = (["fftwmpi", "pfft"] if muFFT.has_mpi else []) + (
 
 
 @pytest.mark.parametrize("engine_str", engines)
-def test_laplace_2d(engine_str):
+def test_forward_inverse_2d(engine_str):
     nb_grid_pts = [6, 4]
-    stencil = np.array(
-        [[0, 1, 0], [1, -4, 1], [0, 1, 0]]
-    )  # FD-stencil for the Laplacian
-    laplace = muGrid.ConvolutionOperator([-1, -1], stencil)
 
     left_ghosts = [1, 1]
     right_ghosts = [1, 1]
@@ -73,4 +69,16 @@ def test_laplace_2d(engine_str):
         # test.
         return
 
-    field = engine.real_field("field")
+    np.testing.assert_array_equal(engine.nb_subdomain_grid_pts, [6, 4])
+    np.testing.assert_array_equal(engine.nb_subdomain_grid_pts, [6, 4])
+
+    field = engine.real_space_field("field")
+    fourier_field = engine.fourier_space_field("fourier_field")
+    result_field = engine.real_space_field("result_field_real")
+    field.sg[...] = np.random.random(field.sg.shape)
+
+    engine.fft(field, fourier_field)
+    engine.ifft(fourier_field, result_field)
+    result_field.sg *= engine.normalisation
+
+    np.testing.assert_allclose(field.s, result_field.s)
