@@ -36,7 +36,7 @@ envdata.append('TESTS_BUILDDIR', meson.current_build_dir())
 
 test('mufft_python_binding_tests',
      python,
-     args : [python.full_path(), '-m', 'pytest', '-v', '-s', join_paths(meson.project_source_root(), 'tests')],
+     args : ['-m', 'pytest', '-v', '-s', join_paths(meson.project_source_root(), 'tests')],
      env : envdata,
      depends : [mufft_python],
      timeout : test_timeout)
