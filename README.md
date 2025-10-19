@@ -10,7 +10,8 @@ using domain decomposition  implemented using the Message Passing Interface (MPI
 [Python](https://www.python.org/).
 
 This README contains only a small quick start guide. Please refer to the
-[full documentation](https://muspectre.github.io/muFFT/) for more help.
+[full documentation](https://muspectre.github.io/muFFT/) or the DeepWiki
+[LLM-generated documentation](https://deepwiki.com/muSpectre/muFFT) for more help.
 
 ## Quick start
 
