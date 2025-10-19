@@ -36,21 +36,20 @@ Program grant you additional permission to convey the resulting work.
 
 import numpy as np
 import pytest
-from mpi4py import MPI
 
 from NuMPI.Testing.Subdivision import suggest_subdivisions
 
 import muFFT, muGrid
 
-from mpi4py import MPI
-
 if muFFT.has_mpi:
+    from mpi4py import MPI
+
     communicator = muFFT.Communicator(MPI.COMM_WORLD)
 else:
     communicator = muFFT.Communicator()
 
 engines = (["fftwmpi", "pfft"] if muFFT.has_mpi else []) + (
-    ["pocketfft", "fftw"] if MPI.COMM_WORLD.size == 1 else []
+    ["pocketfft", "fftw"] if communicator.size == 1 else []
 )
 
 
@@ -68,7 +67,7 @@ def test_forward_inverse_2d(engine_str):
         engine = muFFT.FFT(
             nb_grid_pts,
             engine=engine_str,
-            communicator=MPI.COMM_WORLD,
+            communicator=communicator,
             nb_ghosts_left=left_ghosts,
             nb_ghosts_right=right_ghosts,
         )
@@ -106,7 +105,7 @@ def test_forward_inverse_3d(engine_str):
         engine = muFFT.FFT(
             nb_grid_pts,
             engine=engine_str,
-            communicator=MPI.COMM_WORLD,
+            communicator=communicator,
             nb_ghosts_left=left_ghosts,
             nb_ghosts_right=right_ghosts,
         )
