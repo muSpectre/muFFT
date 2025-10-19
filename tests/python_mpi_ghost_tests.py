@@ -42,13 +42,22 @@ from NuMPI.Testing.Subdivision import suggest_subdivisions
 
 import muFFT, muGrid
 
-assert muFFT.has_mpi
+from mpi4py import MPI
+
+if muFFT.has_mpi:
+    communicator = muFFT.Communicator(MPI.COMM_WORLD)
+else:
+    communicator = muFFT.Communicator()
 
 engines = (["fftwmpi", "pfft"] if muFFT.has_mpi else []) + (
     ["pocketfft", "fftw"] if MPI.COMM_WORLD.size == 1 else []
 )
 
 
+@pytest.mark.skipif(
+    communicator.size > 4,
+    reason="Tests only for up to 4 MPI processes; empty process domains may occur otherwise.",
+)
 @pytest.mark.parametrize("engine_str", engines)
 def test_forward_inverse_2d(engine_str):
     nb_grid_pts = [6, 4]
@@ -72,10 +81,50 @@ def test_forward_inverse_2d(engine_str):
     field = engine.real_space_field("field")
     fourier_field = engine.fourier_space_field("fourier_field")
     result_field = engine.real_space_field("result_field_real")
-    field.sg[...] = np.random.random(field.sg.shape)
+    field.s[...] = np.random.random(field.s.shape)
 
     engine.fft(field, fourier_field)
     engine.ifft(fourier_field, result_field)
-    result_field.sg *= engine.normalisation
+    result_field.s *= engine.normalisation
 
-    np.testing.assert_allclose(field.s, result_field.s, err_msg=f"Failed for engine {engine_str}")
+    np.testing.assert_allclose(
+        field.s, result_field.s, err_msg=f"Failed for engine {engine_str}"
+    )
+
+
+@pytest.mark.skipif(
+    communicator.size > 4,
+    reason="Tests only for up to 4 MPI processes; empty process domains may occur otherwise.",
+)
+@pytest.mark.parametrize("engine_str", engines)
+def test_forward_inverse_3d(engine_str):
+    nb_grid_pts = [6, 4, 4]
+
+    left_ghosts = [1, 1, 1]
+    right_ghosts = [1, 1, 1]
+    try:
+        engine = muFFT.FFT(
+            nb_grid_pts,
+            engine=engine_str,
+            communicator=MPI.COMM_WORLD,
+            nb_ghosts_left=left_ghosts,
+            nb_ghosts_right=right_ghosts,
+        )
+        engine.create_plan(1)
+    except muFFT.UnknownFFTEngineError:
+        # This FFT engine has not been compiled into the code. Skip
+        # test.
+        return
+
+    field = engine.real_space_field("field")
+    fourier_field = engine.fourier_space_field("fourier_field")
+    result_field = engine.real_space_field("result_field_real")
+    field.s[...] = np.random.random(field.s.shape)
+
+    engine.fft(field, fourier_field)
+    engine.ifft(fourier_field, result_field)
+    result_field.s *= engine.normalisation
+
+    np.testing.assert_allclose(
+        field.s, result_field.s, err_msg=f"Failed for engine {engine_str}"
+    )
