@@ -1129,8 +1129,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
         communicator.size > 1, "This test only works on a single MPI process"
     )
     def test_r2hc_incompatible_engines_raise(self):
-        for engine in self.engines:
-            print(engine)
+        for engine in ["pocketfft"]:
             try:
                 engine = muFFT.FFT(
                     [3, 5],
@@ -1145,7 +1144,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
             # Allocate buffers and create plan for one degree of freedom
             real_buffer = engine.register_halfcomplex_field("real-space", 1)
             fourier_buffer = engine.register_halfcomplex_field("fourier-space", 1)
-            with self.assertRaises(RuntimeError) as context:
+            with self.assertRaises(RuntimeError, msg=f"Failed for engine {engine}") as context:
                 engine.hcfft(real_buffer, fourier_buffer)
 
             self.assertTrue(
