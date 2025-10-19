@@ -21,7 +21,7 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License
+You should have received a copy of the GNU Lesser Generagl Public License
 along with µFFT; see the file COPYING. If not, write to the
 Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
@@ -952,8 +952,8 @@ class FFTCheckSerialOnly(unittest.TestCase):
         out_data = np.zeros((5, 5), dtype=float)
 
         # Allocate buffers and create plan for one degree of freedom
-        real_buffer = engine.register_halfcomplex_field("real-space", 1)
-        fourier_buffer = engine.register_halfcomplex_field("fourier-space", 1)
+        real_buffer = engine.register_halfcomplex_field("real-space")
+        fourier_buffer = engine.register_halfcomplex_field("fourier-space")
 
         real_buffer.array()[...] = np.cos(np.pi * 2 * np.arange(5) / 5).reshape(
             1, -1
@@ -963,7 +963,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
 
         expected = np.zeros((5, 5))
         expected[0, 1] = 1 / 2 / engine.normalisation
-        np.testing.assert_allclose(fourier_buffer, expected, atol=1e-14)
+        np.testing.assert_allclose(fourier_buffer.p, expected, atol=1e-14)
 
         real_buffer.array()[...] = np.sin(np.pi * 2 * np.arange(5) / 5).reshape(
             1, -1
@@ -979,7 +979,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
         # Euler formula:
         # sin = - i * 1/2 * (e^qx - e^-qx )
         expected[0, -1] = -1 / 2 / engine.normalisation
-        np.testing.assert_allclose(fourier_buffer, expected, atol=1e-14)
+        np.testing.assert_allclose(fourier_buffer.p, expected, atol=1e-14)
 
     @unittest.skipIf(communicator.size > 1, "fftw only")
     def test_rffth2c_2d_roundtrip(self):
@@ -998,8 +998,8 @@ class FFTCheckSerialOnly(unittest.TestCase):
                 return
 
             # Allocate buffers and create plan for one degree of freedom
-            real_buffer = engine.register_halfcomplex_field("real-space", 1)
-            fourier_buffer = engine.register_halfcomplex_field("fourier-space", 1)
+            real_buffer = engine.register_halfcomplex_field("real-space")
+            fourier_buffer = engine.register_halfcomplex_field("fourier-space")
 
             original = np.random.normal(size=nb_grid_pts)
             real_buffer.array()[...] = original.copy()
@@ -1007,7 +1007,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
             engine.hcfft(real_buffer, fourier_buffer)
             engine.ihcfft(fourier_buffer, real_buffer)
             real_buffer.array()[...] *= engine.normalisation
-            np.testing.assert_allclose(real_buffer, original, atol=1e-14)
+            np.testing.assert_allclose(real_buffer.p, original, atol=1e-14)
 
     @unittest.skipIf(communicator.size > 1, "fftw only")
     def test_rffth2c_2d_convenience_interface(self):
@@ -1091,8 +1091,8 @@ class FFTCheckSerialOnly(unittest.TestCase):
             )
 
             # Allocate buffers and create plan for one degree of freedom
-            real_buffer = engine.register_halfcomplex_field("real-space", 1)
-            fourier_buffer = engine.register_halfcomplex_field("fourier-space", 1)
+            real_buffer = engine.register_halfcomplex_field("real-space")
+            fourier_buffer = engine.register_halfcomplex_field("fourier-space")
 
             original = np.random.normal(size=nb_grid_pts)
             real_buffer.array()[...] = original.copy()
@@ -1100,7 +1100,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
             engine.hcfft(real_buffer, fourier_buffer)
             engine.ihcfft(fourier_buffer, real_buffer)
             real_buffer.array()[...] *= engine.normalisation
-            np.testing.assert_allclose(real_buffer, original, atol=1e-14)
+            np.testing.assert_allclose(real_buffer.p, original, atol=1e-14)
 
     @unittest.skipIf(communicator.size > 1, "fftw only")
     def test_rffth2c_3d_roundtrip(self):
@@ -1114,8 +1114,8 @@ class FFTCheckSerialOnly(unittest.TestCase):
             )
 
             # Allocate buffers and create plan for one degree of freedom
-            real_buffer = engine.register_halfcomplex_field("real-space", 1)
-            fourier_buffer = engine.register_halfcomplex_field("fourier-space", 1)
+            real_buffer = engine.register_halfcomplex_field("real-space")
+            fourier_buffer = engine.register_halfcomplex_field("fourier-space")
 
             original = np.random.normal(size=nb_grid_pts)
             real_buffer.array()[...] = original.copy()
@@ -1123,13 +1123,14 @@ class FFTCheckSerialOnly(unittest.TestCase):
             engine.hcfft(real_buffer, fourier_buffer)
             engine.ihcfft(fourier_buffer, real_buffer)
             real_buffer.array()[...] *= engine.normalisation
-            np.testing.assert_allclose(real_buffer, original, atol=1e-14)
+            np.testing.assert_allclose(real_buffer.p, original, atol=1e-14)
 
     @unittest.skipIf(
         communicator.size > 1, "This test only works on a single MPI process"
     )
     def test_r2hc_incompatible_engines_raise(self):
         for engine in self.engines:
+            print(engine)
             try:
                 engine = muFFT.FFT(
                     [3, 5],
