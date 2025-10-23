@@ -422,10 +422,11 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                 auto nb_dof_per_pixel{
                     std::accumulate(info.shape.begin(), info.shape.end() - dim,
                                     1, std::multiplies<Index_t>())};
-                NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
-                                             eng.get_subdomain_locations_with_ghosts(),
-                                             nb_dof_per_pixel, input_array);
+                NumpyProxy<Real> input_proxy(
+                    eng.get_nb_domain_grid_pts(),
+                    eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                    eng.get_subdomain_locations_with_ghosts(), nb_dof_per_pixel,
+                    input_array);
                 NumpyProxy<Complex> output_proxy(
                     eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
                     eng.get_fourier_locations(), nb_dof_per_pixel,
@@ -454,10 +455,11 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                 NumpyProxy<Complex> input_proxy(
                     eng.get_nb_domain_grid_pts(), eng.get_nb_fourier_grid_pts(),
                     eng.get_fourier_locations(), nb_dof_per_pixel, input_array);
-                NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                              eng.get_nb_subdomain_grid_pts_with_ghosts(),
-                                              eng.get_subdomain_locations_with_ghosts(),
-                                              nb_dof_per_pixel, output_array);
+                NumpyProxy<Real> output_proxy(
+                    eng.get_nb_domain_grid_pts(),
+                    eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                    eng.get_subdomain_locations_with_ghosts(), nb_dof_per_pixel,
+                    output_array);
                 eng.ifft(input_proxy.get_field(), output_proxy.get_field());
             },
             "fourier_input_array"_a, "real_output_array"_a,
@@ -483,10 +485,11 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                 auto nb_dof_per_pixel{
                     std::accumulate(info.shape.begin(), info.shape.end() - dim,
                                     1, std::multiplies<Index_t>())};
-                NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
-                                             eng.get_subdomain_locations_with_ghosts(),
-                                             nb_dof_per_pixel, input_array);
+                NumpyProxy<Real> input_proxy(
+                    eng.get_nb_domain_grid_pts(),
+                    eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                    eng.get_subdomain_locations_with_ghosts(), nb_dof_per_pixel,
+                    input_array);
                 std::stringstream name;
                 name << "fft return buffer "
                      << input_proxy.get_components_shape();
@@ -536,14 +539,16 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             [](Engine & eng, py::array_t<Real> & input_array,
                py::array_t<Real> & output_array) {
                 auto nb_dof_per_pixel{input_array.size() / eng.size()};
-                NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
-                                             eng.get_subdomain_locations_with_ghosts(),
-                                             nb_dof_per_pixel, input_array);
-                NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                              eng.get_nb_subdomain_grid_pts_with_ghosts(),
-                                              eng.get_subdomain_locations_with_ghosts(),
-                                              nb_dof_per_pixel, output_array);
+                NumpyProxy<Real> input_proxy(
+                    eng.get_nb_domain_grid_pts(),
+                    eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                    eng.get_subdomain_locations_with_ghosts(), nb_dof_per_pixel,
+                    input_array);
+                NumpyProxy<Real> output_proxy(
+                    eng.get_nb_domain_grid_pts(),
+                    eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                    eng.get_subdomain_locations_with_ghosts(), nb_dof_per_pixel,
+                    output_array);
                 auto && input_proxy_field{input_proxy.get_field()};
                 eng.hcfft(input_proxy_field, output_proxy.get_field());
             },
@@ -554,14 +559,16 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             [](Engine & eng, py::array_t<Real> & input_array,
                py::array_t<Real> & output_array) {
                 auto nb_dof_per_pixel{output_array.size() / eng.size()};
-                NumpyProxy<Real> input_proxy(eng.get_nb_domain_grid_pts(),
-                                             eng.get_nb_subdomain_grid_pts_with_ghosts(),
-                                             eng.get_subdomain_locations_with_ghosts(),
-                                             nb_dof_per_pixel, input_array);
-                NumpyProxy<Real> output_proxy(eng.get_nb_domain_grid_pts(),
-                                              eng.get_nb_subdomain_grid_pts_with_ghosts(),
-                                              eng.get_subdomain_locations_with_ghosts(),
-                                              nb_dof_per_pixel, output_array);
+                NumpyProxy<Real> input_proxy(
+                    eng.get_nb_domain_grid_pts(),
+                    eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                    eng.get_subdomain_locations_with_ghosts(), nb_dof_per_pixel,
+                    input_array);
+                NumpyProxy<Real> output_proxy(
+                    eng.get_nb_domain_grid_pts(),
+                    eng.get_nb_subdomain_grid_pts_with_ghosts(),
+                    eng.get_subdomain_locations_with_ghosts(), nb_dof_per_pixel,
+                    output_array);
                 eng.ihcfft(input_proxy.get_field(), output_proxy.get_field());
             },
             "real_input_array"_a, "real_output_array"_a,
