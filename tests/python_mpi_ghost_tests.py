@@ -129,7 +129,7 @@ def test_forward_inverse_3d(engine_str):
     )
 
 
-@pytest.mark.parametrize("engine_str", ["fftwmpi"])
+@pytest.mark.parametrize("engine_str", engines)
 def test_apply_stencil(engine_str):
     # Two dimensional grid
     nx, ny = nb_grid_pts = [1024, 10]
@@ -179,11 +179,6 @@ def test_apply_stencil(engine_str):
         ],
     )
     op = muGrid.ConvolutionOperator([0, 0], gradient)
-
-    print(nodal_field.s.flags)
-    print(nodal_field.sg.flags)
-    print(quad_field.s.flags)
-    print(quad_field.sg.flags)
 
     # Apply the gradient operator to the nodal field and write result to the quad field
     op.apply(nodal_field, quad_field)
