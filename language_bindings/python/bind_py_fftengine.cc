@@ -410,7 +410,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             [](Engine & eng, py::array_t<Real> & input_array,
                py::array_t<Complex> & output_array) {
                 const py::buffer_info & info = input_array.request();
-                auto & dim{eng.get_fourier_pixels().get_dim()};
+                auto dim{eng.get_fourier_pixels().get_dim()};
                 if (info.shape.size() < static_cast<size_t>(dim)) {
                     std::stringstream s;
                     s << "Input array has " << info.shape.size()
@@ -439,7 +439,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
             [](Engine & eng, py::array_t<Complex> & input_array,
                py::array_t<Real> & output_array) {
                 const py::buffer_info & info = input_array.request();
-                auto & dim{eng.get_fourier_pixels().get_dim()};
+                auto dim{eng.get_fourier_pixels().get_dim()};
                 if (info.shape.size() < static_cast<size_t>(dim)) {
                     std::stringstream s;
                     s << "Input array has " << info.shape.size()
@@ -471,7 +471,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                         "convenience interface requires them.");
                 }
                 const py::buffer_info & info = input_array.request();
-                auto & dim{eng.get_fourier_pixels().get_dim()};
+                auto dim{eng.get_fourier_pixels().get_dim()};
                 if (info.shape.size() < static_cast<size_t>(dim)) {
                     std::stringstream s;
                     s << "Input array has " << info.shape.size()
@@ -506,7 +506,7 @@ void add_engine_helper(py::module & mod, const std::string & name) {
                         "convenience interface requires them.");
                 }
                 const py::buffer_info & info = input_array.request();
-                auto & dim{eng.get_fourier_pixels().get_dim()};
+                auto dim{eng.get_fourier_pixels().get_dim()};
                 if (info.shape.size() < static_cast<size_t>(dim)) {
                     std::stringstream s;
                     s << "Input array has " << info.shape.size()
