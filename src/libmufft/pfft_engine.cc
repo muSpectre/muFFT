@@ -44,7 +44,7 @@ namespace muFFT {
 
   int PFFTEngine::nb_engines{0};
 
-  PFFTEngine::PFFTEngine(const DynCcoord_t & nb_grid_pts,
+  PFFTEngine::PFFTEngine(const IntCoord_t & nb_grid_pts,
                          Communicator comm,
                          const FFT_PlanFlags & plan_flags,
                          bool allow_temporary_buffer,

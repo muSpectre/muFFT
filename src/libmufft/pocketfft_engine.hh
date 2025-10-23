@@ -63,7 +63,7 @@ namespace muFFT {
      * options. The constructor does not perform any FFT computations; it merely
      * sets up the object for future FFT operations.
      *
-     * @param nb_grid_pts A DynCcoord_t object representing the number of grid
+     * @param nb_grid_pts A IntCoord_t object representing the number of grid
      * points in each dimension of the global grid.
      * @param comm An optional Communicator object for MPI communication.
      * Defaults to an empty Communicator.
@@ -75,11 +75,13 @@ namespace muFFT {
      * @param allow_destroy_input An optional boolean flag indicating whether
      * the input buffers can be invalidated during the FFT. Defaults to false.
      */
-    PocketFFTEngine(const DynCcoord_t & nb_grid_pts,
+    PocketFFTEngine(const IntCoord_t & nb_grid_pts,
                     Communicator comm = Communicator(),
                     const FFT_PlanFlags & plan_flags = FFT_PlanFlags::estimate,
                     bool allow_temporary_buffer = true,
-                    bool allow_destroy_input = false);
+                    bool allow_destroy_input = false,
+                    const IntCoord_t & nb_ghosts_left = IntCoord_t{},
+                    const IntCoord_t & nb_ghosts_right = IntCoord_t{});
     /**
      * @brief Constructs a PocketFFTEngine object with the specified parameters.
      *
@@ -88,7 +90,7 @@ namespace muFFT {
      * perform any FFT computations; it merely sets up the object for future FFT
      * operations.
      *
-     * @param nb_grid_pts A DynCcoord_t object representing the number of grid
+     * @param nb_grid_pts A IntCoord_t object representing the number of grid
      * points in each dimension of the global grid.
      * @param plan_flags An FFT_PlanFlags object representing the FFT
      * planner flags.
@@ -98,7 +100,7 @@ namespace muFFT {
      * @param allow_destroy_input A boolean flag indicating whether
      * the input buffers can be invalidated during the FFT. Defaults to false.
      */
-    PocketFFTEngine(const DynCcoord_t & nb_grid_pts,
+    PocketFFTEngine(const IntCoord_t & nb_grid_pts,
                     const FFT_PlanFlags & plan_flags,
                     bool allow_temporary_buffer = true,
                     bool allow_destroy_input = false);

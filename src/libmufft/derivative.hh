@@ -224,7 +224,7 @@ namespace muFFT {
      * where the derivative should be computed.
      * @param stencil The stencil coefficients.
      */
-    DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
+    DiscreteDerivative(IntCoord_t nb_pts, IntCoord_t lbounds,
                        const std::vector<Real> & stencil);
 
     /**
@@ -238,7 +238,7 @@ namespace muFFT {
      * where the derivative should be computed.
      * @param stencil The stencil coefficients.
      */
-    DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
+    DiscreteDerivative(IntCoord_t nb_pts, IntCoord_t lbounds,
                        const Eigen::ArrayXd & stencil);
 
     //! Default copy constructor
@@ -266,7 +266,7 @@ namespace muFFT {
      * returned.
      * @return The stencil value at the provided coordinate.
      */
-    Real operator()(const DynCcoord_t & dcoord) const {
+    Real operator()(const IntCoord_t & dcoord) const {
       return this->stencil[this->pixels.get_index(dcoord)];
     }
 
@@ -278,7 +278,7 @@ namespace muFFT {
      * @return A constant reference to the Dim_t object that contains the
      * dimension of the stencil.
      */
-    const Dim_t & get_dim() const { return this->pixels.get_dim(); }
+    Dim_t get_dim() const { return this->pixels.get_dim(); }
 
     /**
      * @brief Returns the number of grid points in the stencil.
@@ -288,7 +288,7 @@ namespace muFFT {
      * @return A constant reference to the DynamicCoordinate object that
      * contains the number of grid points in the stencil.
      */
-    const DynCcoord_t & get_nb_pts() const {
+    const IntCoord_t & get_nb_pts() const {
       return this->pixels.get_nb_subdomain_grid_pts();
     }
 
@@ -301,19 +301,19 @@ namespace muFFT {
      * @return A constant reference to the DynamicCoordinate object that
      * contains the lower bounds of the stencil.
      */
-    const DynCcoord_t & get_lbounds() const {
+    const IntCoord_t & get_lbounds() const {
       return this->pixels.get_subdomain_locations();
     }
 
     /**
      * @brief Returns the pixels class that allows to iterate over pixels.
-     * @details This function returns the DynamicPixels object from the
+     * @details This function returns the Pixels object from the
      * muGrid::CcoordOps namespace. This object is used to iterate over the
      * pixels of the stencil.
-     * @return A constant reference to the DynamicPixels object that allows to
+     * @return A constant reference to the Pixels object that allows to
      * iterate over the pixels of the stencil.
      */
-    const muGrid::CcoordOps::DynamicPixels & get_pixels() const {
+    const muGrid::CcoordOps::Pixels & get_pixels() const {
       return this->pixels;
     }
 
@@ -426,7 +426,7 @@ namespace muFFT {
      */
     virtual Complex fourier(const Vector & phase) const {
       Complex s{0, 0};
-      for (auto && dcoord : muGrid::CcoordOps::DynamicPixels(
+      for (auto && dcoord : muGrid::CcoordOps::Pixels(
                this->pixels.get_nb_subdomain_grid_pts(),
                this->pixels.get_subdomain_locations())) {
         const Real arg{phase.matrix().dot(eigen(dcoord).template cast<Real>())};
@@ -459,7 +459,7 @@ namespace muFFT {
     const Eigen::ArrayXd & get_stencil() const { return this->stencil; }
 
    protected:
-    muGrid::CcoordOps::DynamicPixels pixels{};  //!< iterate over the stencil
+    muGrid::CcoordOps::Pixels pixels{};  //!< iterate over the stencil
     const Eigen::ArrayXd stencil;               //!< Finite-differences stencil
   };
 

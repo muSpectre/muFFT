@@ -69,7 +69,7 @@ namespace muFFT {
     constexpr static Real BoxLength{4.5};
     constexpr static Dim_t sdim{dim};
     constexpr static Dim_t NbComponents{sdim * sdim};
-    static DynCcoord_t res() {
+    static IntCoord_t res() {
       return muGrid::CcoordOps::get_cube(sdim, BoxNbGridPts);
     }
     FFTW_fixture() : engine(res(), MPIContext::get_context().comm) {}
@@ -90,7 +90,7 @@ namespace muFFT {
     constexpr static Dim_t sdim{twoD};
     constexpr static Dim_t mdim{twoD};
     constexpr static Dim_t NbComponents{sdim * sdim};
-    static DynCcoord_t res() { return {6, 4}; }
+    static IntCoord_t res() { return {6, 4}; }
     FFTW_fixture_python_segfault()
         : engine{res(), MPIContext::get_context().comm} {}
     Engine engine;
@@ -135,7 +135,7 @@ namespace muFFT {
   /* ---------------------------------------------------------------------- */
   BOOST_FIXTURE_TEST_CASE_TEMPLATE(fft_test, Fix, fixlist, Fix) {
     if (Fix::serial_engine && Fix::engine.get_communicator().size() > 1) {
-      // dont test serial engies in parallel
+      // dont test serial engines in parallel
       return;
     } else {
       Fix::engine.create_plan(Fix::NbComponents);
@@ -194,7 +194,7 @@ namespace muFFT {
       BOOST_CHECK_LT(error, tol);
     }
 
-    /* make sure that the ifft of fft returns the original*/
+    /* make sure that the ifft of fft returns the original */
     Fix::engine.ifft(complex_field, result);
     for (auto && tup : akantu::zip(resultmap, refmap)) {
       auto && result{std::get<0>(tup)};

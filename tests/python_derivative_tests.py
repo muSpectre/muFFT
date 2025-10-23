@@ -98,7 +98,7 @@ class DerivativeCheck1d(unittest.TestCase):
             self.assertAlmostEqual(diff_field[x], ndiff)
 
     def test_sixth_order_central_differences(self):
-        diffop = muFFT.Stencil1D.central6
+        diffop = muFFT.Stencils1D.central6
         q = self.fft.fftfreq
         d = diffop.fourier(q)
         diff_field = np.zeros_like(self.field, order='f')
@@ -432,14 +432,11 @@ class DerivativeCheck2d(unittest.TestCase):
         diffop = muFFT.Stencils2D.upwind_x
         field = self.field.reshape(self.nb_pts, order='F')
         diff_field = diffop.apply(field)
-        print('diff_field[0, 0] (python):', diff_field[0, 0])
         diff_field = np.squeeze(diff_field)
         nx, ny = self.nb_pts
         for x in range(nx):
             for y in range(ny):
                 ndiff = self.field[(x+1) % nx, y] - self.field[x, y]
-                if x == 0 and y == 0:
-                    print('ndiff:', ndiff)
                 ndiff = np.squeeze(ndiff)
                 self.assertAlmostEqual(diff_field[x, y], ndiff)
 
