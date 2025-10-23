@@ -307,13 +307,13 @@ namespace muFFT {
 
     /**
      * @brief Returns the pixels class that allows to iterate over pixels.
-     * @details This function returns the DynamicPixels object from the
+     * @details This function returns the Pixels object from the
      * muGrid::CcoordOps namespace. This object is used to iterate over the
      * pixels of the stencil.
-     * @return A constant reference to the DynamicPixels object that allows to
+     * @return A constant reference to the Pixels object that allows to
      * iterate over the pixels of the stencil.
      */
-    const muGrid::CcoordOps::DynamicPixels & get_pixels() const {
+    const muGrid::CcoordOps::Pixels & get_pixels() const {
       return this->pixels;
     }
 
@@ -426,7 +426,7 @@ namespace muFFT {
      */
     virtual Complex fourier(const Vector & phase) const {
       Complex s{0, 0};
-      for (auto && dcoord : muGrid::CcoordOps::DynamicPixels(
+      for (auto && dcoord : muGrid::CcoordOps::Pixels(
                this->pixels.get_nb_subdomain_grid_pts(),
                this->pixels.get_subdomain_locations())) {
         const Real arg{phase.matrix().dot(eigen(dcoord).template cast<Real>())};
@@ -459,7 +459,7 @@ namespace muFFT {
     const Eigen::ArrayXd & get_stencil() const { return this->stencil; }
 
    protected:
-    muGrid::CcoordOps::DynamicPixels pixels{};  //!< iterate over the stencil
+    muGrid::CcoordOps::Pixels pixels{};  //!< iterate over the stencil
     const Eigen::ArrayXd stencil;               //!< Finite-differences stencil
   };
 

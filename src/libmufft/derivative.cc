@@ -39,7 +39,7 @@
 #include "derivative.hh"
 
 using muGrid::pi;
-using muGrid::CcoordOps::DynamicPixels;
+using muGrid::CcoordOps::Pixels;
 using muGrid::CcoordOps::get_index;
 using muGrid::CcoordOps::get_size;
 using muGrid::CcoordOps::modulo;
@@ -155,7 +155,7 @@ namespace muFFT {
     os << " ";
     muGrid::operator<<(os, lbounds);
     os << " ";
-    for (auto && pixel : muGrid::CcoordOps::DynamicPixels(nb_pts, lbounds)) {
+    for (auto && pixel : muGrid::CcoordOps::Pixels(nb_pts, lbounds)) {
       os << derivative(pixel) << " ";
     }
     os << "}";

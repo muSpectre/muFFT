@@ -71,7 +71,7 @@ namespace muFFT {
         //! global FieldCollection
         using GFieldCollection_t = muGrid::GlobalFieldCollection;
         //! pixel iterator
-        using Pixels_t = typename GFieldCollection_t::DynamicPixels;
+        using Pixels_t = typename GFieldCollection_t::Pixels;
         /**
          * Field type on which to apply the projection.
          * This is a TypedFieldBase because it need to be able to hold
@@ -86,7 +86,7 @@ namespace muFFT {
         /**
          * iterator over Fourier-space discretisation point
          */
-        using iterator = typename GFieldCollection_t::DynamicPixels::iterator;
+        using iterator = typename GFieldCollection_t::Pixels::iterator;
 
         //! Default constructor
         FFTEngineBase() = delete;

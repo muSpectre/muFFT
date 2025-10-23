@@ -127,3 +127,68 @@ def test_forward_inverse_3d(engine_str):
     np.testing.assert_allclose(
         field.s, result_field.s, err_msg=f"Failed for engine {engine_str}"
     )
+
+
+@pytest.mark.parametrize("engine_str", ["fftwmpi"])
+def test_apply_stencil(engine_str):
+    # Two dimensional grid
+    nx, ny = nb_grid_pts = [1024, 10]
+
+    left_ghosts = [1, 1]
+    right_ghosts = [1, 1]
+
+    try:
+        engine = muFFT.FFT(
+            nb_grid_pts,
+            engine=engine_str,
+            communicator=communicator,
+            nb_ghosts_left=left_ghosts,
+            nb_ghosts_right=right_ghosts,
+        )
+        engine.create_plan(1)
+    except muFFT.UnknownFFTEngineError:
+        # This FFT engine has not been compiled into the code. Skip
+        # test.
+        return
+
+    fc = engine.real_field_collection
+    fc.set_nb_sub_pts('quad_points', 2)
+    fc.set_nb_sub_pts('nodal_points', 1)
+
+    # Get nodal field
+    nodal_field = fc.real_field("nodal-field", (1,), "nodal_points")
+
+    # Get quadrature field of shape (2, quad, nx, ny)
+    quad_field = fc.real_field("quad-field", (2,), "quad_points")
+
+    # Fill nodal field with a sine-wave
+    x, y = nodal_field.icoords
+    nodal_field.p[0] = np.sin(2 * np.pi * x / nx)
+
+    # Derivative stencil of shape (2, quad, 2, 2)
+    gradient = np.array(
+        [
+            [  # Derivative in x-direction
+                [[[-1, 0], [1, 0]]],  # Bottom-left triangle (first quadrature point)
+                [[[0, -1], [0, 1]]],  # Top-right triangle (second quadrature point)
+            ],
+            [  # Derivative in y-direction
+                [[[-1, 1], [0, 0]]],  # Bottom-left triangle (first quadrature point)
+                [[[0, 0], [-1, 1]]],  # Top-right triangle (second quadrature point)
+            ],
+        ],
+    )
+    op = muGrid.ConvolutionOperator([0, 0], gradient)
+
+    print(nodal_field.s.flags)
+    print(nodal_field.sg.flags)
+    print(quad_field.s.flags)
+    print(quad_field.sg.flags)
+
+    # Apply the gradient operator to the nodal field and write result to the quad field
+    op.apply(nodal_field, quad_field)
+
+    # Check that the quadrature field has the correct derivative
+    np.testing.assert_allclose(
+        quad_field.s[0, 0], 2 * np.pi * np.cos(2 * np.pi * (x + 0.25) / nx) / nx, atol=1e-5
+    )
