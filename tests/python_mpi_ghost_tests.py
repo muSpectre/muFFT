@@ -129,6 +129,10 @@ def test_forward_inverse_3d(engine_str):
     )
 
 
+@pytest.mark.skipif(
+    communicator.size > 4,
+    reason="Tests only for up to 4 MPI processes; empty process domains may occur otherwise.",
+)
 @pytest.mark.parametrize("engine_str", engines)
 def test_apply_stencil(engine_str):
     # Two dimensional grid
@@ -152,8 +156,8 @@ def test_apply_stencil(engine_str):
         return
 
     fc = engine.real_field_collection
-    fc.set_nb_sub_pts('quad_points', 2)
-    fc.set_nb_sub_pts('nodal_points', 1)
+    fc.set_nb_sub_pts("quad_points", 2)
+    fc.set_nb_sub_pts("nodal_points", 1)
 
     # Get nodal field
     nodal_field = fc.real_field("nodal-field", (1,), "nodal_points")
@@ -185,5 +189,7 @@ def test_apply_stencil(engine_str):
 
     # Check that the quadrature field has the correct derivative
     np.testing.assert_allclose(
-        quad_field.s[0, 0], 2 * np.pi * np.cos(2 * np.pi * (x + 0.25) / nx) / nx, atol=1e-5
+        quad_field.s[0, 0],
+        2 * np.pi * np.cos(2 * np.pi * (x + 0.25) / nx) / nx,
+        atol=1e-5,
     )
