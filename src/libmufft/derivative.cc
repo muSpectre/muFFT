@@ -80,8 +80,8 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  DiscreteDerivative::DiscreteDerivative(DynCcoord_t nb_pts,
-                                         DynCcoord_t lbounds,
+  DiscreteDerivative::DiscreteDerivative(IntCoord_t nb_pts,
+                                         IntCoord_t lbounds,
                                          const std::vector<Real> & stencil)
       : Parent{nb_pts.get_dim()}, pixels{nb_pts, lbounds},
         stencil{
@@ -100,8 +100,8 @@ namespace muFFT {
   }
 
   /* ---------------------------------------------------------------------- */
-  DiscreteDerivative::DiscreteDerivative(DynCcoord_t nb_pts,
-                                         DynCcoord_t lbounds,
+  DiscreteDerivative::DiscreteDerivative(IntCoord_t nb_pts,
+                                         IntCoord_t lbounds,
                                          const Eigen::ArrayXd & stencil)
       : Parent{nb_pts.get_dim()}, pixels{nb_pts, lbounds}, stencil{stencil} {
     if (get_size(nb_pts) != static_cast<size_t>(this->stencil.size())) {
@@ -120,7 +120,7 @@ namespace muFFT {
 
   /* ---------------------------------------------------------------------- */
   DiscreteDerivative DiscreteDerivative::rollaxes(int distance) const {
-    DynCcoord_t new_nb_pts(this->spatial_dimension),
+    IntCoord_t new_nb_pts(this->spatial_dimension),
         new_lbounds(this->spatial_dimension);
     Eigen::ArrayXd stencil(this->stencil.size());
 
@@ -131,7 +131,7 @@ namespace muFFT {
     }
 
     for (auto && pixel : this->pixels) {
-      DynCcoord_t rolled_pixel(this->spatial_dimension);
+      IntCoord_t rolled_pixel(this->spatial_dimension);
       for (Index_t dim{0}; dim < this->spatial_dimension; ++dim) {
         Index_t rolled_dim{modulo(dim + distance, this->spatial_dimension)};
         rolled_pixel[rolled_dim] = pixel[dim] -

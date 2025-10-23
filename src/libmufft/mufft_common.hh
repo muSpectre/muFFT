@@ -50,8 +50,8 @@ namespace muFFT {
   using muGrid::RuntimeError;
 
   using muGrid::Ccoord_t;
-  using muGrid::DynCcoord_t;
-  using muGrid::DynRcoord_t;
+  using muGrid::IntCoord_t;
+  using muGrid::RealCoord_t;
   using muGrid::Rcoord_t;
   using muGrid::Shape_t;
 

@@ -67,7 +67,7 @@ namespace muFFT {
      * @param allow_destroy_input allow that the input buffers are invalidated
      *        during the FFT
      */
-    PFFTEngine(const DynCcoord_t & nb_grid_pts,
+    PFFTEngine(const IntCoord_t & nb_grid_pts,
                Communicator comm = Communicator(),
                const FFT_PlanFlags & plan_flags = FFT_PlanFlags::estimate,
                bool allow_temporary_buffer = true,

@@ -224,7 +224,7 @@ namespace muFFT {
      * where the derivative should be computed.
      * @param stencil The stencil coefficients.
      */
-    DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
+    DiscreteDerivative(IntCoord_t nb_pts, IntCoord_t lbounds,
                        const std::vector<Real> & stencil);
 
     /**
@@ -238,7 +238,7 @@ namespace muFFT {
      * where the derivative should be computed.
      * @param stencil The stencil coefficients.
      */
-    DiscreteDerivative(DynCcoord_t nb_pts, DynCcoord_t lbounds,
+    DiscreteDerivative(IntCoord_t nb_pts, IntCoord_t lbounds,
                        const Eigen::ArrayXd & stencil);
 
     //! Default copy constructor
@@ -266,7 +266,7 @@ namespace muFFT {
      * returned.
      * @return The stencil value at the provided coordinate.
      */
-    Real operator()(const DynCcoord_t & dcoord) const {
+    Real operator()(const IntCoord_t & dcoord) const {
       return this->stencil[this->pixels.get_index(dcoord)];
     }
 
@@ -288,7 +288,7 @@ namespace muFFT {
      * @return A constant reference to the DynamicCoordinate object that
      * contains the number of grid points in the stencil.
      */
-    const DynCcoord_t & get_nb_pts() const {
+    const IntCoord_t & get_nb_pts() const {
       return this->pixels.get_nb_subdomain_grid_pts();
     }
 
@@ -301,7 +301,7 @@ namespace muFFT {
      * @return A constant reference to the DynamicCoordinate object that
      * contains the lower bounds of the stencil.
      */
-    const DynCcoord_t & get_lbounds() const {
+    const IntCoord_t & get_lbounds() const {
       return this->pixels.get_subdomain_locations();
     }
 

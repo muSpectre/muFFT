@@ -44,10 +44,10 @@ using muGrid::operator<<;
 namespace muFFT {
     /* ---------------------------------------------------------------------- */
     FFTEngineBase::FFTEngineBase(
-        const DynCcoord_t & nb_grid_pts, Communicator comm,
+        const IntCoord_t & nb_grid_pts, Communicator comm,
         const FFT_PlanFlags & plan_flags, bool allow_temporary_buffer,
         bool allow_destroy_input, bool engine_has_rigid_memory_layout,
-        const DynCcoord_t & nb_ghosts_left, const DynCcoord_t & nb_ghosts_right)
+        const IntCoord_t & nb_ghosts_left, const IntCoord_t & nb_ghosts_right)
         : CartesianDecomposition(
               comm, nb_grid_pts.get_dim(),
               GlobalFieldCollection::SubPtMap_t{{PixelTag, 1}}),

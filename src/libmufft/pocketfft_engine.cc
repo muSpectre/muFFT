@@ -50,13 +50,13 @@
 
 namespace muFFT {
 
-    PocketFFTEngine::PocketFFTEngine(const DynCcoord_t & nb_grid_pts,
+    PocketFFTEngine::PocketFFTEngine(const IntCoord_t & nb_grid_pts,
                                      Communicator comm,
                                      const FFT_PlanFlags & plan_flags,
                                      bool allow_temporary_buffer,
                                      bool allow_destroy_input,
-                                     const DynCcoord_t & nb_ghosts_left,
-                                     const DynCcoord_t & nb_ghosts_right)
+                                     const IntCoord_t & nb_ghosts_left,
+                                     const IntCoord_t & nb_ghosts_right)
         : Parent{nb_grid_pts,         comm,
                  plan_flags,          allow_temporary_buffer,
                  allow_destroy_input, false,
@@ -65,7 +65,7 @@ namespace muFFT {
     }
 
     /* ---------------------------------------------------------------------- */
-    PocketFFTEngine::PocketFFTEngine(const DynCcoord_t & nb_grid_pts,
+    PocketFFTEngine::PocketFFTEngine(const IntCoord_t & nb_grid_pts,
                                      const FFT_PlanFlags & plan_flags,
                                      bool allow_temporary_buffer,
                                      bool allow_destroy_input)

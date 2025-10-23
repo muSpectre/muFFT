@@ -100,7 +100,7 @@ namespace muFFT {
          * flags, and buffer options. The constructor does not perform any FFT
          * computations; it merely sets up the object for future FFT operations.
          *
-         * @param nb_grid_pts A DynCcoord_t object representing the number of
+         * @param nb_grid_pts A IntCoord_t object representing the number of
          * grid points in each dimension of the global grid.
          * @param comm An optional Communicator object for MPI communication.
          * Defaults to an empty Communicator.
@@ -121,13 +121,13 @@ namespace muFFT {
          * layout. Defaults to true.
          */
         FFTEngineBase(
-            const DynCcoord_t & nb_grid_pts, Communicator comm = Communicator(),
+            const IntCoord_t & nb_grid_pts, Communicator comm = Communicator(),
             const FFT_PlanFlags & plan_flags = FFT_PlanFlags::estimate,
             bool allow_temporary_buffer = true,
             bool allow_destroy_input = false,
             bool engine_has_rigid_memory_layout = true,
-            const DynCcoord_t & nb_ghosts_left = DynCcoord_t{},
-            const DynCcoord_t & nb_ghosts_right = DynCcoord_t{});
+            const IntCoord_t & nb_ghosts_left = IntCoord_t{},
+            const IntCoord_t & nb_ghosts_right = IntCoord_t{});
 
         //! Copy constructor
         FFTEngineBase(const FFTEngineBase & other) = delete;
@@ -320,7 +320,7 @@ namespace muFFT {
          * returns the process-local number of grid points in each direction of
          * the cell
          */
-        const DynCcoord_t & get_nb_subdomain_grid_pts() const {
+        const IntCoord_t & get_nb_subdomain_grid_pts() const {
             return this->nb_subdomain_grid_pts;
         }
 
@@ -328,17 +328,17 @@ namespace muFFT {
          * returns the global number of grid points in each direction of the
          * cell
          */
-        const DynCcoord_t & get_nb_domain_grid_pts() const override {
+        const IntCoord_t & get_nb_domain_grid_pts() const override {
             return this->nb_domain_grid_pts;
         }
 
         //! returns the process-local locations of the cell
-        const DynCcoord_t & get_subdomain_locations() const {
+        const IntCoord_t & get_subdomain_locations() const {
             return this->subdomain_locations;
         }
 
         //! returns the data layout of the process-local grid
-        const DynCcoord_t & get_subdomain_strides() const {
+        const IntCoord_t & get_subdomain_strides() const {
             return this->subdomain_strides;
         }
 
@@ -346,17 +346,17 @@ namespace muFFT {
          * returns the process-local number of grid points in each direction of
          * the cell in Fourier space
          */
-        const DynCcoord_t & get_nb_fourier_grid_pts() const {
+        const IntCoord_t & get_nb_fourier_grid_pts() const {
             return this->nb_fourier_grid_pts;
         }
 
         //! returns the process-local locations of the cell in Fourier space
-        const DynCcoord_t & get_fourier_locations() const {
+        const IntCoord_t & get_fourier_locations() const {
             return this->fourier_locations;
         }
 
         //! returns the data layout of the cell in Fourier space
-        const DynCcoord_t & get_fourier_strides() const {
+        const IntCoord_t & get_fourier_strides() const {
             return this->fourier_strides;
         }
 
@@ -448,24 +448,24 @@ namespace muFFT {
         GFieldCollection_t halfcomplex_field_collection;
 
         //! nb_grid_pts of the full domain of the cell
-        const DynCcoord_t nb_domain_grid_pts;
+        const IntCoord_t nb_domain_grid_pts;
         //! Number of ghosts cells on the left (low index) side of the cell
 
         //! nb_grid_pts of the process-local (subdomain) portion of the cell
-        DynCcoord_t nb_subdomain_grid_pts;
+        IntCoord_t nb_subdomain_grid_pts;
         //! location of the process-local (subdomain) portion of the cell
-        DynCcoord_t subdomain_locations;
+        IntCoord_t subdomain_locations;
         //! data layout of the porcess-local portion of the cell
-        DynCcoord_t subdomain_strides;
+        IntCoord_t subdomain_strides;
         //! nb_grid_pts of the process-local (subdomain) portion of the Fourier
         //! transformed data
-        DynCcoord_t nb_fourier_grid_pts;
+        IntCoord_t nb_fourier_grid_pts;
         //! location of the process-local (subdomain) portion of the Fourier
         //! transformed data
-        DynCcoord_t fourier_locations;
+        IntCoord_t fourier_locations;
         //! data layout of the process-local (subdomain) portion of the Fourier
         //! transformed data
-        DynCcoord_t fourier_strides;
+        IntCoord_t fourier_strides;
 
         //! allow the FFTEngine to create temporary copies (if it cannot work
         //! with a specific memory layout)

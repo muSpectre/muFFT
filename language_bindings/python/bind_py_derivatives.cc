@@ -50,7 +50,7 @@ using muFFT::DerivativeBase;
 using muFFT::DiscreteDerivative;
 using muFFT::FourierDerivative;
 using muGrid::Complex;
-using muGrid::DynCcoord_t;
+using muGrid::IntCoord_t;
 using muGrid::Index_t;
 using muGrid::Real;
 using muGrid::threeD;
@@ -150,7 +150,7 @@ void add_discrete_derivative(py::module & mod, std::string name) {
              std::shared_ptr<DiscreteDerivative>,  // holder
              DerivativeBase                        // base class
              >(mod, name.c_str())
-      .def(py::init([](const DynCcoord_t & lbounds,
+      .def(py::init([](const IntCoord_t & lbounds,
                        py::array_t<Real, py::array::f_style> stencil) {
              const py::buffer_info & info = stencil.request();
              if (info.ndim != lbounds.get_dim()) {
@@ -159,7 +159,7 @@ void add_discrete_derivative(py::module & mod, std::string name) {
                  << "but stencil itself is " << info.ndim << "-dimensional.";
                throw muGrid::RuntimeError(s.str());
              }
-             DynCcoord_t nb_pts(info.ndim);
+             IntCoord_t nb_pts(info.ndim);
              for (int i = 0; i < info.ndim; ++i) {
                nb_pts[i] = info.shape[i];
              }
@@ -192,8 +192,8 @@ void add_discrete_derivative(py::module & mod, std::string name) {
              throw muGrid::RuntimeError(s.str());
            }
            py::array_t<double, py::array::f_style> output_array(info.shape);
-           DynCcoord_t nb_domain_grid_pts{info.shape};
-           DynCcoord_t subdomain_locations(info.ndim);
+           IntCoord_t nb_domain_grid_pts{info.shape};
+           IntCoord_t subdomain_locations(info.ndim);
            NumpyProxy<Real, py::array::f_style> input_proxy(
                 nb_domain_grid_pts, nb_domain_grid_pts,
                 subdomain_locations, 1, input_array);

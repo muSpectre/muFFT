@@ -69,7 +69,7 @@ namespace muFFT {
       return muGrid::CcoordOps::get_cube<DimS>(Index_t{0});
     }
     FFT_fixture()
-        : engine{DynCcoord_t(res()), MPIContext::get_context().serial_comm} {}
+        : engine{IntCoord_t(res()), MPIContext::get_context().serial_comm} {}
     Engine engine;
   };
   template <class Engine, Index_t DimS, Index_t DimM, Index_t NbSubPts,
@@ -91,7 +91,7 @@ namespace muFFT {
     constexpr static Index_t nb_sub_pts{1};
     constexpr static Ccoord_t<sdim> res() { return {6, 4}; }
     constexpr static Ccoord_t<sdim> loc() { return {0, 0}; }
-    FFT_fixture_python_segfault() : engine{DynCcoord_t(res())} {}
+    FFT_fixture_python_segfault() : engine{IntCoord_t(res())} {}
     Engine engine;
   };
   template <class Engine>

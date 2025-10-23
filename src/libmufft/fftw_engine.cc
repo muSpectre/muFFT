@@ -42,12 +42,12 @@
 
 namespace muFFT {
 
-    FFTWEngine::FFTWEngine(const DynCcoord_t & nb_grid_pts, Communicator comm,
+    FFTWEngine::FFTWEngine(const IntCoord_t & nb_grid_pts, Communicator comm,
                            const FFT_PlanFlags & plan_flags,
                            bool allow_temporary_buffer,
                            bool allow_destroy_input,
-                           const DynCcoord_t & nb_ghosts_left,
-                           const DynCcoord_t & nb_ghosts_right)
+                           const IntCoord_t & nb_ghosts_left,
+                           const IntCoord_t & nb_ghosts_right)
         : Parent{
               nb_grid_pts,         comm, plan_flags,     allow_temporary_buffer,
               allow_destroy_input, true, nb_ghosts_left, nb_ghosts_right} {
@@ -56,7 +56,7 @@ namespace muFFT {
     }
 
     /* ---------------------------------------------------------------------- */
-    FFTWEngine::FFTWEngine(const DynCcoord_t & nb_grid_pts,
+    FFTWEngine::FFTWEngine(const IntCoord_t & nb_grid_pts,
                            const FFT_PlanFlags & plan_flags,
                            bool allow_temporary_buffer,
                            bool allow_destroy_input)
@@ -102,7 +102,7 @@ namespace muFFT {
         const int * const inembed{nullptr};
         int istride{howmany};
         int idist{1};
-        auto && nb_fft_pts{[](const DynCcoord_t & grid_pts) {
+        auto && nb_fft_pts{[](const IntCoord_t & grid_pts) {
             int retval{1};
             for (auto && nb : grid_pts) {
                 retval *= nb;

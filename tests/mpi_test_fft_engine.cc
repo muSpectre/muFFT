@@ -69,7 +69,7 @@ namespace muFFT {
     constexpr static Real BoxLength{4.5};
     constexpr static Dim_t sdim{dim};
     constexpr static Dim_t NbComponents{sdim * sdim};
-    static DynCcoord_t res() {
+    static IntCoord_t res() {
       return muGrid::CcoordOps::get_cube(sdim, BoxNbGridPts);
     }
     FFTW_fixture() : engine(res(), MPIContext::get_context().comm) {}
@@ -90,7 +90,7 @@ namespace muFFT {
     constexpr static Dim_t sdim{twoD};
     constexpr static Dim_t mdim{twoD};
     constexpr static Dim_t NbComponents{sdim * sdim};
-    static DynCcoord_t res() { return {6, 4}; }
+    static IntCoord_t res() { return {6, 4}; }
     FFTW_fixture_python_segfault()
         : engine{res(), MPIContext::get_context().comm} {}
     Engine engine;

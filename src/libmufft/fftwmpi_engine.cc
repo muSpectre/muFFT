@@ -44,13 +44,13 @@
 namespace muFFT {
     int FFTWMPIEngine::nb_engines{0};
 
-    FFTWMPIEngine::FFTWMPIEngine(const DynCcoord_t & nb_grid_pts,
+    FFTWMPIEngine::FFTWMPIEngine(const IntCoord_t & nb_grid_pts,
                                  Communicator comm,
                                  const FFT_PlanFlags & plan_flags,
                                  bool allow_temporary_buffer,
                                  bool allow_destroy_input,
-                                 const DynCcoord_t & nb_ghosts_left,
-                                 const DynCcoord_t & nb_ghosts_right)
+                                 const IntCoord_t & nb_ghosts_left,
+                                 const IntCoord_t & nb_ghosts_right)
         : Parent{nb_grid_pts, comm, plan_flags, allow_temporary_buffer,
                  allow_destroy_input} {
         if (!this->nb_engines) {
@@ -125,7 +125,7 @@ namespace muFFT {
         // decomposition is fixed by the FFTW library.
         auto comm_size{this->comm.size()};
         auto comm_rank{this->comm.rank()};
-        DynCcoord_t nb_subdivisions(dim, 1), coordinates(dim, 1);
+        IntCoord_t nb_subdivisions(dim, 1), coordinates(dim, 1);
         std::vector<int> left_ranks(dim, -1), right_ranks(dim, -1);
         nb_subdivisions[0] = comm_size;
         coordinates[0] = comm_rank;
@@ -136,9 +136,9 @@ namespace muFFT {
             this->comm, nb_subdivisions, coordinates, left_ranks, right_ranks);
 
         // Fix ghost buffers
-        auto nb_gleft{nb_ghosts_left.get_dim() == 0 ? DynCcoord_t(dim)
+        auto nb_gleft{nb_ghosts_left.get_dim() == 0 ? IntCoord_t(dim)
                                                     : nb_ghosts_left};
-        auto nb_gright{nb_ghosts_right.get_dim() == 0 ? DynCcoord_t(dim)
+        auto nb_gright{nb_ghosts_right.get_dim() == 0 ? IntCoord_t(dim)
                                                       : nb_ghosts_right};
 
         // No ghosts in x-direction since we have a slab decomposition
