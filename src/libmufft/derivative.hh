@@ -278,7 +278,7 @@ namespace muFFT {
      * @return A constant reference to the Dim_t object that contains the
      * dimension of the stencil.
      */
-    const Dim_t & get_dim() const { return this->pixels.get_dim(); }
+    Dim_t get_dim() const { return this->pixels.get_dim(); }
 
     /**
      * @brief Returns the number of grid points in the stencil.
