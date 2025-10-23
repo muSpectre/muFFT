@@ -1,6 +1,6 @@
 [wrap-git]
 url = https://github.com/muSpectre/muGrid.git
-revision = 25_fft_ghost_buffers
+revision = main
 depth = 1
 
 [provide]
