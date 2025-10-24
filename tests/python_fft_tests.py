@@ -40,7 +40,6 @@ import unittest
 import numpy as np
 
 import muFFT, muGrid
-from NuMPI.Tools.Subdivision import suggest_subdivisions
 
 if muFFT.has_mpi:
     from mpi4py import MPI
@@ -1145,27 +1144,39 @@ class FFTCheckSerialOnly(unittest.TestCase):
             # Allocate buffers and create plan for one degree of freedom
             real_buffer = engine.register_halfcomplex_field("real-space", 1)
             fourier_buffer = engine.register_halfcomplex_field("fourier-space", 1)
-            with self.assertRaises(RuntimeError, msg=f"Failed for engine {engine}") as context:
+            with self.assertRaises(
+                RuntimeError, msg=f"Failed for engine {engine}"
+            ) as context:
                 engine.hcfft(real_buffer, fourier_buffer)
 
             self.assertTrue(
                 "not implemented " in str(context.exception), str(context.exception)
             )
 
-def test_field_accessors(comm, nb_grid_pts=(128, 128)):
-    fft = FFT(comm, nb_grid_pts, s, (1, 1), (1, 1))
-    fc = decomposition.collection
 
-    field = fc.real_field("test-field")
+def test_field_accessors(nb_grid_pts=(128, 128)):
+    fft = muFFT.FFT(
+        nb_grid_pts,
+        engine="fftwmpi",
+        communicator=communicator,
+        nb_ghosts_left=(0, 1),
+        nb_ghosts_right=(0, 1),
+    )
 
-    xg, yg = decomposition.coordsg
+    field = fft.real_space_field("test-field")
+
+    xg, yg = fft.coordsg
     field.pg = xg + 100 * yg
 
-    np.testing.assert_allclose(field.pg[..., 1:-1, 1:-1], field.p)
-    np.testing.assert_allclose(field.sg[..., 1:-1, 1:-1], field.s)
+    np.testing.assert_allclose(field.pg[..., 1:-1], field.p)
+    np.testing.assert_allclose(field.sg[..., 1:-1], field.s)
 
     # Test setter
     field.pg = np.random.random(field.pg.shape)
 
-    np.testing.assert_allclose(field.pg[..., 1:-1, 1:-1], field.p)
-    np.testing.assert_allclose(field.sg[..., 1:-1, 1:-1], field.s)
+    np.testing.assert_allclose(field.pg[..., 1:-1], field.p)
+    np.testing.assert_allclose(field.sg[..., 1:-1], field.s)
+
+    # Test coords
+    np.testing.assert_allclose(fft.coordsg[..., 1:-1], fft.coords)
+    np.testing.assert_array_equal(fft.icoordsg[..., 1:-1], fft.icoords)
