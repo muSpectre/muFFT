@@ -130,7 +130,7 @@ namespace muFFT {
       new_lbounds[rolled_dim] = this->pixels.get_subdomain_locations()[dim];
     }
 
-    for (auto && pixel : this->pixels) {
+    for (auto pixel : this->pixels) {
       IntCoord_t rolled_pixel(this->spatial_dimension);
       for (Index_t dim{0}; dim < this->spatial_dimension; ++dim) {
         Index_t rolled_dim{modulo(dim + distance, this->spatial_dimension)};
@@ -155,7 +155,7 @@ namespace muFFT {
     os << " ";
     muGrid::operator<<(os, lbounds);
     os << " ";
-    for (auto && pixel : muGrid::CcoordOps::Pixels(nb_pts, lbounds)) {
+    for (auto pixel : muGrid::CcoordOps::Pixels(nb_pts, lbounds)) {
       os << derivative(pixel) << " ";
     }
     os << "}";
@@ -164,11 +164,11 @@ namespace muFFT {
 
   /* ---------------------------------------------------------------------- */
   Gradient_t make_fourier_gradient(const Index_t & spatial_dimension) {
-    Gradient_t && g{};
+    Gradient_t g;
     for (Index_t dim = 0; dim < spatial_dimension; ++dim) {
       g.push_back(std::make_shared<FourierDerivative>(spatial_dimension, dim));
     }
-    return std::move(g);
+    return g;
   }
 
 }  // namespace muFFT

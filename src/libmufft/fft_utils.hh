@@ -196,7 +196,7 @@ namespace muFFT {
   fft_freqs(Ccoord_t<dim> nb_grid_pts) {
     std::array<std::valarray<Real>, dim> retval{};
     for (size_t i = 0; i < dim; ++i) {
-      retval[i] = std::move(fft_freqs(nb_grid_pts[i]));
+      retval[i] = fft_freqs(nb_grid_pts[i]);
     }
     return retval;
   }
@@ -223,7 +223,7 @@ namespace muFFT {
   fft_freqs(Ccoord_t<dim> nb_grid_pts, std::array<Real, dim> lengths) {
     std::array<std::valarray<Real>, dim> retval{};
     for (size_t i = 0; i < dim; ++i) {
-      retval[i] = std::move(fft_freqs(nb_grid_pts[i], lengths[i]));
+      retval[i] = fft_freqs(nb_grid_pts[i], lengths[i]);
     }
     return retval;
   }

@@ -151,7 +151,7 @@ namespace muFFT {
     }
     int howmany{static_cast<int>(nb_dof_per_pixel)};
     std::vector<ptrdiff_t> res(dim), loc(dim), fres(dim), floc(dim);
-    auto required_workspace_size{pfft_local_size_many_dft_r2c(
+    ptrdiff_t required_workspace_size{pfft_local_size_many_dft_r2c(
         dim, narr.data(), narr.data(), narr.data(), howmany,
         PFFT_DEFAULT_BLOCKS, PFFT_DEFAULT_BLOCKS, this->mpi_comm,
         PFFT_PADDED_R2C | PFFT_TRANSPOSED_OUT, res.data(), loc.data(),
@@ -161,24 +161,19 @@ namespace muFFT {
 
     this->required_workspace_sizes[nb_dof_per_pixel] = required_workspace_size;
 
-    unsigned int flags;
-    switch (plan_flags) {
-    case FFT_PlanFlags::estimate: {
-      flags = PFFT_ESTIMATE;
-      break;
-    }
-    case FFT_PlanFlags::measure: {
-      flags = PFFT_MEASURE;
-      break;
-    }
-    case FFT_PlanFlags::patient: {
-      flags = PFFT_PATIENT;
-      break;
-    }
-    default:
+    // Convert muFFT planning flags to PFFT flags
+    constexpr auto plan_flags_to_pfft = [](FFT_PlanFlags flag) -> unsigned int {
+      switch (flag) {
+      case FFT_PlanFlags::estimate:
+        return PFFT_ESTIMATE;
+      case FFT_PlanFlags::measure:
+        return PFFT_MEASURE;
+      case FFT_PlanFlags::patient:
+        return PFFT_PATIENT;
+      }
       throw FFTEngineError("unknown planner flag type");
-      break;
-    }
+    };
+    unsigned int flags{plan_flags_to_pfft(this->plan_flags)};
 
     Real * in{pfft_alloc_real(required_workspace_size)};
     if (in == nullptr) {

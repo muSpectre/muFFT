@@ -102,9 +102,9 @@ namespace muFFT {
         const int * const inembed{nullptr};
         int istride{howmany};
         int idist{1};
-        auto && nb_fft_pts{[](const IntCoord_t & grid_pts) {
+        int nb_fft_pts{[](const IntCoord_t & grid_pts) {
             int retval{1};
-            for (auto && nb : grid_pts) {
+            for (int nb : grid_pts) {
                 retval *= nb;
             }
             return retval;
@@ -117,24 +117,19 @@ namespace muFFT {
         int ostride{istride};
         int odist{idist};
 
-        unsigned int flags;
-        switch (this->plan_flags) {
-        case FFT_PlanFlags::estimate: {
-            flags = FFTW_ESTIMATE;
-            break;
-        }
-        case FFT_PlanFlags::measure: {
-            flags = FFTW_MEASURE;
-            break;
-        }
-        case FFT_PlanFlags::patient: {
-            flags = FFTW_PATIENT;
-            break;
-        }
-        default:
+        // Convert muFFT planning flags to FFTW flags
+        constexpr auto plan_flags_to_fftw = [](FFT_PlanFlags flag) -> unsigned int {
+            switch (flag) {
+            case FFT_PlanFlags::estimate:
+                return FFTW_ESTIMATE;
+            case FFT_PlanFlags::measure:
+                return FFTW_MEASURE;
+            case FFT_PlanFlags::patient:
+                return FFTW_PATIENT;
+            }
             throw FFTEngineError("unknown planner flag type");
-            break;
-        }
+        };
+        unsigned int flags{plan_flags_to_fftw(this->plan_flags)};
 
         this->fft_plans[nb_dof_per_pixel] = fftw_plan_many_dft_r2c(
             rank, n, howmany, in, inembed, istride, idist, out, onembed,
@@ -165,14 +160,8 @@ namespace muFFT {
         }
         Real * r2hc_out{r_work_space_2};
 
-        std::vector<fftw_r2r_kind> fft_kinds(rank);
-        for (auto && k : fft_kinds) {
-            k = FFTW_R2HC;
-        }
-        std::vector<fftw_r2r_kind> ifft_kinds(rank);
-        for (auto && k : ifft_kinds) {
-            k = FFTW_HC2R;
-        }
+        std::vector<fftw_r2r_kind> fft_kinds(rank, FFTW_R2HC);
+        std::vector<fftw_r2r_kind> ifft_kinds(rank, FFTW_HC2R);
 
         this->hcfft_plans[nb_dof_per_pixel] = fftw_plan_many_r2r(
             rank, n, howmany, in, inembed, istride, idist, r2hc_out, onembed,
@@ -204,20 +193,20 @@ namespace muFFT {
 
     /* ---------------------------------------------------------------------- */
     FFTWEngine::~FFTWEngine() noexcept {
-        for (auto && nb_dof_per_pixel : this->planned_nb_dofs) {
-            auto && fft_plan{this->fft_plans.at(nb_dof_per_pixel)};
+        for (Index_t nb_dof_per_pixel : this->planned_nb_dofs) {
+            fftw_plan fft_plan{this->fft_plans.at(nb_dof_per_pixel)};
             if (fft_plan != nullptr) {
                 fftw_destroy_plan(fft_plan);
             }
-            auto && ifft_plan{this->ifft_plans.at(nb_dof_per_pixel)};
+            fftw_plan ifft_plan{this->ifft_plans.at(nb_dof_per_pixel)};
             if (ifft_plan != nullptr) {
                 fftw_destroy_plan(ifft_plan);
             }
-            auto && hcfft_plan{this->hcfft_plans.at(nb_dof_per_pixel)};
+            fftw_plan hcfft_plan{this->hcfft_plans.at(nb_dof_per_pixel)};
             if (hcfft_plan != nullptr) {
                 fftw_destroy_plan(hcfft_plan);
             }
-            auto && ihcfft_plan{this->ihcfft_plans.at(nb_dof_per_pixel)};
+            fftw_plan ihcfft_plan{this->ihcfft_plans.at(nb_dof_per_pixel)};
             if (ihcfft_plan != nullptr) {
                 fftw_destroy_plan(ihcfft_plan);
             }

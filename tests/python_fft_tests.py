@@ -40,6 +40,7 @@ import unittest
 import numpy as np
 
 import muFFT, muGrid
+from NuMPI.Tools.Subdivision import suggest_subdivisions
 
 if muFFT.has_mpi:
     from mpi4py import MPI
@@ -1151,6 +1152,20 @@ class FFTCheckSerialOnly(unittest.TestCase):
                 "not implemented " in str(context.exception), str(context.exception)
             )
 
+def test_field_accessors(comm, nb_grid_pts=(128, 128)):
+    fft = FFT(comm, nb_grid_pts, s, (1, 1), (1, 1))
+    fc = decomposition.collection
 
-if __name__ == "__main__":
-    unittest.main()
+    field = fc.real_field("test-field")
+
+    xg, yg = decomposition.coordsg
+    field.pg = xg + 100 * yg
+
+    np.testing.assert_allclose(field.pg[..., 1:-1, 1:-1], field.p)
+    np.testing.assert_allclose(field.sg[..., 1:-1, 1:-1], field.s)
+
+    # Test setter
+    field.pg = np.random.random(field.pg.shape)
+
+    np.testing.assert_allclose(field.pg[..., 1:-1, 1:-1], field.p)
+    np.testing.assert_allclose(field.sg[..., 1:-1, 1:-1], field.s)

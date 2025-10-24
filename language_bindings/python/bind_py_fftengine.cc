@@ -38,6 +38,7 @@
 #include <libmugrid/exception.hh>
 #include <libmugrid/field_typed.hh>
 #include <libmugrid/numpy_tools.hh>
+#include <libmugrid/python_helpers.hh>
 
 #include <libmufft/fft_utils.hh>
 #include <libmufft/pocketfft_engine.hh>
@@ -62,6 +63,7 @@ using muGrid::GlobalFieldCollection;
 using muGrid::Index_t;
 using muGrid::Int;
 using muGrid::NumpyProxy;
+using muGrid::py_coords;
 using muGrid::Real;
 using muGrid::RuntimeError;
 using muGrid::Shape_t;
@@ -166,38 +168,38 @@ auto py_fftfreq(const FFTEngineBase & eng) {
     return fftfreqs;
 }
 
-template <typename T>
-auto py_coords(const FFTEngineBase & eng) {
-    std::vector<Index_t> shape{};
-    const Index_t dim{eng.get_spatial_dim()};
-    shape.push_back(dim);
-    const auto & nb_subdomain_grid_pts{eng.get_nb_subdomain_grid_pts()};
-    for (auto && n : nb_subdomain_grid_pts) {
-        shape.push_back(n);
-    }
-    py::array_t<T, py::array::f_style> coords(shape);
-    const auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
-    const auto & subdomain_locations{eng.get_subdomain_locations()};
-    const auto nb_subdomain_pixels{
-        muGrid::CcoordOps::get_size(nb_subdomain_grid_pts)};
-    T * ptr{static_cast<T *>(coords.request().ptr)};
-    for (size_t k{0}; k < nb_subdomain_pixels; ++k) {
-        IntCoord_t coord(dim);
-        *ptr = normalize_coord<T>(k % nb_subdomain_grid_pts[0] +
-                                      subdomain_locations[0],
-                                  nb_domain_grid_pts[0]);
-        ptr++;
-        size_t yz{k};
-        for (int i = 1; i < dim; ++i) {
-            yz /= nb_subdomain_grid_pts[i - 1];
-            *ptr = normalize_coord<T>(yz % nb_subdomain_grid_pts[i] +
-                                          subdomain_locations[i],
-                                      nb_domain_grid_pts[i]);
-            ptr++;
-        }
-    }
-    return coords;
-}
+// template <typename T>
+// auto py_coords(const FFTEngineBase & eng) {
+//     std::vector<Index_t> shape{};
+//     const Index_t dim{eng.get_spatial_dim()};
+//     shape.push_back(dim);
+//     const auto & nb_subdomain_grid_pts{eng.get_nb_subdomain_grid_pts()};
+//     for (auto && n : nb_subdomain_grid_pts) {
+//         shape.push_back(n);
+//     }
+//     py::array_t<T, py::array::f_style> coords(shape);
+//     const auto & nb_domain_grid_pts{eng.get_nb_domain_grid_pts()};
+//     const auto & subdomain_locations{eng.get_subdomain_locations()};
+//     const auto nb_subdomain_pixels{
+//         muGrid::CcoordOps::get_size(nb_subdomain_grid_pts)};
+//     T * ptr{static_cast<T *>(coords.request().ptr)};
+//     for (size_t k{0}; k < nb_subdomain_pixels; ++k) {
+//         IntCoord_t coord(dim);
+//         *ptr = normalize_coord<T>(k % nb_subdomain_grid_pts[0] +
+//                                       subdomain_locations[0],
+//                                   nb_domain_grid_pts[0]);
+//         ptr++;
+//         size_t yz{k};
+//         for (int i = 1; i < dim; ++i) {
+//             yz /= nb_subdomain_grid_pts[i - 1];
+//             *ptr = normalize_coord<T>(yz % nb_subdomain_grid_pts[i] +
+//                                           subdomain_locations[i],
+//                                       nb_domain_grid_pts[i]);
+//             ptr++;
+//         }
+//     }
+//     return coords;
+// }
 
 template <class Engine>
 void add_engine_helper(py::module & mod, const std::string & name) {
@@ -398,9 +400,17 @@ void add_engine_helper(py::module & mod, const std::string & name) {
         .def_property_readonly("fourier_field_collection",
                                &Engine::get_fourier_field_collection)
         .def_property_readonly(
-            "coords", [](const Engine & eng) { return py_coords<Real>(eng); })
+            "coords",
+            [](const Engine & eng) { return py_coords<Real, false>(eng); })
         .def_property_readonly(
-            "icoords", [](const Engine & eng) { return py_coords<Int>(eng); })
+            "icoords",
+            [](const Engine & eng) { return py_coords<Int, false>(eng); })
+        .def_property_readonly(
+            "coordsg",
+            [](const Engine & eng) { return py_coords<Real, true>(eng); })
+        .def_property_readonly(
+            "icoordsg",
+            [](const Engine & eng) { return py_coords<Int, true>(eng); })
         .def_property_readonly(
             "fftfreq", [](const Engine & eng) { return py_fftfreq<Real>(eng); })
         .def_property_readonly(
