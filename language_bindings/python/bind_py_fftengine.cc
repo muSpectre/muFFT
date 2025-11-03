@@ -242,7 +242,13 @@ void add_engine_helper(py::module & mod, const std::string & name) {
              "allow_temporary_buffer"_a = true, "allow_destroy_input"_a = false,
              "nb_ghosts_left"_a = IntCoord_t{},
              "nb_ghosts_right"_a = IntCoord_t{})
+        .def("communicate_ghosts",
+            [](const Engine & self, const FFTEngineBase::RealField_t & field) {
+                self.communicate_ghosts(field); },
+            "field"_a)
+
 #endif
+
         .def("fft", &Engine::fft)
         .def("ifft", &Engine::ifft)
         .def("hcfft", &Engine::hcfft)
