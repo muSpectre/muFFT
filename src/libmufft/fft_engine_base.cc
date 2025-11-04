@@ -189,7 +189,7 @@ namespace muFFT {
                 output_field = tmp_ofield;
             }
         } else {
-            //! no temporary buffers allowwd
+            //! no temporary buffers allowed
             if (input_copy_necessary) {
                 throw FFTEngineError(
                     "Incompatible memory layout for the real-space "
