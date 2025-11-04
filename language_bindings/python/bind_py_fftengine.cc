@@ -59,6 +59,7 @@
 using muGrid::operator<<;
 using muGrid::Complex;
 using muGrid::IntCoord_t;
+using muGrid::Field;
 using muGrid::GlobalFieldCollection;
 using muGrid::Index_t;
 using muGrid::Int;
@@ -130,7 +131,19 @@ void add_fft_engine_base(py::module & mod) {
                PyFFTEngineBase                  // trampoline base
                >(mod, "FFTEngineBase")
         .def(py::init<IntCoord_t, Communicator, const muFFT::FFT_PlanFlags &,
-                      bool, bool>());
+                      bool, bool>())
+        .def(
+            "communicate_ghosts",
+            [](const FFTEngineBase & self, const Field & field) {
+                self.communicate_ghosts(field);
+            },
+            "field"_a)
+        .def(
+            "communicate_ghosts",
+            [](const FFTEngineBase & self, std::string field_name) {
+                self.communicate_ghosts(field_name);
+            },
+            "field_name"_a);
 }
 
 template <typename T>
