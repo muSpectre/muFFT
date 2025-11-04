@@ -184,6 +184,9 @@ def test_apply_stencil(engine_str):
     )
     op = muGrid.ConvolutionOperator([0, 0], gradient)
 
+    # Communicate ghosts
+    fft.communicate_ghosts(nodal_field)
+
     # Apply the gradient operator to the nodal field and write result to the quad field
     op.apply(nodal_field, quad_field)
 
