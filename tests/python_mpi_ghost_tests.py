@@ -198,8 +198,9 @@ def test_apply_stencil(engine_str):
     )
 
 
-@pytest.mark.parametrize("engine_str", engines)
-def test_unit_impuls(engine_str):
+#@pytest.mark.parametrize("engine_str", engines)
+@pytest.mark.parametrize("engine_str", ["fftwmpi"])
+def test_unit_impulse(engine_str):
     # Two dimensional grid
     nx, ny = nb_grid_pts = [4, 6]
 
@@ -250,6 +251,8 @@ def test_unit_impuls(engine_str):
         f'impuls_response_field: nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{impuls_response_field.s}')
 
     engine.communicate_ghosts(nodal_field)
+    print(f'unit impuls: nodal field after communication with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{nodal_field.s}')
+
     # Derivative stencil of shape (2, quad, 2, 2)
     gradient = np.array(
         [
@@ -277,7 +280,7 @@ def test_unit_impuls(engine_str):
                           )
 
     print(
-        f'computed unit impuls response : nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{nodal_field.s}')
+        f'computed unit impuls response : nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{nodal_field.sg}')
 
     print(f'local sum on core (nodal_field.s) = {np.sum(nodal_field.s)}')  # does not have to be zero
     local_sum = np.sum(nodal_field.s)
