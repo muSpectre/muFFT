@@ -185,7 +185,7 @@ def test_apply_stencil(engine_str):
     op = muGrid.ConvolutionOperator([0, 0], gradient)
 
     # Communicate ghosts
-    fft.communicate_ghosts(nodal_field)
+    engine.communicate_ghosts(nodal_field)
 
     # Apply the gradient operator to the nodal field and write result to the quad field
     op.apply(nodal_field, quad_field)
@@ -198,8 +198,12 @@ def test_apply_stencil(engine_str):
     )
 
 
+@pytest.mark.skipif(
+    communicator.size > 2,
+    reason="Tests only for up to 2 MPI processes; empty process domains may occur otherwise.",
+)
 @pytest.mark.parametrize("engine_str", engines)
-def test_unit_impulse(engine_str):
+def test_laplace_unit_impulse(engine_str):
     # Two dimensional grid
     nx, ny = nb_grid_pts = [4, 6]
 
@@ -231,12 +235,22 @@ def test_unit_impulse(engine_str):
     # Get quadrature field of shape (2, quad, nx, ny)
     quad_field = fc.real_field("quad-field", (2,), "quad_points")
 
-    impuls_locations = (impuls_response_field.icoordsg[0] == 0) & (impuls_response_field.icoordsg[1] == 0)
-    left_location = (impuls_response_field.icoordsg[0] == nx - 1) & (impuls_response_field.icoordsg[1] == 0)
-    right_location = (impuls_response_field.icoordsg[0] == 1) & (impuls_response_field.icoordsg[1] == 0)
+    impuls_locations = (impuls_response_field.icoordsg[0] == 0) & (
+        impuls_response_field.icoordsg[1] == 0
+    )
+    left_location = (impuls_response_field.icoordsg[0] == nx - 1) & (
+        impuls_response_field.icoordsg[1] == 0
+    )
+    right_location = (impuls_response_field.icoordsg[0] == 1) & (
+        impuls_response_field.icoordsg[1] == 0
+    )
 
-    top_location = (impuls_response_field.icoordsg[0] == 0) & (impuls_response_field.icoordsg[1] == 1)
-    bottom_location = (impuls_response_field.icoordsg[0] == 0) & (impuls_response_field.icoordsg[1] == ny - 1)
+    top_location = (impuls_response_field.icoordsg[0] == 0) & (
+        impuls_response_field.icoordsg[1] == 1
+    )
+    bottom_location = (impuls_response_field.icoordsg[0] == 0) & (
+        impuls_response_field.icoordsg[1] == ny - 1
+    )
 
     nodal_field.sg[0, 0, impuls_locations] = 1
     impuls_response_field.sg[0, 0, impuls_locations] = 4
@@ -245,12 +259,20 @@ def test_unit_impulse(engine_str):
     impuls_response_field.sg[0, 0, top_location] = -1
     impuls_response_field.sg[0, 0, bottom_location] = -1
 
-    print(f'unit impuls: nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{nodal_field.s}')
     print(
-        f'impuls_response_field: nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{impuls_response_field.s}')
+        f"unit impuls: nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        + f"{nodal_field.s}"
+    )
+    print(
+        f"impuls_response_field: nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        + f"{impuls_response_field.s}"
+    )
 
     engine.communicate_ghosts(nodal_field)
-    print(f'unit impuls: nodal field after communication with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{nodal_field.s}')
+    print(
+        f"unit impuls: nodal field after communication with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        + f"{nodal_field.s}"
+    )
 
     # Derivative stencil of shape (2, quad, 2, 2)
     gradient = np.array(
@@ -273,24 +295,98 @@ def test_unit_impulse(engine_str):
     engine.communicate_ghosts(quad_field)
 
     # Apply the gradient transposed operator to the quad field and write result to the nodal field
-    gradient_op.transpose(quadrature_point_field=quad_field,
-                          nodal_field=nodal_field,
-                          weights=[1 / 2, 1 / 2]  # size of the element is half of the pixel. Pixel size is 1
-                          )
+    gradient_op.transpose(
+        quadrature_point_field=quad_field,
+        nodal_field=nodal_field,
+        weights=[
+            1 / 2,
+            1 / 2,
+        ],  # size of the element is half of the pixel. Pixel size is 1
+    )
 
     print(
-        f'computed unit impuls response : nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n ' + f'{nodal_field.sg}')
+        f"computed unit impuls response : nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        + f"{nodal_field.sg}"
+    )
 
-    print(f'local sum on core (nodal_field.s) = {np.sum(nodal_field.s)}')  # does not have to be zero
+    print(
+        f"local sum on core (nodal_field.s) = {np.sum(nodal_field.s)}"
+    )  # does not have to be zero
     local_sum = np.sum(nodal_field.s)
     total_sum = communicator.sum(local_sum)
-    print(f'total_sum = {total_sum}')  # have to be zero
+    print(f"total_sum = {total_sum}")  # have to be zero
 
     # Check that the nodal_field has zero mean
     np.testing.assert_allclose(
-        total_sum, 0,
-        atol=1e-10, )
+        total_sum,
+        0,
+        atol=1e-10,
+    )
     # Check that the impulse response is correct
     np.testing.assert_allclose(
-        nodal_field.s, impuls_response_field.s,
-        atol=1e-5, )
+        nodal_field.s,
+        impuls_response_field.s,
+        atol=1e-5,
+    )
+
+
+@pytest.mark.skipif(
+    communicator.size > 2,
+    reason="Tests only for up to 2 MPI processes; empty process domains may occur otherwise.",
+)
+@pytest.mark.parametrize("engine_str", engines)
+def test_shift_unit_impulse(engine_str):
+    # Two dimensional grid
+    nx, ny = nb_grid_pts = [4, 6]
+
+    left_ghosts = [1, 1]
+    right_ghosts = [1, 1]
+
+    try:
+        engine = muFFT.FFT(
+            nb_grid_pts,
+            engine=engine_str,
+            communicator=communicator,
+            nb_ghosts_left=left_ghosts,
+            nb_ghosts_right=right_ghosts,
+        )
+        engine.create_plan(1)
+    except muFFT.UnknownFFTEngineError:
+        # This FFT engine has not been compiled into the code. Skip
+        # test.
+        return
+
+    fc = engine.real_field_collection
+
+    # Get nodal field
+    nodal_field1 = fc.real_field("nodal-field1")
+    nodal_field2 = fc.real_field("nodal-field2")
+
+    impulse_locations = (nodal_field1.icoordsg[0] == 0) & (
+        nodal_field1.icoordsg[1] == 0
+    )
+    nodal_field1.pg[impulse_locations] = 1
+
+    shift = np.array(
+        [
+            [
+                [1, 0],
+                [0, 0],
+            ],
+        ],
+    )
+    shift_op = muGrid.ConvolutionOperator([-1, -1], shift)
+
+    print(communicator.rank, nodal_field1.p)
+    engine.communicate_ghosts(nodal_field1)
+    shift_op.apply(nodal_field1, nodal_field2)
+    impulse_locations = (nodal_field1.icoords[0] == 1) & (nodal_field1.icoords[1] == 1)
+    print(communicator.rank, nodal_field2.p)
+    assert np.all(nodal_field2.p[impulse_locations] == 1)
+    assert np.all(nodal_field2.p[~impulse_locations] == 0)
+    engine.communicate_ghosts(nodal_field2)
+    shift_op.apply(nodal_field2, nodal_field1)
+    impulse_locations = (nodal_field1.icoords[0] == 2) & (nodal_field1.icoords[1] == 2)
+    print(communicator.rank, nodal_field1.p)
+    assert np.all(nodal_field1.p[impulse_locations] == 1)
+    assert np.all(nodal_field1.p[~impulse_locations] == 0)
