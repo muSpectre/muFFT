@@ -198,8 +198,7 @@ def test_apply_stencil(engine_str):
     )
 
 
-#@pytest.mark.parametrize("engine_str", engines)
-@pytest.mark.parametrize("engine_str", ["fftwmpi"])
+@pytest.mark.parametrize("engine_str", engines)
 def test_unit_impulse(engine_str):
     # Two dimensional grid
     nx, ny = nb_grid_pts = [4, 6]
