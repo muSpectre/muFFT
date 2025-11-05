@@ -260,17 +260,17 @@ def test_laplace_unit_impulse(engine_str):
     impuls_response_field.sg[0, 0, bottom_location] = -1
 
     print(
-        f"unit impuls: nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        f"unit impuls: nodal field with buffers in rank {communicator.rank} \n "
         + f"{nodal_field.s}"
     )
     print(
-        f"impuls_response_field: nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        f"impuls_response_field: nodal field with buffers in rank {communicator.rank} \n "
         + f"{impuls_response_field.s}"
     )
 
     engine.communicate_ghosts(nodal_field)
     print(
-        f"unit impuls: nodal field after communication with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        f"unit impuls: nodal field after communication with buffers in rank {communicator.rank} \n "
         + f"{nodal_field.s}"
     )
 
@@ -305,7 +305,7 @@ def test_laplace_unit_impulse(engine_str):
     )
 
     print(
-        f"computed unit impuls response : nodal field with buffers in rank {MPI.COMM_WORLD.rank} \n "
+        f"computed unit impuls response : nodal field with buffers in rank {communicator.rank} \n "
         + f"{nodal_field.sg}"
     )
 
