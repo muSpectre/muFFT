@@ -205,7 +205,7 @@ def test_apply_stencil(engine_str):
 @pytest.mark.parametrize("engine_str", engines)
 def test_laplace_unit_impulse(engine_str):
     # Two dimensional grid
-    nx, ny = nb_grid_pts = [4, 6]
+    nx, ny = nb_grid_pts = [128, 128]
 
     left_ghosts = [1, 1]
     right_ghosts = [1, 1]
@@ -377,16 +377,23 @@ def test_shift_unit_impulse(engine_str):
     )
     shift_op = muGrid.ConvolutionOperator([-1, -1], shift)
 
-    print(communicator.rank, nodal_field1.p)
+    print(communicator.rank, nodal_field1.pg)
     engine.communicate_ghosts(nodal_field1)
     shift_op.apply(nodal_field1, nodal_field2)
     impulse_locations = (nodal_field1.icoords[0] == 1) & (nodal_field1.icoords[1] == 1)
-    print(communicator.rank, nodal_field2.p)
+    print(communicator.rank, nodal_field2.pg)
     assert np.all(nodal_field2.p[impulse_locations] == 1)
     assert np.all(nodal_field2.p[~impulse_locations] == 0)
     engine.communicate_ghosts(nodal_field2)
     shift_op.apply(nodal_field2, nodal_field1)
     impulse_locations = (nodal_field1.icoords[0] == 2) & (nodal_field1.icoords[1] == 2)
-    print(communicator.rank, nodal_field1.p)
+    print(communicator.rank, nodal_field1.pg)
     assert np.all(nodal_field1.p[impulse_locations] == 1)
     assert np.all(nodal_field1.p[~impulse_locations] == 0)
+
+    engine.communicate_ghosts(nodal_field1)
+    shift_op.apply(nodal_field1, nodal_field2)
+    impulse_locations = (nodal_field1.icoords[0] == 3) & (nodal_field1.icoords[1] == 3)
+    print(communicator.rank, nodal_field2.pg)
+    assert np.all(nodal_field2.p[impulse_locations] == 1)
+    assert np.all(nodal_field2.p[~impulse_locations] == 0)
