@@ -43,6 +43,7 @@
  */
 
 #define POCKETFFT_NO_MULTITHREADING
+#include <cstdint>
 #include "pocketfft_hdronly.h"
 #include "libmugrid/ccoord_operations.hh"
 

@@ -127,10 +127,12 @@ namespace muFFT {
         auto comm_rank{this->comm.rank()};
         IntCoord_t nb_subdivisions(dim, 1), coordinates(dim, 1);
         std::vector<int> left_ranks(dim, -1), right_ranks(dim, -1);
-        nb_subdivisions[0] = comm_size;
-        coordinates[0] = comm_rank;
-        left_ranks[0] = muGrid::CcoordOps::modulo(comm_rank - 1, comm_size);
-        right_ranks[0] = muGrid::CcoordOps::modulo(comm_rank + 1, comm_size);
+        nb_subdivisions[dim - 1] = comm_size;
+        coordinates[dim - 1] = comm_rank;
+        left_ranks[dim - 1] =
+            muGrid::CcoordOps::modulo(comm_rank - 1, comm_size);
+        right_ranks[dim - 1] =
+            muGrid::CcoordOps::modulo(comm_rank + 1, comm_size);
 
         this->cart_comm = std::make_unique<muGrid::CartesianCommunicator>(
             this->comm, nb_subdivisions, coordinates, left_ranks, right_ranks);
@@ -183,7 +185,8 @@ namespace muFFT {
             required_workspace_size;
 
         // Convert muFFT planning flags to FFTW flags
-        constexpr auto plan_flags_to_fftw = [](FFT_PlanFlags flag) -> unsigned int {
+        constexpr auto plan_flags_to_fftw =
+            [](FFT_PlanFlags flag) -> unsigned int {
             switch (flag) {
             case FFT_PlanFlags::estimate:
                 return FFTW_ESTIMATE;
