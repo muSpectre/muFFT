@@ -51,7 +51,7 @@ namespace muFFT {
         : Parent{
               nb_grid_pts,         comm, plan_flags,     allow_temporary_buffer,
               allow_destroy_input, true, nb_ghosts_left, nb_ghosts_right} {
-        this->initialise_field_collections();
+        this->initialise_field_collections_serial();
         ++this->nb_engines;
     }
 

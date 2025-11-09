@@ -53,10 +53,6 @@ engines = (["fftwmpi", "pfft"] if muFFT.has_mpi else []) + (
 )
 
 
-@pytest.mark.skipif(
-    communicator.size > 4,
-    reason="Tests only for up to 4 MPI processes; empty process domains may occur otherwise.",
-)
 @pytest.mark.parametrize("engine_str", engines)
 def test_forward_inverse_2d(engine_str):
     nb_grid_pts = [6, 4]
@@ -91,10 +87,6 @@ def test_forward_inverse_2d(engine_str):
     )
 
 
-@pytest.mark.skipif(
-    communicator.size > 4,
-    reason="Tests only for up to 4 MPI processes; empty process domains may occur otherwise.",
-)
 @pytest.mark.parametrize("engine_str", engines)
 def test_forward_inverse_3d(engine_str):
     nb_grid_pts = [6, 4, 4]
@@ -129,10 +121,6 @@ def test_forward_inverse_3d(engine_str):
     )
 
 
-@pytest.mark.skipif(
-    communicator.size > 4,
-    reason="Tests only for up to 4 MPI processes; empty process domains may occur otherwise.",
-)
 @pytest.mark.parametrize("engine_str", engines)
 def test_apply_stencil(engine_str):
     # Two dimensional grid
@@ -198,10 +186,6 @@ def test_apply_stencil(engine_str):
     )
 
 
-@pytest.mark.skipif(
-    communicator.size > 2,
-    reason="Tests only for up to 2 MPI processes; empty process domains may occur otherwise.",
-)
 @pytest.mark.parametrize("engine_str", engines)
 def test_laplace_unit_impulse(engine_str):
     # Two dimensional grid
@@ -330,10 +314,6 @@ def test_laplace_unit_impulse(engine_str):
     )
 
 
-@pytest.mark.skipif(
-    communicator.size > 2,
-    reason="Tests only for up to 2 MPI processes; empty process domains may occur otherwise.",
-)
 @pytest.mark.parametrize("engine_str", engines)
 def test_shift_unit_impulse(engine_str):
     # Two dimensional grid
@@ -395,10 +375,6 @@ def test_shift_unit_impulse(engine_str):
     assert np.all(nodal_field2.p[~impulse_locations] == 0)
 
 
-@pytest.mark.skipif(
-    communicator.size > 2,
-    reason="Tests only for up to 2 MPI processes; empty process domains may occur otherwise.",
-)
 @pytest.mark.parametrize("engine_str", engines)
 def test_laplace_unit_impulse_fft(engine_str):
     # Check if FFT of zero mean field  has zero frequency == 0

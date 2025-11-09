@@ -404,7 +404,7 @@ namespace muFFT {
 
        protected:
         //! calls initialize of the real, hc and fourier field collections
-        void initialise_field_collections();
+        void initialise_field_collections_serial();
 
         //! forward transform, assumes that the buffer has the correct memory
         //! layout
