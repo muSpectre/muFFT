@@ -89,13 +89,15 @@ namespace muFFT {
         // Sanity check 2: Does the input field have the correct number of
         // pixels?
         if (static_cast<size_t>(input_field.get_nb_pixels()) !=
-            muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())) {
+            muGrid::CcoordOps::get_size(
+                this->get_nb_subdomain_grid_pts_with_ghosts())) {
             std::stringstream error{};
             error << "The number of pixels of the field '"
                   << input_field.get_name() << "' passed to the forward FFT is "
                   << input_field.get_nb_pixels()
                   << " and does not match the size "
-                  << muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())
+                  << muGrid::CcoordOps::get_size(
+                         this->get_nb_subdomain_grid_pts_with_ghosts())
                   << " of the (sub)domain handled by this FFT engine.";
             throw FFTEngineError(error.str());
         }
@@ -237,14 +239,16 @@ namespace muFFT {
         // Sanity check 3: Does the output field have the correct number of
         // pixels?
         if (static_cast<size_t>(output_field.get_nb_pixels()) !=
-            muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())) {
+            muGrid::CcoordOps::get_size(
+                this->get_nb_subdomain_grid_pts_with_ghosts())) {
             std::stringstream error;
             error << "The number of pixels of the field '"
                   << output_field.get_name()
                   << "' passed to the inverse FFT is "
                   << output_field.get_nb_pixels()
                   << " and does not match the size "
-                  << muGrid::CcoordOps::get_size(this->get_nb_subdomain_grid_pts_with_ghosts())
+                  << muGrid::CcoordOps::get_size(
+                         this->get_nb_subdomain_grid_pts_with_ghosts())
                   << " of the (sub)domain handled by this FFT engine.";
             throw FFTEngineError(error.str());
         }
@@ -893,10 +897,14 @@ namespace muFFT {
     }
 
     /* ---------------------------------------------------------------------- */
-    void FFTEngineBase::initialise_field_collections() {
-        this->collection.initialise(
-            this->nb_domain_grid_pts, this->nb_subdomain_grid_pts,
-            this->subdomain_locations, this->subdomain_strides);
+    void FFTEngineBase::initialise_field_collections_serial() {
+        // Initialise this Cartesian decomposition instances; this initialises
+        // the field collection for the real fields, `this->collection`.
+        IntCoord_t nb_subdivisions(this->get_spatial_dim(), 1);
+        IntCoord_t nb_ghosts_left(this->get_spatial_dim(), 0);
+        IntCoord_t nb_ghosts_right(this->get_spatial_dim(), 0);
+        this->initialise(this->nb_domain_grid_pts, nb_subdivisions,
+                         nb_ghosts_left, nb_ghosts_right);
         this->halfcomplex_field_collection.initialise(
             this->nb_domain_grid_pts, this->nb_subdomain_grid_pts,
             this->subdomain_locations, this->subdomain_strides);
