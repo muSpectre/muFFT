@@ -1156,7 +1156,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
             )
 
 
-@pytest.mark.skipif(not muFFT.has_mpi, "Test requires FFTWMPI")
+@pytest.mark.skipif(not muFFT.has_mpi, reason="Test requires FFTWMPI")
 def test_field_accessors(nb_grid_pts=(128, 128)):
     fft = muFFT.FFT(
         nb_grid_pts,
