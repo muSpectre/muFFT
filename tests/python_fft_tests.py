@@ -854,7 +854,7 @@ class FFTCheck(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 engine.fft(in_data, out_data)
 
-    @pytest.mark.skipif(not muFFT.has_mpi, "Test requires FFTWMPI")
+    @pytest.mark.skipif(not muFFT.has_mpi, reason="Test requires FFTWMPI")
     def test_zero_grid_pts(self):
         nb_grid_pts = [3, 3]  # Gives one CPU with zero points on 4 processes
         axes = (0, 1)
