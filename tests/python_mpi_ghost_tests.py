@@ -410,54 +410,21 @@ def test_fft_scalar_vs_vector_field(engine_str):
 
     nodal_field_scalar  = fc.real_field("scalar_nodal-field", (1,), "nodal_points")
 
-    # Get quadrature field of shape (2, quad, nx, ny)
-    quad_field_scalar = fc.real_field("scalar_quad-field", (1, 2,), "quad_points")
-
     impuls_locations = (nodal_field_scalar.icoordsg[0] == 0) & (
             nodal_field_scalar.icoordsg[1] == 0
     )
-
+    # #  A_scalar[0, 0, impuls_locations] = 1
     nodal_field_scalar.sg[0, 0, impuls_locations] = 1
 
     print(
-        f"unit impuls: scalar nodal field with buffers in rank {communicator.rank} \n "
+        f"unit impuls: nodal_field_scalar with buffers in rank {communicator.rank} \n "
         + f"{nodal_field_scalar.sg[0]}"
     )
 
     engine.communicate_ghosts(nodal_field_scalar)
     print(
-        f"unit impuls: scalar nodal field after communication with buffers in rank {communicator.rank} \n "
+        f"unit impuls: nodal_field_scalar after communication with buffers in rank {communicator.rank} \n "
         + f"{nodal_field_scalar.sg[0]}"
-    )
-
-    # Derivative stencil of shape (2, quad, 2, 2)
-    gradient = np.array(
-        [
-            [  # Derivative in x-direction
-                [[[-1, 0], [1, 0]]],  # Bottom-left triangle (first quadrature point)
-                [[[0, -1], [0, 1]]],  # Top-right triangle (second quadrature point)
-            ],
-            [  # Derivative in y-direction
-                [[[-1, 1], [0, 0]]],  # Bottom-left triangle (first quadrature point)
-                [[[0, 0], [-1, 1]]],  # Top-right triangle (second quadrature point)
-            ],
-        ],
-    )
-    gradient_op = muGrid.ConvolutionOperator([0, 0], gradient)
-
-    # Apply the gradient operator to the nodal field and write result to the quad field
-    gradient_op.apply(nodal_field_scalar, quad_field_scalar)
-
-    engine.communicate_ghosts(quad_field_scalar)
-
-    # Apply the gradient transposed operator to the quad field and write result to the nodal field
-    gradient_op.transpose(
-        quadrature_point_field=quad_field_scalar,
-        nodal_field=nodal_field_scalar,
-        weights=[
-            1 / 2,
-            1 / 2,
-        ],  # size of the element is half of the pixel. Pixel size is 1
     )
 
     engine.fft(nodal_field_scalar, ffield_scalar)
@@ -465,12 +432,16 @@ def test_fft_scalar_vs_vector_field(engine_str):
         f" ffield  {communicator.rank}  \n "
         + f"{ffield_scalar.s}"
     )
-    # Now compute vector field where the second component is zero
+
+    # Now compute vector field where the second component has only zeros
+    # and the first component is the same as in scalar case
+    # #  A_vector[0] = A_scalar[0]
+    # #  A_vector[1] = 0
+    # #  A_vector[0, 0, impuls_locations] = 1
+
     # Get nodal field
     ffield_vector = engine.fourier_space_field('vector-field', (2,))
     nodal_field_vector = fc.real_field("vector_nodal-field", (2,), "nodal_points")
-    # Get quadrature field of shape (2, quad, nx, ny)
-    quad_field_vector = fc.real_field("vector_quad-field", (2,2,), "quad_points")
 
     impuls_locations = (nodal_field_vector.icoordsg[0] == 0) & (
             nodal_field_vector.icoordsg[1] == 0
@@ -489,36 +460,6 @@ def test_fft_scalar_vs_vector_field(engine_str):
         + f"{nodal_field_vector.sg[0]}"
     )
 
-    # Derivative stencil of shape (2, quad, 2, 2)
-    gradient = np.array(
-        [
-            [  # Derivative in x-direction
-                [[[-1, 0], [1, 0]]],  # Bottom-left triangle (first quadrature point)
-                [[[0, -1], [0, 1]]],  # Top-right triangle (second quadrature point)
-            ],
-            [  # Derivative in y-direction
-                [[[-1, 1], [0, 0]]],  # Bottom-left triangle (first quadrature point)
-                [[[0, 0], [-1, 1]]],  # Top-right triangle (second quadrature point)
-            ],
-        ],
-    )
-    gradient_op = muGrid.ConvolutionOperator([0, 0], gradient)
-
-    # Apply the gradient operator to the nodal field and write result to the quad field
-    gradient_op.apply(nodal_field_vector, quad_field_vector)
-
-    engine.communicate_ghosts(quad_field_vector)
-
-    # Apply the gradient transposed operator to the quad field and write result to the nodal field
-    gradient_op.transpose(
-        quadrature_point_field=quad_field_vector,
-        nodal_field=nodal_field_vector,
-        weights=[
-            1 / 2,
-            1 / 2,
-        ],  # size of the element is half of the pixel. Pixel size is 1
-    )
-
     engine.fft(nodal_field_vector, ffield_vector)
     print(
         f" ffield_vector  {communicator.rank}  \n "
@@ -526,7 +467,7 @@ def test_fft_scalar_vs_vector_field(engine_str):
     )
 
 
-    # Check that the nodal_field has zero mean
+    # check if FFT of  # FFT A_vector[0] = FFT A_scalar[0]
     np.testing.assert_allclose(
         ffield_vector.s[0,0] ,ffield_scalar.s[0,0]
          ,
