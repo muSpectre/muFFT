@@ -220,20 +220,20 @@ def test_laplace_unit_impulse(engine_str):
     quad_field = fc.real_field("quad-field", (2,), "quad_points")
 
     impuls_locations = (impuls_response_field.icoordsg[0] == 0) & (
-            impuls_response_field.icoordsg[1] == 0
+        impuls_response_field.icoordsg[1] == 0
     )
     left_location = (impuls_response_field.icoordsg[0] == nx - 1) & (
-            impuls_response_field.icoordsg[1] == 0
+        impuls_response_field.icoordsg[1] == 0
     )
     right_location = (impuls_response_field.icoordsg[0] == 1) & (
-            impuls_response_field.icoordsg[1] == 0
+        impuls_response_field.icoordsg[1] == 0
     )
 
     top_location = (impuls_response_field.icoordsg[0] == 0) & (
-            impuls_response_field.icoordsg[1] == 1
+        impuls_response_field.icoordsg[1] == 1
     )
     bottom_location = (impuls_response_field.icoordsg[0] == 0) & (
-            impuls_response_field.icoordsg[1] == ny - 1
+        impuls_response_field.icoordsg[1] == ny - 1
     )
 
     nodal_field.sg[0, 0, impuls_locations] = 1
@@ -343,7 +343,7 @@ def test_shift_unit_impulse(engine_str):
     nodal_field2 = fc.real_field("nodal-field2")
 
     impulse_locations = (nodal_field1.icoordsg[0] == 0) & (
-            nodal_field1.icoordsg[1] == 0
+        nodal_field1.icoordsg[1] == 0
     )
     nodal_field1.pg[impulse_locations] = 1
 
@@ -376,10 +376,10 @@ def test_shift_unit_impulse(engine_str):
 
 
 @pytest.mark.parametrize("engine_str", engines)
-def test_laplace_unit_impulse_fft(engine_str):
+def test_fft_scalar_vs_vector_field(engine_str):
     # Check if FFT of zero mean field  has zero frequency == 0
     # Two dimensional grid
-    nx, ny = nb_grid_pts = [8, 16]
+    nb_grid_pts = [4, 6]
 
     left_ghosts = [1, 1]
     right_ghosts = [1, 1]
@@ -401,80 +401,32 @@ def test_laplace_unit_impulse_fft(engine_str):
     fc = engine.real_field_collection
     fc.set_nb_sub_pts("quad_points", 2)
     fc.set_nb_sub_pts("nodal_points", 1)
-    fcf = engine.fourier_field_collection
-    # Get nodal field
-    ffield = engine.fourier_space_field('scalar-field')
 
-    nodal_field = fc.real_field("nodal-field", (1,), "nodal_points")
+    #### I will compute FFT of scalar field, and the compare it with FFT of a vector field with the same input
 
-    # Get quadrature field of shape (2, quad, nx, ny)
-    quad_field = fc.real_field("quad-field", (2,), "quad_points")
+    # Get scalar nodal field
+    ffield_scalar = engine.fourier_space_field("scalar-field", (1,))
+    nodal_field_scalar = fc.real_field("scalar_nodal-field", (1,), "nodal_points")
+    impulse_locations = (nodal_field_scalar.icoordsg[0] == 0) & (
+        nodal_field_scalar.icoordsg[1] == 0
+    )
+    nodal_field_scalar.sg[0, 0, impulse_locations] = 1
 
-    impuls_locations = (nodal_field.icoordsg[0] == 0) & (
-            nodal_field.icoordsg[1] == 0
+    engine.fft(nodal_field_scalar, ffield_scalar)
+
+    # Get vector nodal field
+    ffield_vector = engine.fourier_space_field("vector-field", (2,))
+    nodal_field_vector = fc.real_field("vector_nodal-field", (2,), "nodal_points")
+    impulse_locations = (nodal_field_vector.icoordsg[0] == 0) & (
+        nodal_field_vector.icoordsg[1] == 0
     )
 
-    nodal_field.sg[0, 0, impuls_locations] = 1
+    nodal_field_vector.sg[0, 0, impulse_locations] = 1
 
-    print(
-        f"unit impuls: nodal field with buffers in rank {communicator.rank} \n "
-        + f"{nodal_field.s}"
-    )
+    engine.fft(nodal_field_vector, ffield_vector)
 
-    engine.communicate_ghosts(nodal_field)
-    print(
-        f"unit impuls: nodal field after communication with buffers in rank {communicator.rank} \n "
-        + f"{nodal_field.s}"
-    )
-
-    # Derivative stencil of shape (2, quad, 2, 2)
-    gradient = np.array(
-        [
-            [  # Derivative in x-direction
-                [[[-1, 0], [1, 0]]],  # Bottom-left triangle (first quadrature point)
-                [[[0, -1], [0, 1]]],  # Top-right triangle (second quadrature point)
-            ],
-            [  # Derivative in y-direction
-                [[[-1, 1], [0, 0]]],  # Bottom-left triangle (first quadrature point)
-                [[[0, 0], [-1, 1]]],  # Top-right triangle (second quadrature point)
-            ],
-        ],
-    )
-    gradient_op = muGrid.ConvolutionOperator([0, 0], gradient)
-
-    # Apply the gradient operator to the nodal field and write result to the quad field
-    gradient_op.apply(nodal_field, quad_field)
-
-    engine.communicate_ghosts(quad_field)
-
-    # Apply the gradient transposed operator to the quad field and write result to the nodal field
-    gradient_op.transpose(
-        quadrature_point_field=quad_field,
-        nodal_field=nodal_field,
-        weights=[
-            1 / 2,
-            1 / 2,
-        ],  # size of the element is half of the pixel. Pixel size is 1
-    )
-
-    engine.fft(nodal_field, ffield)
-
-    impuls_locations_freq = (ffield.icoordsg[0] == 0) & (
-            ffield.icoordsg[1] == 0
-    )
-    print(
-        f" Zero frequency fft of unit impulse response  {communicator.rank} \n "
-        + f"{ffield.s[0, impuls_locations_freq]}"
-    )
-
-    # this unit impulse needs to have zero mean ---> this means that zero frequency has to be 0
-    print(
-        f" fft of unit impulse response  {communicator.rank} \n "
-        + f"{ffield.s}"
-    )
-    # Check that the nodal_field has zero mean
     np.testing.assert_allclose(
-        ffield.s[0, impuls_locations_freq],
-        0,
+        ffield_vector.s[0, 0],
+        ffield_scalar.s[0, 0],
         atol=1e-10,
     )

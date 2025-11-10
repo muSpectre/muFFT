@@ -38,6 +38,7 @@ import gc
 
 import unittest
 import numpy as np
+import pytest
 
 import muFFT, muGrid
 
@@ -853,7 +854,7 @@ class FFTCheck(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 engine.fft(in_data, out_data)
 
-    @unittest.skipIf(not muFFT.has_mpi)
+    @pytest.mark.skipif(not muFFT.has_mpi, "Test requires FFTWMPI")
     def test_zero_grid_pts(self):
         nb_grid_pts = [3, 3]  # Gives one CPU with zero points on 4 processes
         axes = (0, 1)
@@ -1155,7 +1156,7 @@ class FFTCheckSerialOnly(unittest.TestCase):
             )
 
 
-@unittest.skipIf(not muFFT.has_mpi)
+@pytest.mark.skipif(not muFFT.has_mpi, "Test requires FFTWMPI")
 def test_field_accessors(nb_grid_pts=(128, 128)):
     fft = muFFT.FFT(
         nb_grid_pts,
