@@ -220,20 +220,20 @@ def test_laplace_unit_impulse(engine_str):
     quad_field = fc.real_field("quad-field", (2,), "quad_points")
 
     impuls_locations = (impuls_response_field.icoordsg[0] == 0) & (
-            impuls_response_field.icoordsg[1] == 0
+        impuls_response_field.icoordsg[1] == 0
     )
     left_location = (impuls_response_field.icoordsg[0] == nx - 1) & (
-            impuls_response_field.icoordsg[1] == 0
+        impuls_response_field.icoordsg[1] == 0
     )
     right_location = (impuls_response_field.icoordsg[0] == 1) & (
-            impuls_response_field.icoordsg[1] == 0
+        impuls_response_field.icoordsg[1] == 0
     )
 
     top_location = (impuls_response_field.icoordsg[0] == 0) & (
-            impuls_response_field.icoordsg[1] == 1
+        impuls_response_field.icoordsg[1] == 1
     )
     bottom_location = (impuls_response_field.icoordsg[0] == 0) & (
-            impuls_response_field.icoordsg[1] == ny - 1
+        impuls_response_field.icoordsg[1] == ny - 1
     )
 
     nodal_field.sg[0, 0, impuls_locations] = 1
@@ -343,7 +343,7 @@ def test_shift_unit_impulse(engine_str):
     nodal_field2 = fc.real_field("nodal-field2")
 
     impulse_locations = (nodal_field1.icoordsg[0] == 0) & (
-            nodal_field1.icoordsg[1] == 0
+        nodal_field1.icoordsg[1] == 0
     )
     nodal_field1.pg[impulse_locations] = 1
 
@@ -379,7 +379,7 @@ def test_shift_unit_impulse(engine_str):
 def test_fft_scalar_vs_vector_field(engine_str):
     # Check if FFT of zero mean field  has zero frequency == 0
     # Two dimensional grid
-    nx, ny = nb_grid_pts = [4, 6]
+    nb_grid_pts = [4, 6]
 
     left_ghosts = [1, 1]
     right_ghosts = [1, 1]
@@ -401,75 +401,32 @@ def test_fft_scalar_vs_vector_field(engine_str):
     fc = engine.real_field_collection
     fc.set_nb_sub_pts("quad_points", 2)
     fc.set_nb_sub_pts("nodal_points", 1)
-    fcf = engine.fourier_field_collection
 
     #### I will compute FFT of scalar field, and the compare it with FFT of a vector field with the same input
 
-    # Get nodal field
-    ffield_scalar = engine.fourier_space_field('scalar-field', (1,))
-
-    nodal_field_scalar  = fc.real_field("scalar_nodal-field", (1,), "nodal_points")
-
-    impuls_locations = (nodal_field_scalar.icoordsg[0] == 0) & (
-            nodal_field_scalar.icoordsg[1] == 0
+    # Get scalar nodal field
+    ffield_scalar = engine.fourier_space_field("scalar-field", (1,))
+    nodal_field_scalar = fc.real_field("scalar_nodal-field", (1,), "nodal_points")
+    impulse_locations = (nodal_field_scalar.icoordsg[0] == 0) & (
+        nodal_field_scalar.icoordsg[1] == 0
     )
-    # #  A_scalar[0, 0, impuls_locations] = 1
-    nodal_field_scalar.sg[0, 0, impuls_locations] = 1
-
-    print(
-        f"unit impuls: nodal_field_scalar with buffers in rank {communicator.rank} \n "
-        + f"{nodal_field_scalar.sg[0]}"
-    )
-
-    engine.communicate_ghosts(nodal_field_scalar)
-    print(
-        f"unit impuls: nodal_field_scalar after communication with buffers in rank {communicator.rank} \n "
-        + f"{nodal_field_scalar.sg[0]}"
-    )
+    nodal_field_scalar.sg[0, 0, impulse_locations] = 1
 
     engine.fft(nodal_field_scalar, ffield_scalar)
-    print(
-        f" ffield  {communicator.rank}  \n "
-        + f"{ffield_scalar.s}"
-    )
 
-    # Now compute vector field where the second component has only zeros
-    # and the first component is the same as in scalar case
-    # #  A_vector[0] = A_scalar[0]
-    # #  A_vector[1] = 0
-    # #  A_vector[0, 0, impuls_locations] = 1
-
-    # Get nodal field
-    ffield_vector = engine.fourier_space_field('vector-field', (2,))
+    # Get vector nodal field
+    ffield_vector = engine.fourier_space_field("vector-field", (2,))
     nodal_field_vector = fc.real_field("vector_nodal-field", (2,), "nodal_points")
-
-    impuls_locations = (nodal_field_vector.icoordsg[0] == 0) & (
-            nodal_field_vector.icoordsg[1] == 0
+    impulse_locations = (nodal_field_vector.icoordsg[0] == 0) & (
+        nodal_field_vector.icoordsg[1] == 0
     )
 
-    nodal_field_vector.sg[0, 0, impuls_locations] = 1
-
-    print(
-        f"unit impuls: vector nodal field with buffers in rank {communicator.rank} \n "
-        + f"{nodal_field_vector.sg[0]}"
-    )
-
-    engine.communicate_ghosts(nodal_field_vector)
-    print(
-        f"unit impuls: vector nodal field after communication with buffers in rank {communicator.rank} \n "
-        + f"{nodal_field_vector.sg[0]}"
-    )
+    nodal_field_vector.sg[0, 0, impulse_locations] = 1
 
     engine.fft(nodal_field_vector, ffield_vector)
-    print(
-        f" ffield_vector  {communicator.rank}  \n "
-        + f"{ffield_vector.s}"
-    )
 
-
-    # check if FFT of  # FFT A_vector[0] = FFT A_scalar[0]
     np.testing.assert_allclose(
-        ffield_vector.s[0,0] ,ffield_scalar.s[0,0]
-         ,
+        ffield_vector.s[0, 0],
+        ffield_scalar.s[0, 0],
         atol=1e-10,
     )

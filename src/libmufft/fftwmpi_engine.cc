@@ -281,8 +281,9 @@ namespace muFFT {
                                     FourierField_t & output_field) {
         // Compute offset
         Shape_t nb_ghosts_left{this->collection.get_nb_ghosts_left()};
-        auto offset{muGrid::raw_mem_ops::linear_index(
-            nb_ghosts_left, this->collection.get_pixels_strides())};
+        auto offset{input_field.get_nb_dof_per_pixel() *
+                    muGrid::raw_mem_ops::linear_index(
+                        nb_ghosts_left, this->collection.get_pixels_strides())};
 
         // Compute FFT
         fftw_mpi_execute_dft_r2c(
@@ -296,8 +297,9 @@ namespace muFFT {
                                      RealField_t & output_field) {
         // Compute offset
         Shape_t nb_ghosts_left{this->collection.get_nb_ghosts_left()};
-        auto offset{muGrid::raw_mem_ops::linear_index(
-            nb_ghosts_left, this->collection.get_pixels_strides())};
+        auto offset{input_field.get_nb_dof_per_pixel() *
+                    muGrid::raw_mem_ops::linear_index(
+                        nb_ghosts_left, this->collection.get_pixels_strides())};
 
         fftw_mpi_execute_dft_c2r(
             this->ifft_plans.at(input_field.get_nb_dof_per_pixel()),
