@@ -17,7 +17,7 @@ version_hash = version[2]
 
 mufft_dependencies = []
 
-fftw3 = dependency('fftw3', required : false)
+fftw3 = dependency('fftw3', required : get_option('fftw'))
 if fftw3.found()
     add_project_arguments('-DWITH_FFTW', language : ['c', 'cpp'])
     mufft_dependencies += [fftw3]
@@ -39,12 +39,12 @@ if mpi.found()
     fftw3mpi = cc.find_library(
         'fftw3_mpi',
         has_headers : ['fftw3-mpi.h'],
-        required : false)
+        required : get_option('fftwmpi'))
     if fftw3mpi.found()
         add_project_arguments('-DWITH_FFTWMPI', language : ['c', 'cpp'])
         mufft_dependencies += [fftw3mpi]
     endif
-    pfft = dependency('pfft', required : false)
+    pfft = dependency('pfft', required : get_option('pfft'))
     if pfft.found()
         add_project_arguments('-DWITH_PFFT', language : ['c', 'cpp'])
         mufft_dependencies += [pfft]

@@ -1,0 +1,3 @@
+option('fftw', type : 'feature', value : 'auto')
+option('fftwmpi', type : 'feature', value : 'auto')
+option('pfft', type : 'feature', value : 'auto')
