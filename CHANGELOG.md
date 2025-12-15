@@ -1,10 +1,11 @@
 Change log for µFFT
 ===================
 
-0.95.0 (not yet released)
--------------------------
+0.95.0 (15Dec2025)
+------------------
 
-- ENH: Ghost/halo buffers for communication of real-space stencil operations
+- ENH: FFTs on top of fields with ghost/halo buffers for communication of
+  real-space stencil operations
 
 0.94.0 (26Jul2025)
 ------------------
