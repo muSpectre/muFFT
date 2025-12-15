@@ -1,6 +1,6 @@
 [wrap-git]
 url = https://github.com/muSpectre/muGrid.git
-revision = main
+revision = 0.96.0
 depth = 1
 
 [provide]
